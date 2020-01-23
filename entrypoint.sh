@@ -9,5 +9,7 @@ python run_lm_finetuning.py \
     --do_train \
     --train_data_file=train.txt \
     --line_by_line \
+    --fp16 \
+    --fp16_opt_level=O2 \
     --save_steps=1000 \
     --save_total_limit=25
