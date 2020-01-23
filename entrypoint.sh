@@ -8,4 +8,6 @@ python run_lm_finetuning.py \
     --model_name_or_path=$model \
     --do_train \
     --train_data_file=train.txt \
-    --line_by_line
+    --line_by_line \
+    --save_steps=100 \
+    --save_total_limit=25
