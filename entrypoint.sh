@@ -9,5 +9,5 @@ python run_lm_finetuning.py \
     --do_train \
     --train_data_file=train.txt \
     --line_by_line \
-    --save_steps=100 \
+    --save_steps=1000 \
     --save_total_limit=25
