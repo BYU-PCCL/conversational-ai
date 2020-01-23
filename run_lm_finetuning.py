@@ -698,6 +698,8 @@ def main():
             "and load it from here, using --tokenizer_name".format(tokenizer_class.__name__)
         )
 
+    tokenizer.pad_token = ""
+
     if args.block_size <= 0:
         args.block_size = tokenizer.max_len_single_sentence
         # Our input block size will be the max possible for the model
