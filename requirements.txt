@@ -1,0 +1,5 @@
+https://github.com/huggingface/transformers/archive/1a8e87b.tar.gz
+numpy>=1
+tensorboard>=2
+torch>=1
+tqdm>=4
