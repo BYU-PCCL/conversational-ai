@@ -11,9 +11,20 @@ mkdir -p "$tb_runs_dir"
 
 docker pull mwilliammyers/$name
 
+# get the ID of the last GPU
+gpu_id=$(nvidia-smi -L | awk 'END { gsub(":", ""); print $2 }')
+
 if [ -x "$(command -v nvidia-docker)" ]; then
-    nvidia-docker run -d --rm --name=$name -v "$chkpt_dir/":/tmp/output/ -v "$tb_runs_dir/":/workspace/runs mwilliammyers/$name
+    NV_GPU=$gpu_id nvidia-docker run \
+        -d --rm --name=$name \
+        -v "$chkpt_dir/":/tmp/output/ \
+        -v "$tb_runs_dir/":/workspace/runs \
+        mwilliammyers/$name
 else
-    docker run -d --rm --gpus=all --name=$name -v "$chkpt_dir/":/tmp/output/ -v "$tb_runs_dir/":/workspace/runs mwilliammyers/$name
+    docker run \
+        -d --rm --gpus=$gpu_id --name=$name \
+        -v "$chkpt_dir/":/tmp/output/ \
+        -v "$tb_runs_dir/":/workspace/runs \
+        mwilliammyers/$name
 fi
 
