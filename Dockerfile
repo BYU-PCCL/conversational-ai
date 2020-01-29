@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     git checkout b66ffc1 && \
     pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 
-COPY entrypoint.sh run_lm_finetuning.py train.txt ./
+COPY ./ ./
 
-CMD ["./entrypoint.sh"]
+CMD ["./train.sh"]
 

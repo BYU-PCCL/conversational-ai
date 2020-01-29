@@ -1,30 +1,29 @@
 #!/bin/sh
 
-name=conversational-ai
 
-chkpt_dir="${1:-/mnt/pccfs/not_backed_up/will/checkpoints/}"
-mkdir -p "$chkpt_dir"
-chkpt_dir="$(mktemp -dp $chkpt_dir --suffix=-$name)"
+project_dir=$(git rev-parse --show-toplevel 2> /dev/null) 
 
-tb_runs_dir="${2:-/mnt/pccfs/not_backed_up/will/runs/}"
-mkdir -p "$tb_runs_dir"
-
-docker pull mwilliammyers/$name
-
-# get the ID of the last GPU
-gpu_id=$(nvidia-smi -L | awk 'END { gsub(":", ""); print $2 }')
-
-if [ -x "$(command -v nvidia-docker)" ]; then
-    NV_GPU=$gpu_id nvidia-docker run \
-        -d --rm --name=$name \
-        -v "$chkpt_dir/":/tmp/output/ \
-        -v "$tb_runs_dir/":/workspace/runs \
-        mwilliammyers/$name
-else
-    docker run \
-        -d --rm --gpus=$gpu_id --name=$name \
-        -v "$chkpt_dir/":/tmp/output/ \
-        -v "$tb_runs_dir/":/workspace/runs \
-        mwilliammyers/$name
+if [ -n "$project_dir" ]; then
+    py=$(find $project_dir -executable -wholename '*bin/python3*' | head -n 1)
 fi
 
+py="${py:-python}"
+
+model="${MODEL:-gpt2}"
+
+apex_args=""
+$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O2"
+
+$py run_lm_finetuning.py \
+    --model_type=$model \
+    --model_name_or_path=$model \
+    --do_train \
+    --train_data_file=train.txt \
+    --line_by_line \
+    --num_train_epochs=10 \
+    --output_dir=checkpoints_conversational-ai_$(date +%s) \
+    --save_steps=1000 \
+    --save_total_limit=3 \
+    $apex_args \
+    "$@"
+    
