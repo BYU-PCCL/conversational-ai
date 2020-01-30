@@ -6,8 +6,9 @@ import logging
 import numpy as np
 import torch
 import torch.nn.functional as F
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from tqdm import trange
+
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
@@ -139,8 +140,8 @@ def run_model():
                     generated += 1
                     text = enc.decode(out[i])
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    print(text)
-            print("=" * 80)
+                    print(text.replace("<|endoftext|>", ""))
+            print("=" * 90)
         else:
             generated = 0
             for _ in range(args.nsamples // args.batch_size):
@@ -160,7 +161,7 @@ def run_model():
                     text = enc.decode(out[i])
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
                     print(text)
-            print("=" * 80)
+            print("=" * 90)
 
 
 if __name__ == "__main__":
