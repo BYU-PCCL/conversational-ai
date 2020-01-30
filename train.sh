@@ -14,6 +14,7 @@ model="${MODEL:-gpt2}"
 apex_args=""
 $py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O2"
 
+# TODO: automatically estimate a batch size based on GPU size
 $py run_lm_finetuning.py \
     --model_type=$model \
     --model_name_or_path=$model \
@@ -24,7 +25,7 @@ $py run_lm_finetuning.py \
     --output_dir=checkpoints/checkpoints_conversational-ai_$(date +%s) \
     --save_steps=10000 \
     --save_total_limit=5 \
-    --per_gpu_train_batch_size=8 \
+    --per_gpu_train_batch_size=12 \
     $apex_args \
     "$@"
     
