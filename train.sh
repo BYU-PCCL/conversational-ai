@@ -12,7 +12,7 @@ py="${py:-python}"
 model="${MODEL:-gpt2}"
 
 apex_args=""
-$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O3"
+$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O2"
 
 $py run_lm_finetuning.py \
     --model_type=$model \
@@ -22,7 +22,7 @@ $py run_lm_finetuning.py \
     --line_by_line \
     --num_train_epochs=50 \
     --output_dir=checkpoints/checkpoints_conversational-ai_$(date +%s) \
-    --save_steps=15000 \
+    --save_steps=10000 \
     --save_total_limit=5 \
     --per_gpu_train_batch_size=8 \
     $apex_args \
