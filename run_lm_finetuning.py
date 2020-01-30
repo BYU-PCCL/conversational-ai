@@ -965,7 +965,7 @@ def main():
         if args.local_rank in [-1, 0]:
             os.makedirs(args.output_dir, exist_ok=True)
 
-        logger.info("Saving model checkpoint to %s", args.output_dir)
+        logger.debug("Saving model checkpoint to %s", args.output_dir)
         # Save a trained model, configuration and tokenizer using `save_pretrained()`.
         # They can then be reloaded using `from_pretrained()`
         model_to_save = (
