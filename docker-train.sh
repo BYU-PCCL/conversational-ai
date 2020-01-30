@@ -1,6 +1,7 @@
 #!/bin/sh
 
-name=conversational-ai
+docker_image=conversational-ai
+name="$docker_image-$(date +%s)"
 
 work_dir=/workspace
 
@@ -17,11 +18,11 @@ docker pull pccl/$name
 # get the ID of the last GPU
 gpu_id=${NV_GPU:-$(nvidia-smi -L | awk 'END { gsub(":", ""); print $2 }')}
 
-args="-d --rm --name=$name -v $chkpt_dir/:$work_dir/checkpoints/ -v $tb_runs_dir/:$work_dir/runs"
+args="-d --rm --name=$name -e TENSORBOARD_RUN=$name -v $chkpt_dir/:$work_dir/checkpoints/ -v $tb_runs_dir/:$work_dir/runs"
 
 if [ -x "$(command -v nvidia-docker)" ]; then
-    NV_GPU=$gpu_id nvidia-docker run $args pccl/$name
+    NV_GPU=$gpu_id nvidia-docker run $args pccl/$docker_image
 else
-    docker run --gpus=$gpu_id $args pccl/$name
+    docker run --gpus=$gpu_id $args pccl/$docker_image
 fi
 
