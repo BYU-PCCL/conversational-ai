@@ -21,7 +21,7 @@ $py run_lm_finetuning.py \
     --train_data_file=train.txt \
     --line_by_line \
     --num_train_epochs=100 \
-    --output_dir=checkpoints_conversational-ai_$(date +%s) \
+    --output_dir=checkpoints/checkpoints_conversational-ai_$(date +%s) \
     --save_steps=1000 \
     --save_total_limit=3 \
     $apex_args \
