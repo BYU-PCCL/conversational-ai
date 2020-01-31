@@ -26,3 +26,5 @@ else
     docker run --gpus=$gpu_id $args pccl/$docker_image_name ./train.sh $@
 fi
 
+docker logs -f $run_name
+
