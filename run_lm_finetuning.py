@@ -251,7 +251,7 @@ def train(
 ) -> Tuple[int, float]:
     """ Train the model """
     if args.local_rank in [-1, 0]:
-        log_dir = os.getenv("TENSORBOARD_RUN")
+        log_dir = os.getenv("RUN_NAME")
         tb_writer = SummaryWriter("runs/{}".format(log_dir) if log_dir else None)
 
     args.train_batch_size = args.per_gpu_train_batch_size * max(1, args.n_gpu)
