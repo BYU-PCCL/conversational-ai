@@ -7,9 +7,11 @@ if [ -n "$project_dir" ]; then
 fi
 
 chkpt_dir=${CHECKPOINT_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints}
+chkpt_dir="$chkpt_dir/$(ls -1r $chkpt_dir | grep -m 1 conversational-ai)"
+chkpt_dir="$chkpt_dir/$(ls -1r $chkpt_dir | grep -m 1 checkpoint)"
 
 $py run_gpt2.py \
-    --model_name_or_path="$chkpt_dir/$(ls -1r $chkpt_dir | grep -m 1 conversational-ai)" \
+    --model_name_or_path="$chkpt_dir/" \
     --length=40 \
     "$@"
 
