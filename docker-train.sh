@@ -7,7 +7,7 @@ work_dir=/workspace
 
 local_root_dir=/mnt/pccfs/not_backed_up/will
 
-chkpt_dir=${CHCKPOINT_DIR:-$local_root_dir/checkpoints/}
+chkpt_dir=${CHECKPOINT_DIR:-$local_root_dir/checkpoints/}
 mkdir -p $chkpt_dir
 
 tb_dir=${TENSORBOARD_DIR:-$local_root_dir/runs/}
