@@ -25,7 +25,7 @@ $py run_lm_finetuning.py \
     --output_dir="checkpoints/${RUN_NAME:-conversational-ai_$(date +%s)}" \
     --save_steps=10000 \
     --save_total_limit=5 \
-    --per_gpu_train_batch_size=12 \
+    --per_gpu_train_batch_size=8 \
     $apex_args \
     "$@"
     
