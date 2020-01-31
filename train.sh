@@ -12,7 +12,7 @@ py="${py:-python}"
 model="${MODEL:-gpt2}"
 
 apex_args=""
-$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O2"
+$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O1"
 
 # TODO: automatically estimate a batch size based on GPU size
 $py run_lm_finetuning.py \
