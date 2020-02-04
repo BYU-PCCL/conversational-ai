@@ -2,16 +2,14 @@
 
 ## train
 
-with docker:
-
-```
-./docker-train.sh
-```
-
-without docker:
-
 ```
 ./train.sh
+```
+
+or equivalently:
+
+```
+curl -fsSL git.io/pccl-conversational-ai-train | sh
 ```
 
 ## chat
@@ -19,5 +17,5 @@ without docker:
 to run a trained GPT2 model, do:
 
 ```
-./chat.sh
+./chat.py
 ```

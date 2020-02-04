@@ -1,31 +1,25 @@
 #!/bin/sh
 
+docker_image_name=conversational-ai
+run_name="$docker_image_name-$(date +%s)"
 
-project_dir=$(git rev-parse --show-toplevel 2> /dev/null) 
+work_dir=/
 
-if [ -n "$project_dir" ]; then
-    py=$(find $project_dir -executable -wholename '*bin/python3*' | head -n 1)
+local_root_dir=/mnt/pccfs/not_backed_up/will
+
+chkpt_dir=${CHECKPOINT_DIR:-$local_root_dir/checkpoints/}
+mkdir -p $chkpt_dir
+
+docker pull pccl/$docker_image_name
+
+gpu_id=${NV_GPU:-all}
+args="-d --rm --name=$run_name --ipc=host -e RUN_NAME=$run_name -v $chkpt_dir/:$work_dir/checkpoint/"
+
+if [ -x "$(command -v nvidia-docker)" ]; then
+    NV_GPU=$gpu_id nvidia-docker run $args pccl/$docker_image_name $@
+else
+    docker run --gpus=$gpu_id $args pccl/$docker_image_name $@
 fi
 
-py="${py:-python}"
+docker logs -f $run_name
 
-model="${MODEL:-gpt2}"
-
-apex_args=""
-$py -c "import apex" 2> /dev/null && apex_args="--fp16 --fp16_opt_level=O1"
-
-# TODO: automatically estimate a batch size based on GPU size
-$py run_lm_finetuning.py \
-    --model_type=$model \
-    --model_name_or_path=$model \
-    --do_train \
-    --train_data_file=train.txt \
-    --line_by_line \
-    --num_train_epochs=50 \
-    --output_dir="checkpoints/${RUN_NAME:-conversational-ai_$(date +%s)}" \
-    --save_steps=10000 \
-    --save_total_limit=5 \
-    --per_gpu_train_batch_size=8 \
-    $apex_args \
-    "$@"
-    
