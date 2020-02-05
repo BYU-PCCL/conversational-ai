@@ -22,8 +22,9 @@ def batch_size_for(devices):
     if bs is not None:
         return int(bs)
 
-    mem = min(x.memory_limit_bytes for x in devices if x.device_type == "GPU")
-    mem /= 1024 ** 3
+    mem = min([x.memory_limit_bytes for x in devices if x.device_type == "GPU"] or [1])
+    mem = max(1, mem / 1024 / 1024 / 1024)
+
     return 2 ** int(math.log(mem, 2))
 
 
@@ -38,13 +39,15 @@ if not os.path.isfile(TRAIN_FILE):
 
 sess = gpt2.start_tf_sess()
 
+gpu_devices = [x for x in sess.list_devices() if x.device_type == "GPU"]
+
 gpt2.finetune(
     sess,
     TRAIN_FILE,
     run_name=RUN_NAME,
     model_name=MODEL_NAME,
-    multi_gpu=True,
-    batch_size=batch_size_for(sess.list_devices()),
+    multi_gpu=True if len(gpu_devices) > 1 else False,
+    batch_size=batch_size_for(gpu_devices),
     steps=STEPS,
     learning_rate=0.0001,
     sample_every=1000,
