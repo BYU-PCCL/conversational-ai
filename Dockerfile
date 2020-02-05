@@ -8,5 +8,5 @@ COPY ./ ./
 
 EXPOSE 6006
 
-CMD ["sh", "-c", "tensorboard --logdir=/checkpoint --bind_all & ./train.py"]
+CMD ["sh", "-c", "tensorboard --logdir=/checkpoint & ./train.py"]
 
