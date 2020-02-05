@@ -2,11 +2,7 @@
 
 docker_image_name=conversational-ai
 
-if [ -e "Dockerfile" ]; then
-    docker build -t pccl/$docker_image_name .
-else
-    docker pull pccl/$docker_image_name
-fi
+docker pull pccl/$docker_image_name
 
 echo ""
 
