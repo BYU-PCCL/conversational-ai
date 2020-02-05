@@ -10,7 +10,7 @@ import gpt_2_simple as gpt2  # isort:skip
 
 RUN_NAME = os.getenv("RUN_NAME", "conversational-ai")
 MODEL_NAME = os.getenv("MODEL_NAME", "355M")
-STEPS = max(int(os.getenv("STEPS", 10000)), 1)
+STEPS = max(int(os.getenv("STEPS", 2000)), 1)
 TRAIN_FILE = os.getenv("TRAIN_FILE", "train.txt")
 
 
@@ -45,7 +45,7 @@ gpt2.finetune(
     steps=STEPS,
     learning_rate=0.0001,
     sample_every=1000,
-    max_checkpoints=5,
-    save_every=max(STEPS // 10, 1),
+    max_checkpoints=10,
+    save_every=100 if STEPS > 100 else max(STEPS // 10, 1),
     print_every=25 if STEPS > 25 else 1,
 )
