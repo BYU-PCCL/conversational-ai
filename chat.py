@@ -27,6 +27,7 @@ def chat(checkpoint, length=64, **kwargs):
             prefix=conversation,
             return_as_list=True,
             length=length,
+            nsamples=kwargs.get("batch_size", 1),
             **kwargs
         )
 
