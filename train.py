@@ -4,6 +4,9 @@ import math
 import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
+import tensorflow as tf  # isort:skip
+
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import gpt_2_simple as gpt2  # isort:skip
 
