@@ -8,14 +8,14 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
 import gpt_2_simple as gpt2  # isort:skip
 
 
-RUN_NAME = os.getenv("RUN_NAME", "conversational-ai")
-MODEL_NAME = os.getenv("MODEL_NAME", "355M")
-STEPS = max(int(os.getenv("STEPS", 2000)), 1)
-TRAIN_FILE = os.getenv("TRAIN_FILE", "train.txt")
+RUN_NAME = os.getenv("CONVERSATIONAL_AI_RUN_NAME", "conversational-ai")
+MODEL_NAME = os.getenv("CONVERSATIONAL_AI_MODEL_NAME", "355M")
+STEPS = max(int(os.getenv("CONVERSATIONAL_AI_STEPS", 2000)), 1)
+TRAIN_FILE = os.getenv("CONVERSATIONAL_AI_TRAIN_FILE", "train.txt")
 
 
 def batch_size_for(devices):
-    bs = os.getenv("BATCH_SIZE")
+    bs = os.getenv("CONVERSATIONAL_AI_BATCH_SIZE")
     if bs is not None:
         return int(bs)
 
