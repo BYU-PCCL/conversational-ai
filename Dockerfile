@@ -6,5 +6,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./ ./
 
-CMD ["./train.py"]
+EXPOSE 6006
+
+CMD ["sh", "-c", "tensorboard --logdir=/checkpoint --bind_all & ./train.py"]
 
