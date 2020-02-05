@@ -15,8 +15,6 @@ mkdir -p $chkpt_dir
 gpu_id=${NV_GPU:-all}
 args="-d --rm --name=$run_name -P --ipc=host -e RUN_NAME=$run_name -v $chkpt_dir/:$work_dir/checkpoint/"
 
-echo "$@"
-
 if [ -x "$(command -v nvidia-docker)" ]; then
     NV_GPU=$gpu_id nvidia-docker run $args pccl/$docker_image_name $@
 else
