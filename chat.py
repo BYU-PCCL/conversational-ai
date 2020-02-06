@@ -28,7 +28,8 @@ def chat(checkpoint, length=128, **kwargs):
         prompt = "> "
         conversation = ""
         while True:
-            conversation += f"{prompt}{input(prompt).strip()}\n"
+            # TODO: why do we need an extra space for the prompt?
+            conversation += f"{prompt}{input(prompt + ' ').strip()}\n"
 
             with Spinner("Thinking..."):
                 output = gpt2.generate(
