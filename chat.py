@@ -10,12 +10,18 @@ import time
 from pathlib import Path
 
 
-def chat(checkpoint, length=128, **kwargs):
+def chat(checkpoint, output_dir=None, length=128, **kwargs):
     import gpt_2_simple as gpt2
 
     checkpoint = Path(checkpoint)
     checkpoint_dir = checkpoint.parent.resolve()
     run_name = checkpoint.name
+
+    output_file = None
+    if output_dir:
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = Path(output_dir, f"{run_name}_{int(time.time())}")
 
     try:
         with Spinner(f"Loading model from {checkpoint}...", file=sys.stderr):
@@ -51,6 +57,9 @@ def chat(checkpoint, length=128, **kwargs):
             print(output, end="")
 
             conversation += output
+
+            if output_file:
+                output_file.write_text(conversation)
     except (KeyboardInterrupt, EOFError):
         # do not print exception
         pass
@@ -94,6 +103,13 @@ def main():
         help="Length (number of tokens) of the generated texts",
         default=128,
         type=int,
+    )
+
+    parser.add_argument(
+        "--output-dir",
+        help="Also save chat under OUTPUT_DIR, with the same name as CHECKPOINT",
+        type=Path,
+        default=Path("./chats/"),
     )
 
     chat(**vars(parser.parse_args()))

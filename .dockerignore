@@ -3,6 +3,10 @@
 /.idea/
 model*
 checkpoint*
+chats/
+train.sh
+chat.sh
+docker.sh
 
 # Created by https://www.gitignore.io/api/vim,linux,windows,macos,python,venv
 # Edit at https://www.gitignore.io/?templates=vim,linux,windows,macos,python,venv
