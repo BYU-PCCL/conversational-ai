@@ -13,13 +13,13 @@ from pathlib import Path
 def chat(checkpoint, length=128, **kwargs):
     import gpt_2_simple as gpt2
 
-    try:
-        with Spinner("Loading model...", file=sys.stderr):
-            sess = gpt2.start_tf_sess()
+    checkpoint = Path(checkpoint)
+    checkpoint_dir = checkpoint.parent.resolve()
+    run_name = checkpoint.name
 
-            checkpoint = Path(checkpoint)
-            checkpoint_dir = checkpoint.parent.resolve()
-            run_name = checkpoint.name
+    try:
+        with Spinner(f"Loading model from {checkpoint}...", file=sys.stderr):
+            sess = gpt2.start_tf_sess()
 
             # HACK: avoid gpt2's unecessary printing that messes with our spinner...
             with contextlib.redirect_stdout(open(os.devnull, "w")):
