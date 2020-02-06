@@ -8,7 +8,7 @@ echo ""
 
 gpu_id=${NV_GPU:-all}
 run_name="${docker_image_name}_$(date +%s)"
-chkpt_dir=${CHECKPOINT_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints}
+chkpt_dir=${CONVERSATIONAL_AI_CHECKPOINT_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints}
 
 args=$(env | awk 'BEGIN { ORS=" " }; $0 ~ /CONVERSATIONAL_AI_/ { print "-e", $0 }')
 args="-d --rm --name=$run_name -P --ipc=host -e CONVERSATIONAL_AI_RUN_NAME=$run_name -v $chkpt_dir/:/checkpoint/ $args"
