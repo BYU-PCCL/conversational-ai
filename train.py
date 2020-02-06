@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import math
 import os
 
@@ -28,22 +29,12 @@ def batch_size_for(devices):
     return 2 ** int(math.log(mem, 2))
 
 
-if not os.path.isdir(os.path.join("models", MODEL_NAME)):
-    gpt2.download_gpt2(model_name=MODEL_NAME)
-
-
-if not os.path.isfile(TRAIN_FILE):
-    import dataset
-
-    dataset.write_to_file(TRAIN_FILE)
-
 sess = gpt2.start_tf_sess()
 
 gpu_devices = [x for x in sess.list_devices() if x.device_type == "GPU"]
 
-gpt2.finetune(
-    sess,
-    TRAIN_FILE,
+params = dict(
+    dataset=TRAIN_FILE,
     run_name=RUN_NAME,
     model_name=MODEL_NAME,
     multi_gpu=True if len(gpu_devices) > 1 else False,
@@ -55,3 +46,18 @@ gpt2.finetune(
     save_every=100 if STEPS > 100 else max(STEPS // 10, 1),
     print_every=25 if STEPS > 25 else 1,
 )
+
+# flush to make sure to print params before loading the model
+print(json.dumps(params, indent=2), flush=True)
+
+if not os.path.isdir(os.path.join("models", MODEL_NAME)):
+    gpt2.download_gpt2(model_name=MODEL_NAME)
+
+
+if not os.path.isfile(TRAIN_FILE):
+    import dataset
+
+    dataset.write_to_file(TRAIN_FILE)
+
+
+gpt2.finetune(sess, **params)
