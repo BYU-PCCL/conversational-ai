@@ -1,12 +1,8 @@
 #!/bin/sh
 
 docker run \
-    -it \
-    --rm \
-    --gpus=${NV_GPU:-all} \
-    --ipc=host \
-    -v ${CHECKPOINT_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints}/:/checkpoint/ \
+    -it --rm --ipc=host --gpus=all \
+    -v ${CONVERSATIONAL_AI_CHECKPOINT_DIR:-$(git rev-parse --show-toplevel || $PWD)/checkpoint}:/checkpoint/ \
     pccl/conversational-ai \
-    python3 chat.py \
-    $@
+    python3 chat.py $@
 
