@@ -25,10 +25,10 @@ def chat(checkpoint, length=128, **kwargs):
             with contextlib.redirect_stdout(open(os.devnull, "w")):
                 gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
 
-        conversation = "<|startoftext|>"
+        prompt = "> "
+        conversation = ""
         while True:
-            # TODO: why does the spinner require us to use an extra space?
-            conversation += "> " + input(">  ")
+            conversation += f"{prompt}{input(prompt).strip()}\n"
 
             with Spinner("Thinking..."):
                 output = gpt2.generate(
@@ -39,12 +39,15 @@ def chat(checkpoint, length=128, **kwargs):
                     return_as_list=True,
                     length=length,
                     nsamples=kwargs.get("batch_size", 1),
-                    **kwargs
+                    truncate=prompt,
+                    include_prefix=False,
+                    **kwargs,
                 )
 
-            output = "\n".join(output)
+            # TODO: handle nsamples > 1
+            output = output[0]
 
-            print(output)
+            print(output, end="")
 
             conversation += output
     except (KeyboardInterrupt, EOFError):
