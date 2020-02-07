@@ -62,7 +62,7 @@ def chat(checkpoint, output_dir=None, length=128, **kwargs):
                 output_file.write_text(conversation)
     except (KeyboardInterrupt, EOFError):
         # do not print exception
-        pass
+        sys.exit(0)
 
 
 def main():
