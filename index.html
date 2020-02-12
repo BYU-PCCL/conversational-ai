@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>chatbot</title>
+
+    <script src="http://code.jquery.com/jquery-3.0.0.slim.min.js"></script>
+
+    <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font: 13px Helvetica, Arial;
+      }
+
+      form input {
+        border: 0;
+        padding: 10px;
+        width: 90%;
+        margin-right: 0.5%;
+      }
+
+      form button {
+        width: 9%;
+        background: rgb(130, 224, 255);
+        border: none;
+        padding: 10px;
+      }
+
+      #convoId-div,
+      #convoId-banner {
+        background: #aaa;
+        padding: 10px;
+        width: 100%;
+      }
+
+      #input-div {
+        background: #000;
+        padding: 3px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      #messages li {
+        padding: 5px 10px;
+      }
+
+      #messages li:nth-child(odd) {
+        background: #eee;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form>
+      <div id="convoId-div">
+        <input id="convoId" user="convoId" autocomplete="off" />
+        <button>Save</button>
+      </div>
+
+      <div id="convoId-banner"></div>
+
+      <ul id="messages"></ul>
+
+      <div id="input-div">
+        <input
+          id="message"
+          user="message"
+          autocomplete="off"
+          placeholder="Message"
+          autofocus
+        />
+        <button>Send</button>
+      </div>
+    </form>
+
+    <script>
+      function dec2hex(dec) {
+        return ("0" + dec.toString(16)).substr(-2);
+      }
+
+      function generateId(len) {
+        var arr = new Uint8Array((len || 10) / 2);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr, dec2hex).join("");
+      }
+
+      websocket = new WebSocket("ws://" + window.location.hostname + ":8080/chat");
+
+      defaultConvoId = generateId();
+
+      $("#convoId").attr(
+        "placeholder",
+        "conversation name (default: " + defaultConvoId + ")"
+      );
+
+      $("form").submit(function() {
+        id = $("#convoId").val() ? $("#convoId").val() : defaultConvoId;
+
+        $("#convoId-div").hide();
+        $("#convoId-banner").text(id);
+
+        message = $("#message").val();
+
+        $("#messages").append($("<li>").html(message));
+
+        $("#message").focus();
+        $("#message").val("");
+
+        websocket.send(
+          JSON.stringify({
+            id,
+            message
+          })
+        );
+
+        return false;
+      });
+
+      websocket.onmessage = function(evt) {
+        $("#messages").append($("<li>").html(evt.data));
+      };
+
+      websocket.onerror = function(evt) {
+        $("#messages").append(
+          $("<li>").html('<span style="color: red;">ERROR:</span> ' + evt.data)
+        );
+      };
+    </script>
+  </body>
+</html>

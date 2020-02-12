@@ -10,8 +10,13 @@ from pathlib import Path
 from halo import Halo as Spinner
 
 
-def chat_bot(checkpoint, output_dir=None, length=128, **kwargs):
+# TODO: this should not handle saving/updating the conversation
+def chatbot(checkpoint, output_dir=None, length=128, **kwargs):
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
+    import tensorflow as tf
     import gpt_2_simple as gpt2
+
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
     checkpoint = Path(checkpoint)
     checkpoint_dir = checkpoint.parent.resolve()
@@ -60,7 +65,7 @@ def chat_bot(checkpoint, output_dir=None, length=128, **kwargs):
 
 
 def _run_interactive_chat(**kwargs):
-    chat = chat_bot(**kwargs)
+    chat = chatbot(**kwargs)
 
     prompt = "> "
     conversation = ""
@@ -81,11 +86,6 @@ def _run_interactive_chat(**kwargs):
 def main():
     import argparse
 
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
-    import tensorflow as tf  # isort:skip
-
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-
     parser = argparse.ArgumentParser(
         description="chat with the model",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -103,11 +103,7 @@ def main():
     )
 
     parser.add_argument(
-        "-b",
-        "--batch-size",
-        help="Batch size",
-        default=8 if tf.test.is_gpu_available() else 1,
-        type=int,
+        "-b", "--batch-size", help="Batch size", default=1, type=int,
     )
 
     parser.add_argument(
