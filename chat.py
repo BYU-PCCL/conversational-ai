@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 import contextlib
-import itertools
 import os
 import readline
 import sys
-import threading
 import time
 from pathlib import Path
+
+from halo import Halo as Spinner
 
 
 def chat(checkpoint, output_dir=None, length=128, **kwargs):
@@ -24,7 +24,7 @@ def chat(checkpoint, output_dir=None, length=128, **kwargs):
         output_file = Path(output_dir, f"{run_name}_{int(time.time())}")
 
     try:
-        with Spinner(f"Loading model from {checkpoint}...", file=sys.stderr):
+        with Spinner(f"Loading model from {checkpoint}...", stream=sys.stderr):
             sess = gpt2.start_tf_sess()
 
             # HACK: avoid gpt2's unecessary printing that messes with our spinner...
@@ -113,40 +113,6 @@ def main():
     )
 
     chat(**vars(parser.parse_args()))
-
-
-class Spinner:
-    # TODO: avoid term escape sequences to make this platform independent
-    def __init__(
-        self,
-        message="",
-        symbols=["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
-        delay=0.09,
-        file=sys.stdout,
-    ):
-        self._spinner = itertools.cycle(symbols)
-        self._busy = False
-        self._delay = float(delay)
-        self._file = file
-
-        message = message + " " if not message.endswith(" ") else message
-        # hide cursor; https://stackoverflow.com/a/10455937
-        print(message, end="\033[?25l", file=self._file, flush=True)
-
-    def _spinner_task(self):
-        while self._busy:
-            print(next(self._spinner), end="", file=self._file, flush=True)
-            time.sleep(self._delay)
-            print("\b", end="", file=self._file, flush=True)
-
-    def __enter__(self):
-        self._busy = True
-        threading.Thread(target=self._spinner_task).start()
-
-    def __exit__(self, exc_type, exc_val, traceback):
-        self._busy = False
-        # clear this line and show cursor; https://stackoverflow.com/a/5291396
-        print("\033[2K\033[1G", end="\033[?25h", file=self._file, flush=True)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 chitchat_dataset
 gpt-2-simple
+halo
 numpy==1.16.0
 tensorflow-gpu>=1.14.0
