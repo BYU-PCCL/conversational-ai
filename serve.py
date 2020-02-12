@@ -36,7 +36,7 @@ async def _chat(request, ws):
         user_input = data.get("message")
         response = ""
         if user_input:
-            convo = request.app.chat_histories.setdefault(data["id"], "<|startoftext|>\n")
+            convo = request.app.chat_histories.setdefault(data["id"], "")
             response, convo = request.app.chat(user_input, conversation=convo)
             request.app.chat_histories[data["id"]] = convo
 
