@@ -10,7 +10,7 @@ from pathlib import Path
 from halo import Halo as Spinner
 
 
-def chat(checkpoint, output_dir=None, length=128, **kwargs):
+def chat_bot(checkpoint, output_dir=None, length=128, **kwargs):
     import gpt_2_simple as gpt2
 
     checkpoint = Path(checkpoint)
@@ -23,43 +23,56 @@ def chat(checkpoint, output_dir=None, length=128, **kwargs):
         output_dir.mkdir(parents=True, exist_ok=True)
         output_file = Path(output_dir, f"{run_name}_{int(time.time())}")
 
+    with Spinner(f"Loading model from {checkpoint}...", stream=sys.stderr):
+        sess = gpt2.start_tf_sess()
+
+        # HACK: avoid gpt2's unecessary printing that messes with our spinner...
+        with contextlib.redirect_stdout(open(os.devnull, "w")):
+            gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
+
+    def _chat(user_input, conversation="", prompt="> "):
+        conversation += f"{prompt}{user_input}\n"
+
+        output = gpt2.generate(
+            sess,
+            checkpoint_dir=checkpoint_dir,
+            run_name=run_name,
+            prefix=conversation,
+            return_as_list=True,
+            length=length,
+            nsamples=kwargs.get("batch_size", 1),
+            truncate=prompt,
+            include_prefix=False,
+            **kwargs,
+        )
+
+        # TODO: handle nsamples > 1
+        output = output[0]
+
+        conversation += output
+
+        if output_file:
+            output_file.write_text(conversation)
+
+        return output, conversation
+
+    return _chat
+
+
+def _run_interactive_chat(**kwargs):
+    chat = chat_bot(**kwargs)
+
+    prompt = "> "
+    conversation = ""
     try:
-        with Spinner(f"Loading model from {checkpoint}...", stream=sys.stderr):
-            sess = gpt2.start_tf_sess()
-
-            # HACK: avoid gpt2's unecessary printing that messes with our spinner...
-            with contextlib.redirect_stdout(open(os.devnull, "w")):
-                gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
-
-        prompt = "> "
-        conversation = ""
         while True:
             # TODO: why do we need an extra space for the prompt?
-            conversation += f"{prompt}{input(prompt + ' ').strip()}\n"
+            user_input = input(prompt).strip()
 
             with Spinner("Thinking..."):
-                output = gpt2.generate(
-                    sess,
-                    checkpoint_dir=checkpoint_dir,
-                    run_name=run_name,
-                    prefix=conversation,
-                    return_as_list=True,
-                    length=length,
-                    nsamples=kwargs.get("batch_size", 1),
-                    truncate=prompt,
-                    include_prefix=False,
-                    **kwargs,
-                )
-
-            # TODO: handle nsamples > 1
-            output = output[0]
+                output, conversation = chat(user_input, conversation, prompt=prompt)
 
             print(output, end="")
-
-            conversation += output
-
-            if output_file:
-                output_file.write_text(conversation)
     except (KeyboardInterrupt, EOFError):
         # do not print exception
         sys.exit(0)
@@ -112,7 +125,7 @@ def main():
         default=Path("./chats/"),
     )
 
-    chat(**vars(parser.parse_args()))
+    _run_interactive_chat(**vars(parser.parse_args()))
 
 
 if __name__ == "__main__":
