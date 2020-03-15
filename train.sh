@@ -26,4 +26,3 @@ docker ps --filter=name=$docker_image_name
 echo ""
 
 docker logs -f $run_name
-

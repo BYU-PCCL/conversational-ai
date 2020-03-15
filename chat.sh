@@ -6,4 +6,3 @@ docker run \
     -v $PWD/chats:/chats/ \
     pccl/conversational-ai \
     python3 chat.py $@
-

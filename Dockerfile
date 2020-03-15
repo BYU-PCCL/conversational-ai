@@ -11,4 +11,3 @@ EXPOSE 6006
 EXPOSE 8080
 
 CMD ["sh", "-c", "tensorboard --logdir=/checkpoint & ./train.py"]
-
