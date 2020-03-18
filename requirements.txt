@@ -1,5 +1,5 @@
 chitchat_dataset
-gpt-2-simple
 halo
-numpy==1.16.0
-tensorflow-gpu>=1.14.0
+numpy>=1.18
+tensorflow-gpu>=1.15.0,<2.0.0
+t5==0.3.0

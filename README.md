@@ -1,5 +1,9 @@
 # conversational-ai
 
+## requirements
+
+- `pip>=20.0` & `setuptools>=41.0.0`
+
 ## train
 
 ```

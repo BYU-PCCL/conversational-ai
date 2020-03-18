@@ -16,7 +16,9 @@ app.static("/", "/index.html")
 
 @app.route("/chats/<convo_id>")
 async def _chats(request, convo_id):
-    convo = request.app.chat_histories.get(convo_id, "[no chat history for requested convo_id]")
+    convo = request.app.chat_histories.get(
+        convo_id, "[no chat history for requested convo_id]"
+    )
     return response.text(convo)
 
 

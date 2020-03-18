@@ -1,12 +1,17 @@
 .git*
-/.vscode/
-/.idea/
-model*
-checkpoint*
 chats/
 train.sh
 chat.sh
 docker.sh
+requirements.dev.txt
+
+/.vscode/
+/.idea/
+runs/
+/model*
+/checkpoint*
+/data
+command
 
 # Created by https://www.gitignore.io/api/vim,linux,windows,macos,python,venv
 # Edit at https://www.gitignore.io/?templates=vim,linux,windows,macos,python,venv

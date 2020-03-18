@@ -1,34 +1,47 @@
-import os
+"""Prepares a dataset for consumption by the T5 model.
+
+https://github.com/google-research/text-to-text-transfer-transformer
+"""
+
 import re
 from pathlib import Path
+from typing import Iterable, List, Optional, Union
 
 import chitchat_dataset as ccc
 
 
-def _prep_convo(
-    convo,
-    start_token="<|startoftext|>",
-    end_token="<|endoftext|>",
-    # max_utterance_length=int(sys.argv[1]) if len(sys.argv) > 1 else 0,
-):
-    convo = ["> " + txt if i % 2 == 0 else txt for i, txt in enumerate(convo)]
-    return "{}\n{}\n{}".format(start_token, "\n".join(convo), end_token)
+def _prep_convo(convo: Iterable[str]) -> List[str]:
+    result = []
+
+    convo = list(c for c in convo if c.strip())
+    for i in range(1, len(convo)):
+        txt = f"conversation: {'<TURN>'.join(convo[:i])}\t{convo[i]}"
+
+        txt = txt.replace(" ,", ",").replace(" .", ".").replace(" ?", "?")
+        txt = txt.replace(" 's", "'s").replace("s ' ", "s' ")
+        txt = txt.replace(" ' ", "'").replace(" ’ ", "'")
+
+        result.append(txt)
+
+    return result
 
 
-def write_to_file(path="train.txt", daily_dialog_path="dialogues_text.txt"):
+def write_to_file(
+    path: Union[str, Path] = "train.tsv",
+    daily_dialog_path: Optional[Union[str, Path]] = None,
+) -> Union[str, Path]:
+    """Writes the CCC (and optionally the daily dialog) dataset to a file."""
     dataset = []
 
-    try:
+    if daily_dialog_path:
         for line in Path(daily_dialog_path).open().readlines():
-            dataset.append(_prep_convo(re.split(r"\s*__eou__\s*", line)))
-    except FileNotFoundError:
-        pass
+            dataset.extend(_prep_convo(re.split(r"\s*__eou__\s*", line)))
 
     for convo in ccc.Dataset().values():
         convo = _prep_convo(" ".join(u["text"] for u in m) for m in convo["messages"])
-        dataset.append(convo)
+        dataset.extend(convo)
 
-    Path(path).write_text("\n".join(dataset))
+    Path(path).write_text("\n".join(dataset))  # type: ignore
 
     return path
 
@@ -36,4 +49,4 @@ def write_to_file(path="train.txt", daily_dialog_path="dialogues_text.txt"):
 if __name__ == "__main__":
     import os
 
-    write_to_file(os.getenv("TRAIN_FILE", "train.txt"))
+    write_to_file(os.getenv("TRAIN_FILE", "train.tsv"), os.getenv("DAILY_DIALOG_PATH"))
