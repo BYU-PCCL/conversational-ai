@@ -1,5 +1,7 @@
-chitchat_dataset
-gpt-2-simple
-halo
-numpy==1.16.0
-tensorflow-gpu>=1.14.0
+chitchat_dataset>=0.2.0
+halo>=0.0.28
+numpy>=1.18
+torch>=1.4
+# tensorflow>=2.1
+transformers>=2.5
+# https://api.github.com/repos/huggingface/transformers/tarball/38a555a

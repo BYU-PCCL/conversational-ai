@@ -1,5 +1,8 @@
 # conversational-ai
 
+# requirements
+- TensorFlow 2 packages require a `pip>=20.0` & `setuptools>=41.0.0`.
+
 ## train
 
 ```
