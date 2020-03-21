@@ -2,7 +2,7 @@
 
 image_name=conversational-ai
 
-docker pull pccl/$image_name
+# docker pull pccl/$image_name
 
 echo ""
 

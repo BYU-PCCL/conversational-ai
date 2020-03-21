@@ -16,4 +16,4 @@ COPY ["*.sh", "*.py", "./"]
 EXPOSE 6006
 EXPOSE 8080
 
-CMD ["sh", "-c", "tensorboard --logdir=/models & ./t5.sh"]
+CMD ["sh", "-c", "tensorboard --logdir=/models & python3 train.py"]
