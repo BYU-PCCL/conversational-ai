@@ -43,9 +43,10 @@ def finetune(
         "conversation",
         t5.data.TextLineTask,
         split_to_filepattern={"train": train_path, "validation": validation_path},
-        text_preprocessor=None,
-        # postprocess_fn=t5.data.postprocessors.lower_text,
-        postprocess_fn=None,
+        text_preprocessor=[
+            partial(t5.data.preprocessors.parse_tsv, field_names=["inputs", "targets"]),
+        ],
+        postprocess_fn=t5.data.postprocessors.lower_text,
         metric_fns=[t5.evaluation.metrics.accuracy, t5.evaluation.metrics.rouge],
         sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
         # num_input_examples=sum(1 for _ in TRAIN_FILE.open(mode="r")),
