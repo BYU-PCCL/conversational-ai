@@ -1,4 +1,5 @@
 train.tsv
+validation.tsv
 /.vscode/
 /.idea/
 runs/
