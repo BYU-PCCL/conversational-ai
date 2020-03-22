@@ -79,11 +79,12 @@ def finetune(
 
 
 if __name__ == "__main__":
+    name = "CONVERSATIONAL_AI"
     kwargs = dict(
-        finetune_steps=os.getenv("CONVERSATIONAL_AI_FINETUNE_STEPS"),
-        model_size=os.getenv("CONVERSATIONAL_AI_MODEL_DIR"),
-        model_dir=os.getenv("CONVERSATIONAL_AI_MODEL_DIR"),
-        train_file=os.getenv("CONVERSATIONAL_AI_TRAIN_FILE"),
+        finetune_steps=os.getenv(f"{name}_FINETUNE_STEPS"),
+        model_size=os.getenv(f"{name}_MODEL_SIZE"),
+        model_dir=os.getenv("f{name}_MODEL_DIR", os.getenv(f"{name}_CHECKPOINT_DIR")),
+        train_file=os.getenv(f"{name}_TRAIN_FILE"),
     )
 
     finetune(**{k: v for k, v in kwargs.items() if v is not None})  # type: ignore
