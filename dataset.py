@@ -35,8 +35,11 @@ def write_to_files(
     validation_path: _Path = "validation.tsv",
     daily_dialog_path: Optional[_Path] = os.getenv("DAILY_DIALOG_PATH"),  # noqa: B008
     train_ratio: float = 0.9,
-) -> Tuple[_Path, _Path]:
+) -> Tuple[Path, Path]:
     """Write the CCC (& optionally daily dialog) dataset(s) to train/validation files."""
+    train_path = Path(train_path)
+    validation_path = Path(validation_path)
+
     dataset = []
 
     if daily_dialog_path:
@@ -49,9 +52,12 @@ def write_to_files(
 
     random.shuffle(dataset)
 
+    for path in [train_path, validation_path]:
+        path.parent.mkdir(parents=True, exist_ok=True)
+
     train_idx = int(train_ratio * len(dataset))
-    Path(train_path).write_text("\n".join(dataset[:train_idx]))  # type: ignore
-    Path(validation_path).write_text("\n".join(dataset[train_idx:]))  # type: ignore
+    train_path.write_text("\n".join(dataset[:train_idx]))  # type: ignore
+    validation_path.write_text("\n".join(dataset[train_idx:]))  # type: ignore
 
     return train_path, validation_path
 
