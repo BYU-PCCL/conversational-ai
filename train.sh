@@ -6,29 +6,24 @@
 #
 # Any environment variable starting with `CONVERSATIONAL_AI_` will be passed
 # into the container. You can also limit the available GPUS by running e.g.:
-# `NV_GPU=0,1 ./train.sh`
+# `NVIDIA_VISIBLE_DEVICES=0,1 ./train.sh`
 
 
-image="pccl/conversational-ai"
+# setup variables & build up docker args
 
-[ -z "$NV_GPU" ] && export NV_GPU=all
+name="conversational-ai"
+image="pccl/$name:${DOCKER_TAG:-latest}"
 
-[ -z "$CONVERSATIONAL_AI_RUN_NAME" ] && CONVERSATIONAL_AI_RUN_NAME="$(basename $image)_$(hostname)_$(date +%s)"
-export CONVERSATIONAL_AI_RUN_NAME
+export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $name)_$(hostname)_$(date +%s)}"
 
-[ -z "$CONVERSATIONAL_AI_MODEL_DIR" ] && export CONVERSATIONAL_AI_MODEL_DIR="/mnt/pccfs/not_backed_up/will/checkpoints/$CONVERSATIONAL_AI_RUN_NAME"
+export CONVERSATIONAL_AI_MODEL_DIR="${CONVERSATIONAL_AI_MODEL_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints/$CONVERSATIONAL_AI_RUN_NAME}"
+export DAILY_DIALOG_PATH="${DAILY_DIALOG_PATH:-/mnt/pccfs/not_backed_up/data/daily_dialog/ijcnlp_dailydialog/dialogues_text.txt}"
 
-docker="docker"
-gpu_args=""
-# backwards compatability with old versions of nvidia-container-toolkit
-if [ -x "$(command -v nvidia-docker)" ]; then
-    docker="nvidia-docker"
-elif [ -x "$(command -v docker)" ]; then
-    gpu_args="--gpus=$NV_GPU"
-else
-    printf "Could not find docker executable; see: https://docker.com/get-started\n" 1>&2
-    exit 1
-fi
+export NVIDIA_VISIBLE_DEVICES="${NVIDIA_VISIBLE_DEVICES:-${NV_GPU:-all}}"
+
+# use the syntax for the old version of nvidia-container-toolkit as the default
+gpu_args="-e NVIDIA_VISIBLE_DEVICES=$NVIDIA_VISIBLE_DEVICES --runtime=nvidia"
+docker run --help | grep -q -- '--gpus' && gpu_args="--gpus=$NVIDIA_VISIBLE_DEVICES"
 
 mkdir -p "$CONVERSATIONAL_AI_MODEL_DIR"
 mount_args=""
@@ -36,13 +31,16 @@ for path in \
     "/mnt" \
     "$CONVERSATIONAL_AI_MODEL_DIR" \
     "$CONVERSATIONAL_AI_TRAIN_PATH" \
-    "$CONVERSATIONAL_AI_VALIDATION_PATH"
+    "$CONVERSATIONAL_AI_VALIDATION_PATH" \
+    "$DAILY_DIALOG_PATH"
 do
     [ -n "$path" ] && [ -e "$path" ] && mount_args="-v $path:$path $mount_args"
 done
 
 
-if git remote get-url origin 2>/dev/null | grep -qi "$image"; then
+# run the docker command(s)
+
+if git remote get-url origin 2>/dev/null | grep -qi "$name"; then
     cd "$(git rev-parse --show-toplevel)" || exit
 
     printf "Building %s docker image...\n" "$image"
@@ -54,18 +52,19 @@ if git remote get-url origin 2>/dev/null | grep -qi "$image"; then
         docker push "$image"
     fi
 else
-    printf "\nPulling latest %s docker image...\n" "$image"
+    printf "Pulling latest %s docker image...\n" "$image"
     docker pull "$image"
 fi
 
 printf "\nStarting container %s...\n" "$CONVERSATIONAL_AI_RUN_NAME"
 # shellcheck disable=SC2086,SC2046
-$docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
-    --detach --rm --publish-all --user=$(id -u):$(id -g) \
+docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
+    --detach --rm --publish-all \
     --ipc=host --shm-size=8g --ulimit memlock=-1 --ulimit stack=67108864 \
     $gpu_args \
     $mount_args \
     $(env | awk 'BEGIN { ORS=" " }; $0 ~ /CONVERSATIONAL_AI_/ { print "-e", $0 }') \
+    -e DAILY_DIALOG_PATH=$DAILY_DIALOG_PATH \
     "$image" \
     "$@"
 
