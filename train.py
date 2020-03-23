@@ -10,6 +10,7 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
+import t5
 import tensorflow as tf
 
 import dataset
@@ -19,22 +20,21 @@ def finetune(
     steps: int = 25000,
     train_path: Union[str, Path] = "./train.tsv",
     validation_path: Union[str, Path] = "./validation.tsv",
-    pretrained_model_dir: str = "gs://t5-data/pretrained_models/small",
+    pretrained_model_dir: str = "gs://t5-data/pretrained_models/large",
     model_dir: Union[str, Path] = "./models",
     model_parallelism: int = 1,
     data_parallelism: Optional[int] = None,
     global_batch_size: Union[int, Tuple[str, int]] = ("tokens_per_batch", 1024),
+    sequence_length: Dict[str, int] = dict(inputs=256, targets=128),  # noqa: B008
     learning_rate_schedule: float = 0.003,
     keep_checkpoint_max: int = 5,
-    save_checkpoints_steps: int = 100,
+    save_checkpoints_steps: int = 1000,
     gpus: Optional[List[str]] = None,
-    gpu_memory_growth: bool = False,
+    gpu_memory_growth: bool = True,
     run_name: Optional[str] = None,
-    **kwargs: Dict[str, Any],  # passed into t5.models.MtfModel
+    **kwargs: Dict[str, Any],
 ) -> None:
     """Finetunes a T5 model."""
-    import t5  # import t5 here so we can set the log level first
-
     num_input_examples = None
     if not Path(train_path).is_file():
         train_len, val_len = dataset.write_to_files(train_path, validation_path)
@@ -72,7 +72,7 @@ def finetune(
         learning_rate_schedule=learning_rate_schedule,
         keep_checkpoint_max=keep_checkpoint_max,
         save_checkpoints_steps=save_checkpoints_steps,
-        sequence_length=dict(inputs=256, targets=128),
+        sequence_length=sequence_length,
         **kwargs,
     )
 
@@ -86,12 +86,12 @@ def finetune(
     model.eval(mixture_or_task_name="conversation", checkpoint_steps="all")
 
 
-def _init_gpus(gpus: Iterable[str], memory_growth: bool = False) -> Iterable[str]:
-    def _configure(gpu: Any) -> str:
+def _init_gpus(gpus: Iterable[str], memory_growth: bool) -> Iterable[str]:
+    def _conf(gpu: Any) -> str:
         tf.config.experimental.set_memory_growth(gpu, memory_growth)
         return gpu.name.replace("/physical_device:", "").lower()
 
-    all_gpus = set(map(_configure, tf.config.experimental.list_physical_devices("GPU")))
+    all_gpus = set(map(_conf, tf.config.experimental.list_physical_devices("GPU")))
 
     return set(g.lower() for g in gpus).intersection(all_gpus) if gpus else all_gpus
 
