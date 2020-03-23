@@ -35,9 +35,10 @@ def finetune(
     """Finetunes a T5 model."""
     import t5  # import t5 here so we can set the log level first
 
-    # TODO: use a tensorflow dataset to avoid writing to a file?
+    num_input_examples = None
     if not Path(train_path).is_file():
-        _, _ = dataset.write_to_files(train_path, validation_path)
+        train_len, val_len = dataset.write_to_files(train_path, validation_path)
+        num_input_examples = dict(train=train_len, validation=val_len)
 
     t5.data.TaskRegistry.add(
         "conversation",
@@ -49,7 +50,7 @@ def finetune(
         postprocess_fn=t5.data.postprocessors.lower_text,
         metric_fns=[t5.evaluation.metrics.accuracy, t5.evaluation.metrics.rouge],
         sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
-        # num_input_examples=sum(1 for _ in TRAIN_FILE.open(mode="r")),
+        num_input_examples=num_input_examples,
     )
 
     mesh_devices = list(_init_gpus(gpus or [], gpu_memory_growth))

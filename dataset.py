@@ -35,7 +35,7 @@ def write_to_files(
     validation_path: _Path = "validation.tsv",
     daily_dialog_path: Optional[_Path] = os.getenv("DAILY_DIALOG_PATH"),  # noqa: B008
     train_ratio: float = 0.9,
-) -> Tuple[Path, Path]:
+) -> Tuple[int, int]:
     """Write the CCC (& optionally daily dialog) dataset(s) to train/validation files."""
     train_path = Path(train_path)
     validation_path = Path(validation_path)
@@ -59,12 +59,10 @@ def write_to_files(
     train_path.write_text("\n".join(dataset[:train_idx]))  # type: ignore
     validation_path.write_text("\n".join(dataset[train_idx:]))  # type: ignore
 
-    return train_path, validation_path
+    return train_idx, len(dataset) - train_idx
 
 
 if __name__ == "__main__":
-    import os
-
     write_to_files(
         os.getenv("CONVERSATIONAL_AI_TRAIN_PATH", "train.tsv"),
         os.getenv("CONVERSATIONAL_AI_VALIDATION_PATH", "validation.tsv"),
