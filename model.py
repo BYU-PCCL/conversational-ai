@@ -20,7 +20,7 @@ def finetune(
     steps: int = 25000,
     train_path: Union[str, Path] = "./train.tsv",
     validation_path: Union[str, Path] = "./validation.tsv",
-    pretrained_model_dir: str = "gs://t5-data/pretrained_models/large",
+    model_size: str = "large",
     model_dir: Union[str, Path] = "./models",
     model_parallelism: int = 1,
     data_parallelism: Optional[int] = None,
@@ -78,7 +78,7 @@ def finetune(
 
     model.finetune(
         mixture_or_task_name="conversation",
-        pretrained_model_dir=pretrained_model_dir,
+        pretrained_model_dir=f"gs://t5-data/pretrained_models/{model_size.lower()}",
         finetune_steps=int(steps),
     )
 
