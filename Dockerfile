@@ -18,4 +18,4 @@ COPY ["*.sh", "*.py", "./"]
 EXPOSE 6006
 EXPOSE 8080
 
-CMD tensorboard --logdir=${CONVERSATIONAL_AI_MODEL_DIR:-/models/} -v -2 & python3 train.py
+CMD tensorboard --logdir=${CONVERSATIONAL_AI_MODEL_DIR:-/models/} -v -2 & python3 model.py
