@@ -2,11 +2,11 @@
 
 # Finetune the model in a docker container.
 #
-# usage: ./train.sh
+# usage: ./docker.sh
 #
 # Any environment variable starting with `CONVERSATIONAL_AI_` will be passed
 # into the container. You can also limit the available GPUS by running e.g.:
-# `NVIDIA_VISIBLE_DEVICES=0,1 ./train.sh`
+# `NVIDIA_VISIBLE_DEVICES=0,1 ./docker.sh`
 
 
 # setup variables & build up docker args
