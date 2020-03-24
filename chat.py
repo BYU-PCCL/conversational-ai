@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
+"""Simple chatbot interface."""
 
 import contextlib
 import os
-import readline
+import readline  # noqa: F401
 import sys
 import time
 from pathlib import Path
+from typing import Callable, Tuple, Union
 
 from halo import Halo as Spinner
 
+_PathLike = Union[str, Path]
+
 
 # TODO: this should not handle saving/updating the conversation
-def chatbot(checkpoint, output_dir=None, length=128, **kwargs):
+def chatbot(
+    checkpoint: _PathLike, output_dir: _PathLike = None, length: int = 128, **kwargs
+) -> Callable:
+    """Chat with the bot."""
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
     import tensorflow as tf
-    import gpt_2_simple as gpt2
+    import gpt_2_simple as gpt2  # noqa
 
     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
@@ -35,7 +42,9 @@ def chatbot(checkpoint, output_dir=None, length=128, **kwargs):
         with contextlib.redirect_stdout(open(os.devnull, "w")):
             gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
 
-    def _chat(user_input, conversation="", prompt="> "):
+    def _chat(
+        user_input: str, conversation: str = "", prompt: str = "> "
+    ) -> Tuple[str, str]:
         conversation += f"{prompt}{user_input}\n"
 
         output = gpt2.generate(
@@ -64,7 +73,7 @@ def chatbot(checkpoint, output_dir=None, length=128, **kwargs):
     return _chat
 
 
-def _run_interactive_chat(**kwargs):
+def _run_interactive_chat(**kwargs) -> None:
     chat = chatbot(**kwargs)
 
     prompt = "> "
@@ -72,7 +81,7 @@ def _run_interactive_chat(**kwargs):
     try:
         while True:
             # TODO: why do we need an extra space for the prompt?
-            user_input = input(prompt).strip()
+            user_input = input(prompt).strip()  # noqa: S322
 
             with Spinner("Thinking..."):
                 output, conversation = chat(user_input, conversation, prompt=prompt)
@@ -83,7 +92,7 @@ def _run_interactive_chat(**kwargs):
         sys.exit(0)
 
 
-def main():
+if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -122,7 +131,3 @@ def main():
     )
 
     _run_interactive_chat(**vars(parser.parse_args()))
-
-
-if __name__ == "__main__":
-    main()
