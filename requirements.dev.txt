@@ -9,4 +9,3 @@ flake8-isort
 isort[requirements,pyproject]
 mypy
 pep8-naming
-pytest

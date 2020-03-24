@@ -36,7 +36,7 @@ def write_to_files(
     daily_dialog_path: Optional[_Path] = os.getenv("DAILY_DIALOG_PATH"),  # noqa: B008
     train_ratio: float = 0.9,
 ) -> Tuple[int, int]:
-    """Write the CCC (& optionally daily dialog) dataset(s) to train/validation files."""
+    """Write the CCC (& optionally DailyDialog) dataset(s) to train/validation files."""
     train_path = Path(train_path)
     validation_path = Path(validation_path)
 
