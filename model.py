@@ -6,6 +6,7 @@ The T5 model is described in the paper: https://arxiv.org/abs/1910.10683.
 import json
 import os
 from contextlib import suppress
+from datetime import datetime
 from functools import partial
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
@@ -31,10 +32,21 @@ def finetune(
     save_checkpoints_steps: int = 1000,
     gpus: Optional[List[str]] = None,
     gpu_memory_growth: bool = True,
-    run_name: Optional[str] = None,
+    run_name: str = datetime.now().isoformat(),  # noqa: B008
     **kwargs: Dict[str, Any],
 ) -> None:
     """Finetunes a T5 model."""
+    mesh_devices = list(_init_gpus(gpus or [], gpu_memory_growth))
+
+    model_parallelism = max(model_parallelism, 1)
+    if not data_parallelism:
+        data_parallelism = max(len(mesh_devices) // model_parallelism, 1)
+    mesh_shape = f"model:{model_parallelism},batch:{data_parallelism}"
+
+    hparams = locals()
+    with Path(model_dir, f"hparams-{run_name}.json").open("w") as f:
+        json.dump(hparams, f, default=lambda o: type(o).__name__)
+
     num_input_examples = None
     if not Path(train_path).is_file():
         train_len, val_len = dataset.write_to_files(train_path, validation_path)
@@ -53,18 +65,12 @@ def finetune(
         num_input_examples=num_input_examples,
     )
 
-    mesh_devices = list(_init_gpus(gpus or [], gpu_memory_growth))
-
-    model_parallelism = max(model_parallelism, 1)
-    if not data_parallelism:
-        data_parallelism = max(len(mesh_devices) // model_parallelism, 1)
-
     Path(model_dir).mkdir(parents=True, exist_ok=True)
 
     model = t5.models.MtfModel(
         model_dir=model_dir,
         model_parallelism=model_parallelism,
-        mesh_shape=f"model:{model_parallelism},batch:{data_parallelism}",
+        mesh_shape=mesh_shape,
         mesh_devices=mesh_devices,
         tpu=None,
         tpu_topology=None,
