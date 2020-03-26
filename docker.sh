@@ -68,8 +68,5 @@ docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
     "$image" \
     "$@"
 
-docker port "$CONVERSATIONAL_AI_RUN_NAME" 6006 \
-    | sed "s#0.0.0.0:#\nTensorboard running at http://$(hostname):#"
-
 printf "\n(Press CTRL+C to stop viewing the %s logs)\n" "$image"
 docker logs -f "$CONVERSATIONAL_AI_RUN_NAME"
