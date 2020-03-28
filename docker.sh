@@ -12,9 +12,10 @@
 # setup variables & build up docker args
 
 name="conversational-ai"
-image="pccl/$name:${DOCKER_TAG:-latest}"
+tag="${DOCKER_TAG:-latest}"
+image="pccl/$name:$tag"
 
-export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $name)_$(hostname)_$(date +%s)}"
+export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $name)_$tag_$(hostname)_$(date +%s)}"
 
 export CONVERSATIONAL_AI_MODEL_DIR="${CONVERSATIONAL_AI_MODEL_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints/$CONVERSATIONAL_AI_RUN_NAME}"
 export DAILY_DIALOG_PATH="${DAILY_DIALOG_PATH:-/mnt/pccfs/not_backed_up/data/daily_dialog/ijcnlp_dailydialog/dialogues_text.txt}"
