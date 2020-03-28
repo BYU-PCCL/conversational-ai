@@ -5,55 +5,30 @@ The T5 model is described in the paper: https://arxiv.org/abs/1910.10683.
 
 import json
 import os
+import tempfile
 from contextlib import suppress
-from datetime import datetime
 from functools import partial
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 import t5
-import tensorflow as tf
 
 import dataset
 
+_DEFAULT_MODEL_DIR = "./models"  # HACK
 
-def finetune(
-    steps: int = 25000,
-    train_path: Union[str, Path] = "./train.tsv",
-    validation_path: Union[str, Path] = "./validation.tsv",
-    model_size: str = "large",
-    model_dir: Union[str, Path] = "./models",
-    model_parallelism: int = 1,
-    data_parallelism: Optional[int] = None,
-    global_batch_size: Union[int, Tuple[str, int]] = ("tokens_per_batch", 1024),
-    sequence_length: Dict[str, int] = dict(inputs=256, targets=128),  # noqa: B008
-    learning_rate_schedule: float = 0.003,
-    keep_checkpoint_max: int = 5,
-    save_checkpoints_steps: int = 1000,
-    gpus: Optional[List[str]] = None,
-    gpu_memory_growth: bool = True,
-    run_name: str = datetime.now().isoformat(),  # noqa: B008
-    **kwargs: Dict[str, Any],
+# TODO: figure out CLI so we don't have to have **kwargs params for everything
+
+
+def register_task(
+    mixture_or_task_name: str,
+    train_path: str,
+    validation_path: str,
+    num_input_examples: Optional[Dict[str, int]] = None,
 ) -> None:
-    """Finetunes a T5 model."""
-    mesh_devices = list(_init_gpus(gpus or [], gpu_memory_growth))
-
-    model_parallelism = max(model_parallelism, 1)
-    if not data_parallelism:
-        data_parallelism = max(len(mesh_devices) // model_parallelism, 1)
-    mesh_shape = f"model:{model_parallelism},batch:{data_parallelism}"
-
-    hparams = locals()
-    with Path(model_dir, f"hparams-{run_name}.json").open("w") as f:
-        json.dump(hparams, f, default=lambda o: type(o).__name__)
-
-    num_input_examples = None
-    if not Path(train_path).is_file():
-        train_len, val_len = dataset.write_to_files(train_path, validation_path)
-        num_input_examples = dict(train=train_len, validation=val_len)
-
+    """Registers a task for use with training or evaluating a T5 model."""
     t5.data.TaskRegistry.add(
-        "conversation",
+        mixture_or_task_name,
         t5.data.TextLineTask,
         split_to_filepattern={"train": train_path, "validation": validation_path},
         text_preprocessor=[
@@ -65,41 +40,65 @@ def finetune(
         num_input_examples=num_input_examples,
     )
 
-    Path(model_dir).mkdir(parents=True, exist_ok=True)
 
-    model = t5.models.MtfModel(
-        model_dir=model_dir,
-        model_parallelism=model_parallelism,
-        mesh_shape=mesh_shape,
-        mesh_devices=mesh_devices,
-        tpu=None,
-        tpu_topology=None,
-        batch_size=global_batch_size,
-        learning_rate_schedule=learning_rate_schedule,
-        keep_checkpoint_max=keep_checkpoint_max,
-        save_checkpoints_steps=save_checkpoints_steps,
-        sequence_length=sequence_length,
-        **kwargs,
-    )
+class T5:
+    def __init__(self, model_size: str = "large", **kwargs,) -> None:
+        """Configures and instantiates a T5 model."""
+        kwargs = {
+            "model_dir": _DEFAULT_MODEL_DIR,
+            "model_parallelism": 1,
+            "batch_size": ("tokens_per_batch", 1024),
+            "sequence_length": dict(inputs=256, targets=128),
+            "learning_rate_schedule": 0.003,
+            "keep_checkpoint_max": 5,
+            "save_checkpoints_steps": 1000,
+            "tpu": None,
+            "tpu_topology": None,
+            "mesh_devices": ["gpu:0"],
+            **kwargs,
+        }
 
-    model.finetune(
-        mixture_or_task_name="conversation",
-        pretrained_model_dir=f"gs://t5-data/pretrained_models/{model_size.lower()}",
-        finetune_steps=int(steps),
-    )
+        kwargs["model_dir"] = str(kwargs["model_dir"])  # in case we get a `Path`
+        kwargs["model_parallelism"] = max(kwargs["model_parallelism"], 1)
+        if not kwargs.get("mesh_shape"):
+            d_par = max(len(kwargs["mesh_devices"]) // kwargs["model_parallelism"], 1)
+            kwargs["mesh_shape"] = f"model:{kwargs['model_parallelism']},batch:{d_par}"
 
-    model.batch_size = model.batch_size * 4
-    model.eval(mixture_or_task_name="conversation", checkpoint_steps="all")
+        self._model_kwargs = kwargs
+        self._model_size = model_size.lower()
 
+        Path(self._model_kwargs["model_dir"]).mkdir(parents=True, exist_ok=True)
+        self._model = t5.models.MtfModel(**kwargs)
 
-def _init_gpus(gpus: Iterable[str], memory_growth: bool) -> Iterable[str]:
-    def _conf(gpu: Any) -> str:
-        tf.config.experimental.set_memory_growth(gpu, memory_growth)
-        return gpu.name.replace("/physical_device:", "").lower()
+    def finetune(
+        self,
+        mixture_or_task_name: str,
+        steps: int = 10000,
+        pretrained_model_dir: Optional[str] = None,
+    ) -> None:
+        """Finetunes a T5 model."""
+        if pretrained_model_dir is None:
+            pretrained_model_dir = f"gs://t5-data/pretrained_models/{self._model_size}"
+        self._model.finetune(mixture_or_task_name, steps, pretrained_model_dir)
 
-    all_gpus = set(map(_conf, tf.config.experimental.list_physical_devices("GPU")))
+    def evaluate(self, mixture_or_task_name: str, steps: Optional[int] = -1) -> None:
+        """Evaluates a T5 model."""
+        self._model.batch_size = self._model.batch_size * 4
+        self._model.eval(mixture_or_task_name, checkpoint_steps=steps)
 
-    return set(g.lower() for g in gpus).intersection(all_gpus) if gpus else all_gpus
+    def predict(self, model_input: List[str]) -> List[str]:
+        """Makes a prediction using a trained T5 model."""
+        # HACK: get around t5's lame API that requires filesystem I/O
+        with tempfile.TemporaryDirectory() as tmp:
+            in_file = Path(tmp, "input.txt")
+            in_file.write_text("\n".join(model_input))
+            out_file = Path(tmp, "output.txt")
+
+            self._model.predict(str(in_file), str(out_file), checkpoint_steps=-1)
+
+            # will have the checkpoint appended to it so we glob to get all of them
+            outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
+            return "\n".join(outputs).split("\n")  # return the flattened list
 
 
 if __name__ == "__main__":
@@ -110,4 +109,22 @@ if __name__ == "__main__":
             value = json.loads(value)
         return key.replace(app, "").lower(), value
 
-    finetune(**dict(_parse(k, v) for k, v in os.environ.items() if k.startswith(app)))
+    kwargs = dict(_parse(k, v) for k, v in os.environ.items() if k.startswith(app))
+    # TODO: figure out CLI so we don't have to do all this crap
+    _ = kwargs.pop("run_name", None)
+    other_kwargs = {k: kwargs.pop(k, None) for k in ["steps", "pretrained_model_dir"]}
+    other_kwargs = {k: v for k, v in other_kwargs.items() if v is not None}
+    mixture_or_task_name = kwargs.pop("mixture_or_task_name", "conversation")
+    model_dir = kwargs.setdefault("model_dir", _DEFAULT_MODEL_DIR)
+    train_path = str(kwargs.pop("train_path", Path(model_dir, "train.tsv")))
+    val_path = str(kwargs.pop("validation_path", Path(model_dir, "validation.tsv")))
+
+    num_input_examples = None
+    if not Path(train_path).is_file():
+        train_len, val_len = dataset.write_to_files(train_path, val_path)
+        num_input_examples = dict(train=train_len, validation=val_len)
+    register_task(mixture_or_task_name, train_path, val_path, num_input_examples)
+
+    model = T5(**kwargs)
+    model.finetune(mixture_or_task_name=mixture_or_task_name, **other_kwargs)
+    model.evaluate(mixture_or_task_name=mixture_or_task_name)
