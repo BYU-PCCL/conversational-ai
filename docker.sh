@@ -19,6 +19,7 @@ export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $nam
 
 export CONVERSATIONAL_AI_MODEL_DIR="${CONVERSATIONAL_AI_MODEL_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints/$CONVERSATIONAL_AI_RUN_NAME}"
 export DAILY_DIALOG_PATH="${DAILY_DIALOG_PATH:-/mnt/pccfs/not_backed_up/data/daily_dialog/ijcnlp_dailydialog/dialogues_text.txt}"
+export CONVERSATIONAL_AI_CHATS_DIR="${CONVERSATIONAL_AI_CHATS_DIR:-$PWD/chats/}"
 
 export NVIDIA_VISIBLE_DEVICES="${NVIDIA_VISIBLE_DEVICES:-${NV_GPU:-all}}"
 
@@ -33,6 +34,7 @@ for path in \
     "$CONVERSATIONAL_AI_MODEL_DIR" \
     "$CONVERSATIONAL_AI_TRAIN_PATH" \
     "$CONVERSATIONAL_AI_VALIDATION_PATH" \
+    "$CONVERSATIONAL_AI_CHATS_DIR" \
     "$DAILY_DIALOG_PATH"
 do
     [ -n "$path" ] && [ -e "$path" ] && mount_args="-v $path:$path $mount_args"
@@ -60,7 +62,7 @@ fi
 printf "\nStarting container %s...\n" "$CONVERSATIONAL_AI_RUN_NAME"
 # shellcheck disable=SC2086,SC2046
 docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
-    --detach --rm --publish-all \
+    ${DOCKER_ARGS=--detach} --rm --publish-all \
     --ipc=host --shm-size=8g --ulimit memlock=-1 --ulimit stack=67108864 \
     $gpu_args \
     $mount_args \
@@ -69,5 +71,7 @@ docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
     "$image" \
     "$@"
 
-printf "\n(Press CTRL+C to stop viewing the %s logs)\n" "$image"
-docker logs -f "$CONVERSATIONAL_AI_RUN_NAME"
+if docker ps | grep -qi "$CONVERSATIONAL_AI_RUN_NAME"; then
+    printf "\n(Press CTRL+C to stop viewing the %s logs)\n" "$image"
+    docker logs -f "$CONVERSATIONAL_AI_RUN_NAME"
+fi
