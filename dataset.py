@@ -14,12 +14,14 @@ import chitchat_dataset as ccc
 _Path = Union[str, Path]
 
 
-def _prep_convo(convo: Iterable[str]) -> List[str]:
+def _prep_convo(
+    convo: Iterable[str], task: str = "converse", sep: str = "<TURN>"
+) -> List[str]:
     result = []
 
     convo = list(c for c in convo if c.strip())
     for i in range(1, len(convo)):
-        txt = f"conversation: {'<TURN>'.join(convo[:i])}\t{convo[i]}"
+        txt = f"{task}: {sep.join(convo[:i])}\t{convo[i]}"
 
         txt = txt.replace(" ,", ",").replace(" .", ".").replace(" ?", "?")
         txt = txt.replace(" 's", "'s").replace("s ' ", "s' ")
