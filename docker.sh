@@ -53,17 +53,20 @@ else
     docker pull "$image"
 fi
 
-printf "\nStarting container %s...\n" "$CONVERSATIONAL_AI_RUN_NAME"
-# shellcheck disable=SC2086,SC2046
-docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
-    ${DOCKER_ARGS=--detach} --rm --publish-all \
-    --ipc=host --shm-size=8g --ulimit memlock=-1 --ulimit stack=67108864 \
-    $gpu_args \
-    $mount_args \
-    $(env | awk 'BEGIN { ORS=" " }; $0 ~ /CONVERSATIONAL_AI_/ { print "-e", $0 }') \
-    -e DAILY_DIALOG_PATH=$DAILY_DIALOG_PATH \
-    "$image" \
-    "$@"
+# default to yes iff `DOCKER_RUN` is not set
+if echo "${DOCKER_RUN=1}" | grep -qiE "^(1|t(rue)?|y(es)?)$"; then
+    printf "\nStarting container %s...\n" "$CONVERSATIONAL_AI_RUN_NAME"
+    # shellcheck disable=SC2086,SC2046
+    docker run --name="$CONVERSATIONAL_AI_RUN_NAME" \
+        ${DOCKER_ARGS=--detach} --rm --publish-all \
+        --ipc=host --shm-size=8g --ulimit memlock=-1 --ulimit stack=67108864 \
+        $gpu_args \
+        $mount_args \
+        $(env | awk 'BEGIN { ORS=" " }; $0 ~ /CONVERSATIONAL_AI_/ { print "-e", $0 }') \
+        -e DAILY_DIALOG_PATH=$DAILY_DIALOG_PATH \
+        "$image" \
+        "$@"
+fi
 
 if docker ps | grep -qi "$CONVERSATIONAL_AI_RUN_NAME"; then
     printf "\n(Press CTRL+C to stop viewing the %s logs)\n" "$image"
