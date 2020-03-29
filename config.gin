@@ -3,20 +3,20 @@ task_name/macro.value = "conversation"
 register_task.mixture_or_task_name = %task_name
 
 finetune.mixture_or_task_name = %task_name
-finetune.pretrained_model_dir = "gs://t5-data/pretrained_models/small"
+finetune.pretrained_model_dir = "gs://t5-data/pretrained_models/large"
 finetune.steps = 10000
 
 evaluate.mixture_or_task_name = %task_name
 evaluate.steps = -1
 
 # MtfModel.model_dir = "./checkpoint/model"
-MtfModel.batch_size = ("tokens_per_batch", 1024)
-MtfModel.sequence_length = {"inputs": 256, "targets": 128}
-MtfModel.learning_rate_schedule = 0.003
+MtfModel.batch_size = ("tokens_per_batch", 2048)
+MtfModel.sequence_length = {"inputs": 512, "targets": 256}
+MtfModel.learning_rate_schedule = 0.001
 # MtfModel.model_parallelism = 1
 MtfModel.mesh_devices = ["gpu:0"]
 MtfModel.mesh_shape = "model:1,batch:1"
 MtfModel.tpu = None
 # MtfModel.tpu_topology = None
 MtfModel.keep_checkpoint_max = 5
-MtfModel.save_checkpoints_steps = 1000
+MtfModel.save_checkpoints_steps = 500
