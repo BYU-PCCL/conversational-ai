@@ -1,8 +1,7 @@
 """Simple chatbot script to chat with a trained T5 model."""
-
 import logging
 import os
-import readline  # noqa: F401
+import readline  # noqa: F401,W0611
 import time
 from pathlib import Path
 from typing import List, Optional, Union
@@ -62,7 +61,7 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    chkpt: Union[str, Path] = os.getenv("CONVERSATIONAL_AI_MODEL_DIR")
+    chkpt: Union[str, Path, None] = os.getenv("CONVERSATIONAL_AI_MODEL_DIR")
     if not chkpt:
         chkpt = max(
             (p for p in Path("./checkpoint/").iterdir() if p.is_dir()),

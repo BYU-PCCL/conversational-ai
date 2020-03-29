@@ -2,7 +2,6 @@
 
 The T5 model is described in the paper: https://arxiv.org/abs/1910.10683.
 """
-
 import os
 import tempfile
 from functools import partial
@@ -108,9 +107,9 @@ if __name__ == "__main__":
         _gin_setdefault("register_task.validation_path", f"{model_dir}/validation.tsv")
         _gin_glob_parse_configs_in(model_dir)
 
-    register_task()
+    register_task()  # noqa: E1120
 
     model = T5()
 
-    model.finetune()
-    model.evaluate()
+    model.finetune()  # noqa: E1120
+    model.evaluate()  # noqa: E1120
