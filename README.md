@@ -4,24 +4,32 @@
 
 ## requirements
 
-- `pip>=20.0` & `setuptools>=41.0.0`
+- `pip>=20.0`
+- `setuptools>=41.0.0`
+- `wheel>=0.34.2`
 
-## train
+## installation
+
+See the [Dockerfile](Dockerfile)...
+
+## usage
+
+### finetune
 
 ```
-./train.sh
+./docker.sh
 ```
 
 or equivalently:
 
 ```
-curl -fsSL git.io/pccl-conversational-ai-train | sh
+curl -fsSL git.io/pccl-conversational-ai-docker-sh | sh
 ```
 
-## chat
+### chat
 
-to run a trained GPT2 model, do:
+to chat interactively with a trained model, do:
 
 ```
-./chat.py
+env DOCKER_PUSH=no DOCKER_ARGS=-it ./docker.sh chat.py
 ```
