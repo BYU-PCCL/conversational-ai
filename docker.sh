@@ -15,7 +15,7 @@ name="conversational-ai"
 tag="${DOCKER_TAG:-latest}"
 image="pccl/$name:$tag"
 
-export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $name)_$tag_$(hostname)_$(date +%s)}"
+export CONVERSATIONAL_AI_RUN_NAME="${CONVERSATIONAL_AI_RUN_NAME:-$(basename $name)_${tag}_$(hostname)_$(date +%s)}"
 
 export CONVERSATIONAL_AI_MODEL_DIR="${CONVERSATIONAL_AI_MODEL_DIR:-/mnt/pccfs/not_backed_up/will/checkpoints/$CONVERSATIONAL_AI_RUN_NAME}"
 export DAILY_DIALOG_PATH="${DAILY_DIALOG_PATH:-/mnt/pccfs/not_backed_up/data/daily_dialog/ijcnlp_dailydialog/dialogues_text.txt}"
@@ -29,13 +29,7 @@ docker run --help | grep -q -- '--gpus' && gpu_args="--gpus=$NVIDIA_VISIBLE_DEVI
 
 mkdir -p "$CONVERSATIONAL_AI_MODEL_DIR"
 mount_args=""
-for path in \
-    "/mnt" \
-    "$CONVERSATIONAL_AI_MODEL_DIR" \
-    "$CONVERSATIONAL_AI_TRAIN_PATH" \
-    "$CONVERSATIONAL_AI_VALIDATION_PATH" \
-    "$CONVERSATIONAL_AI_CHATS_DIR" \
-    "$DAILY_DIALOG_PATH"
+for path in "/mnt" "$CONVERSATIONAL_AI_MODEL_DIR" "$CONVERSATIONAL_AI_CHATS_DIR" "$DAILY_DIALOG_PATH"
 do
     [ -n "$path" ] && [ -e "$path" ] && mount_args="-v $path:$path $mount_args"
 done

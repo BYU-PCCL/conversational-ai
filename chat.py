@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from typing import List, Optional, Union
 
-import model
+import models
 
 
 def interactive(
@@ -27,7 +27,12 @@ def interactive(
 
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     logging.getLogger("tensorflow").setLevel(logging.FATAL)
-    m = model.T5(model_dir=checkpoint_dir)
+    m = models.T5(
+        model_dir=str(checkpoint_dir),
+        mesh_devices=["gpu:0"],
+        mesh_shape="model:1,batch:1",
+        tpu=None,
+    )
 
     history: List[str] = []
     try:
@@ -35,7 +40,9 @@ def interactive(
             inp = input(prompt)  # noqa: S322
             history.append(inp)
 
-            predictions = m.predict([f"conversation: " + "<TURN>".join(history)])
+            # TODO: do not hardcode the task & separator tokens
+            model_input = [f"conversation: " + "<TURN>".join(history)]
+            predictions = m.predict(model_input, temperature=0.0)
 
             prediction = "\n".join(predictions)
             history.append(prediction)

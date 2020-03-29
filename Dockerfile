@@ -13,8 +13,9 @@ RUN pip install --no-cache-dir -U pip wheel setuptools && \
 
 COPY ["*.tsv", "*.txt", "./"]
 
-COPY ["*.sh", "*.py", "./"]
+COPY ["*.sh", "*.gin", "*.py", "./"]
 
 EXPOSE 8080
 
-CMD ["python3", "model.py"]
+ENTRYPOINT ["python3"]
+CMD ["models.py"]
