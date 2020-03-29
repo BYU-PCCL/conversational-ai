@@ -2,7 +2,7 @@
 .git*
 /.idea/
 /.vscode/
-/checkpoint
+/checkpoints
 /data
 /models/
 chat.sh
