@@ -49,7 +49,7 @@ if git remote get-url origin 2>/dev/null | grep -qi "$name"; then
         docker push "$image"
     fi
 else
-    printf "Pulling latest %s docker image...\n" "$image"
+    printf "Pulling %s docker image...\n" "$image"
     docker pull "$image"
 fi
 

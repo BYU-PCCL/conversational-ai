@@ -8,7 +8,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -U pip wheel setuptools && \
     pip install --no-cache-dir -r requirements.txt && \
     pip uninstall -y tensorflow tensorflow-gpu && \
-    pip install --no-cache-dir "$(grep tensorflow-gpu requirements.txt)" && \
+    pip install --no-cache-dir 'tensorflow-gpu>=1.15.0,<2.0.0' && \
     pip install --no-cache-dir 'sanic==19.*'
 
 COPY ["*.tsv", "*.txt", "./"]
