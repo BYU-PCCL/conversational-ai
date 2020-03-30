@@ -1,5 +1,6 @@
 # conversational-ai
 
+![ci](https://github.com/BYU-PCCL/conversational-ai/workflows/ci/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## requirements
@@ -17,13 +18,13 @@ See the [Dockerfile](Dockerfile)...
 ### finetune
 
 ```
-./docker.sh
+./docker.py
 ```
 
 or equivalently:
 
 ```
-curl -fsSL git.io/pccl-conversational-ai-docker-sh | sh
+curl -fsSL git.io/pccl-conversational-ai-docker-py | python3
 ```
 
 ### chat
@@ -31,5 +32,5 @@ curl -fsSL git.io/pccl-conversational-ai-docker-sh | sh
 to chat interactively with a trained model, do:
 
 ```
-env DOCKER_PUSH=no DOCKER_ARGS=-it ./docker.sh chat.py
+./docker.py -tc 'python3 chat.py'
 ```
