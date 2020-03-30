@@ -17,5 +17,4 @@ COPY ["*.sh", "*.gin", "*.py", "./"]
 
 EXPOSE 8080
 
-ENTRYPOINT ["python3"]
-CMD ["models.py"]
+CMD ["python3", "models.py"]

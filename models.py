@@ -6,7 +6,7 @@ import os
 import tempfile
 from functools import partial
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import List, Optional
 
 import gin
 import t5
@@ -52,14 +52,17 @@ class T5:
 
             self._model.predict(str(in_file), str(out_file), **kwargs)
 
-            # will have the checkpoint appended to it so we glob to get all of them
+            # will have the checkpoint num appended to it so we glob to get all of them
             outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
+            # TODO: should we return just the last one?
             return "\n".join(outputs).split("\n")  # return the flattened list
 
 
 @gin.configurable
 def register_task(
-    train_path: str, validation_path: str, mixture_or_task_name: str,
+    mixture_or_task_name: str,
+    train_path: str = "./data/train.tsv",
+    validation_path: str = "./data/train.tsv",
 ) -> None:
     """Registers a task for use with training or evaluating a T5 model."""
     num_input_examples = None
@@ -81,35 +84,23 @@ def register_task(
     )
 
 
-def _gin_setdefault(key: str, value: str) -> Any:
-    try:
-        value = gin.query_parameter(key)
-    except ValueError:
-        gin.bind_parameter(key, value)
-    return value
+if __name__ == "__main__":
+    """Usage: python3 models.py --gin_param="MtfModel.model_dir='./checkpoints'"
 
-
-def _gin_glob_parse_configs_in(directory: Union[str, Path]) -> None:
-    for p in Path(directory).glob("*.gin"):
+    See: https://github.com/google/gin-config for more info on configuration
+    """
+    for p in Path("./").glob("*.gin"):
         gin.parse_config_file(p)
 
-
-if __name__ == "__main__":
-    _gin_glob_parse_configs_in("./")
-
     utils.parse_gin_defaults_and_flags()
-
-    with gin.unlock_config():
-        # TODO: should we get `default_model_dir` from CONVERSATIONAL_AI_MODEL_DIR?
-        default_model_dir = os.getenv("CONVERSATIONAL_AI_MODEL_DIR", "./checkpoints/t5")
-        model_dir = _gin_setdefault("MtfModel.model_dir", default_model_dir)
-        _gin_setdefault("register_task.train_path", f"{model_dir}/train.tsv")
-        _gin_setdefault("register_task.validation_path", f"{model_dir}/validation.tsv")
-        _gin_glob_parse_configs_in(model_dir)
 
     register_task()  # noqa: E1120
 
     model = T5()
+
+    # TODO: should we also check `logging.getLogger("tensorflow").level` ?
+    if int(os.getenv("TF_CPP_MIN_LOG_LEVEL", 0)) < 2:
+        print("# Gin config", "# " + "=" * 78, gin.operative_config_str(), sep="\n")
 
     model.finetune()  # noqa: E1120
     model.evaluate()  # noqa: E1120
