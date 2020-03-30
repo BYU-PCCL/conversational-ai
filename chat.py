@@ -1,89 +1,60 @@
-#!/usr/bin/env python3
-
-import contextlib
+"""Simple chatbot script to chat with a trained T5 model."""
+import logging
 import os
-import readline
-import sys
+import readline  # noqa: F401,W0611
 import time
 from pathlib import Path
+from typing import List, Optional, Union
 
-from halo import Halo as Spinner
 
-
-# TODO: this should not handle saving/updating the conversation
-def chatbot(checkpoint, output_dir=None, length=128, **kwargs):
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "4"
-    import tensorflow as tf
-    import gpt_2_simple as gpt2
-
-    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-
-    checkpoint = Path(checkpoint)
-    checkpoint_dir = checkpoint.parent.resolve()
-    run_name = checkpoint.name
+def interactive(
+    checkpoint: Union[str, Path],
+    output_dir: Optional[Union[str, Path]] = None,
+    prompt: str = "> ",
+) -> List[str]:
+    """Runs an interactive chat session with the trained T5 model."""
+    checkpoint_dir = Path(checkpoint)
+    run_name = checkpoint_dir.name
 
     output_file = None
     if output_dir:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = Path(output_dir, f"{run_name}_{int(time.time())}")
+        output_file = Path(output_dir, f"{run_name}__{int(time.time())}")
 
-    with Spinner(f"Loading model from {checkpoint}...", stream=sys.stderr):
-        sess = gpt2.start_tf_sess()
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # set log level to fatal
+    os.environ["AUTOGRAPH_VERBOSITY"] = "0"  # turn off AutoGraph logging
+    logging.getLogger("tensorflow").disabled = True
+    import models  # just in case this or anything else imports tf
 
-        # HACK: avoid gpt2's unecessary printing that messes with our spinner...
-        with contextlib.redirect_stdout(open(os.devnull, "w")):
-            gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
+    m = models.T5(
+        model_dir=str(checkpoint_dir),
+        mesh_devices=["gpu:0"],
+        mesh_shape="model:1,batch:1",
+        tpu=None,
+    )
 
-    def _chat(user_input, conversation="", prompt="> "):
-        conversation += f"{prompt}{user_input}\n"
-
-        output = gpt2.generate(
-            sess,
-            checkpoint_dir=checkpoint_dir,
-            run_name=run_name,
-            prefix=conversation,
-            return_as_list=True,
-            length=length,
-            nsamples=kwargs.get("batch_size", 1),
-            truncate=prompt,
-            include_prefix=False,
-            **kwargs,
-        )
-
-        # TODO: handle nsamples > 1
-        output = output[0]
-
-        conversation += output
-
-        if output_file:
-            output_file.write_text(conversation)
-
-        return output, conversation
-
-    return _chat
-
-
-def _run_interactive_chat(**kwargs):
-    chat = chatbot(**kwargs)
-
-    prompt = "> "
-    conversation = ""
+    history: List[str] = []
     try:
         while True:
-            # TODO: why do we need an extra space for the prompt?
-            user_input = input(prompt).strip()
+            inp = input(prompt)  # noqa: S322
+            history.append(inp)
 
-            with Spinner("Thinking..."):
-                output, conversation = chat(user_input, conversation, prompt=prompt)
+            # TODO: do not hardcode the task & separator tokens
+            model_input = [f"conversation: " + "<TURN>".join(history)]
+            predictions = m.predict(model_input, temperature=0.0)
 
-            print(output, end="")
+            prediction = "\n".join(predictions)
+            history.append(prediction)
+            print(prediction)
+            if output_file:
+                output_file.write_text(f"{prompt}{inp}\n{prediction}")
     except (KeyboardInterrupt, EOFError):
-        # do not print exception
-        sys.exit(0)
+        # do not print a traceback
+        return history
 
 
-def main():
+if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -91,38 +62,26 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    ckpt = Path(os.getenv("CONVERSATIONAL_AI_CHECKPOINT_DIR", "checkpoint"))
+    chkpt: Union[str, Path, None] = os.getenv("CONVERSATIONAL_AI_MODEL_DIR")
+    if not chkpt:
+        chkpt = max(
+            (p for p in Path("./checkpoints/").iterdir() if p.is_dir()),
+            key=lambda p: p.stat().st_mtime,
+        )
+
     parser.add_argument(
         "-c",
         "--checkpoint",
         help="The directory of the model checkpoint",
         type=Path,
-        default=max(
-            (p for p in ckpt.iterdir() if p.is_dir()), key=lambda p: p.stat().st_mtime,
-        ),
-    )
-
-    parser.add_argument(
-        "-b", "--batch-size", help="Batch size", default=1, type=int,
-    )
-
-    parser.add_argument(
-        "-l",
-        "--length",
-        help="Length (number of tokens) of the generated texts",
-        default=128,
-        type=int,
+        default=chkpt,
     )
 
     parser.add_argument(
         "--output-dir",
         help="Also save chat under OUTPUT_DIR, with the same name as CHECKPOINT",
         type=Path,
-        default=Path("./chats/"),
+        default=Path(os.getenv("CONVERSATIONAL_AI_CHATS_DIR", "./chats/")),
     )
 
-    _run_interactive_chat(**vars(parser.parse_args()))
-
-
-if __name__ == "__main__":
-    main()
+    _history = interactive(**vars(parser.parse_args()))

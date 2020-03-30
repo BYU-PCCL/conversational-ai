@@ -1,0 +1,12 @@
+black==19.10b0
+flake8-annotations==2.*
+flake8-bandit==2.*
+flake8-black==0.1.*
+flake8-bugbear==20.*
+flake8-deprecated==1.*
+flake8-docstrings==1.*
+flake8-isort==2.*
+flake8==3.*
+isort[requirements,pyproject]==4.*
+mypy==0.770
+pep8-naming==0.10.*

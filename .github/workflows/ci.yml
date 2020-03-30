@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+    paths:
+      - .github/workflows/**
+      - "**.py"
+      - "**.sh"
+  pull_request:
+    paths:
+      - .github/workflows/**
+      - "**.py"
+      - "**.sh"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - uses: actions/cache@v1
+        if: startsWith(runner.os, 'Linux')
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dev dependencies
+        run: |
+          pip install --upgrade pip wheel setuptools
+          pip install -r requirements.dev.txt
+
+      - uses: rbialon/flake8-annotations@v1
+
+      - run: flake8
+
+      - run: mypy

@@ -1,13 +1,20 @@
 FROM tensorflow/tensorflow:1.15.2-gpu-py3    
 
+WORKDIR /workspace/
+
 COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir sanic>=19.0.0
+# pip & tensorflow are stupid
+RUN pip install --no-cache-dir -U pip wheel setuptools && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip uninstall -y tensorflow tensorflow-gpu && \
+    pip install --no-cache-dir 'tensorflow-gpu>=1.15.0,<2.0.0' && \
+    pip install --no-cache-dir 'sanic==19.*'
 
-COPY ./ ./
+COPY ["*.tsv", "*.txt", "./"]
 
-EXPOSE 6006
+COPY ["*.sh", "*.gin", "*.py", "./"]
+
 EXPOSE 8080
 
-CMD ["sh", "-c", "tensorboard --logdir=/checkpoint & ./train.py"]
+CMD ["python3", "models.py"]

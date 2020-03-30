@@ -1,12 +1,19 @@
+.actrc
 .git*
-/.vscode/
 /.idea/
-model*
-checkpoint*
-chats/
-train.sh
+/.vscode/
+/checkpoints
+/data
+/models/
 chat.sh
+chats/
+command
 docker.sh
+docker.py
+requirements.dev.txt
+runs/
+setup.cfg
+train.sh
 
 # Created by https://www.gitignore.io/api/vim,linux,windows,macos,python,venv
 # Edit at https://www.gitignore.io/?templates=vim,linux,windows,macos,python,venv

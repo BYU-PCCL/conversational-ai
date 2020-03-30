@@ -1,8 +1,12 @@
-/.vscode/
 /.idea/
+/.vscode/
+/checkpoints
+/data
+/models/
+command
 runs/
-/model*
-/checkpoint*
+train.tsv
+validation.tsv
 
 # Created by https://www.gitignore.io/api/vim,linux,windows,macos,python,venv
 # Edit at https://www.gitignore.io/?templates=vim,linux,windows,macos,python,venv
