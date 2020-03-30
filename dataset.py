@@ -32,10 +32,10 @@ def _prep_convo(
 
 
 def write_to_files(
-    train_path: _Path = "train.tsv",
-    validation_path: _Path = "validation.tsv",
+    train_path: _Path = "./data/train.tsv",
+    validation_path: _Path = "./data/validation.tsv",
     daily_dialog_path: Optional[_Path] = os.getenv("DAILY_DIALOG_PATH"),  # noqa: B008
-    train_ratio: float = 0.9,
+    train_ratio: float = 0.95,
 ) -> Tuple[int, int]:
     """Write the CCC (& optionally DailyDialog) dataset(s) to train/validation files."""
     train_path = Path(train_path)
@@ -65,7 +65,7 @@ def write_to_files(
 
 if __name__ == "__main__":
     write_to_files(
-        os.getenv("CONVERSATIONAL_AI_TRAIN_PATH", "train.tsv"),
-        os.getenv("CONVERSATIONAL_AI_VALIDATION_PATH", "validation.tsv"),
+        os.getenv("CONVERSATIONAL_AI_TRAIN_PATH", "./data/train.tsv"),
+        os.getenv("CONVERSATIONAL_AI_VALIDATION_PATH", "./data/validation.tsv"),
         daily_dialog_path=os.getenv("DAILY_DIALOG_PATH"),
     )
