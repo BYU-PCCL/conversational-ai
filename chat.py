@@ -6,8 +6,6 @@ import time
 from pathlib import Path
 from typing import List, Optional, Union
 
-import models
-
 
 def interactive(
     checkpoint: Union[str, Path],
@@ -22,10 +20,13 @@ def interactive(
     if output_dir:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = Path(output_dir, f"{run_name}__{int(time.time())}").open("a")
+        output_file = Path(output_dir, f"{run_name}__{int(time.time())}")
 
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-    logging.getLogger("tensorflow").setLevel(logging.FATAL)
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # set log level to fatal
+    os.environ["AUTOGRAPH_VERBOSITY"] = "0"  # turn off AutoGraph logging
+    logging.getLogger("tensorflow").disabled = True
+    import models  # just in case this or anything else imports tf
+
     m = models.T5(
         model_dir=str(checkpoint_dir),
         mesh_devices=["gpu:0"],
@@ -47,7 +48,7 @@ def interactive(
             history.append(prediction)
             print(prediction)
             if output_file:
-                output_file.write(f"{prompt}{inp}\n{prediction}")
+                output_file.write_text(f"{prompt}{inp}\n{prediction}")
     except (KeyboardInterrupt, EOFError):
         # do not print a traceback
         return history
