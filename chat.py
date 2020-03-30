@@ -64,7 +64,7 @@ if __name__ == "__main__":
     chkpt: Union[str, Path, None] = os.getenv("CONVERSATIONAL_AI_MODEL_DIR")
     if not chkpt:
         chkpt = max(
-            (p for p in Path("./checkpoint/").iterdir() if p.is_dir()),
+            (p for p in Path("./checkpoints/").iterdir() if p.is_dir()),
             key=lambda p: p.stat().st_mtime,
         )
 

@@ -9,7 +9,7 @@ finetune.steps = 10000
 evaluate.mixture_or_task_name = %task_name
 evaluate.steps = -1
 
-# MtfModel.model_dir = "./checkpoint/model"
+MtfModel.model_dir = "./checkpoints/t5"
 MtfModel.batch_size = ("tokens_per_batch", 2048)
 MtfModel.sequence_length = {"inputs": 512, "targets": 256}
 MtfModel.learning_rate_schedule = 0.001

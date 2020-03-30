@@ -9,6 +9,7 @@ chat.sh
 chats/
 command
 docker.sh
+docker.py
 requirements.dev.txt
 runs/
 setup.cfg
