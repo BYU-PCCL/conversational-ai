@@ -26,6 +26,7 @@ def main(
         "--shm-size=8g",
         "--ulimit=memlock=-1",
         "--ulimit=stack=67108864",
+        f"--user={os.getuid()}:{os.getgid()}",
     ],
     **kwargs,  # not used; just here so we can pass in whatever we get from the CLI
 ) -> None:
@@ -37,7 +38,7 @@ def main(
     if pull:
         subprocess.run(["docker", "pull", image], stdout=sys.stdout, stderr=sys.stderr)
 
-    args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach"] + args
+    args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach",] + args
 
     gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", "all")
     args.append(f"--env=NVIDIA_VISIBLE_DEVICES={gpus}")
@@ -68,7 +69,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        allow_abbrev=False,
+        allow_abbrev=True,
+        epilog="All other args will be passed to the container's process",
     )
 
     parser.add_argument(
@@ -84,21 +86,9 @@ if __name__ == "__main__":
         default="{name}_{tag}_{hostname}_{timestamp}",
     )
     parser.add_argument(
-        "--checkpoints-dir",
-        help="The directory root/prefix containing all checkpoint directories",
-        type=Path,
-        default=Path("./checkpoints/"),
-    )
-    parser.add_argument(
-        "--data-dir",
-        help="The directory for the datasets",
-        type=Path,
-        default=Path("./data/"),
-    )
-    parser.add_argument(
         "-c",
         "--command",
-        help="The command to run (any extra CLI args will be appended to this)",
+        help="The command to run inside the container",
         default="python3 models.py",
     )
     parser.add_argument(
@@ -112,6 +102,8 @@ if __name__ == "__main__":
         help="Pull the image before running the container",
         action="store_true",
     )
+
+    # TODO: add `--volumes` flag
 
     args, extra_args = parser.parse_known_args()
 
@@ -129,29 +121,16 @@ if __name__ == "__main__":
         "name": name,
         "command": shlex.split(args.command),
         "volumes": {
-            args.checkpoints_dir: Path("/workspace/checkpoints/"),
-            args.data_dir: Path("/workspace/data/"),
+            "./checkpoints": "/workspace/checkpoints/",
+            "./data": "/workspace/data/",
+            "./chats": "/workspace/chats/",
+            "/mnt": "/mnt",
         },
     }
 
-    default_volumes = {
-        "./checkpoints": Path("/workspace/checkpoints/"),
-        "./data": Path("/workspace/data/"),
-        "./chats": Path("/workspace/chats/"),
-        "/mnt": Path("/mnt"),
-    }
-    for src, dst in default_volumes.items():
-        # two local directories cannot map to the same container directory
-        if dst not in main_kwargs["volumes"].values():
-            main_kwargs["volumes"][src] = dst
-
-    # TODO: figure out a better way to handle chat.py checkpoints_dir
-    if "chat.py" not in main_kwargs["command"]:
-        model_dir = Path(args.checkpoints_dir, name).absolute()
-        # mkdir now so the volume will be mounted and the dir will have correct owner
-        model_dir.mkdir(parents=True, exist_ok=True)
-        main_kwargs["volumes"][model_dir] = model_dir
-        main_kwargs["command"].append(f"--gin_param=MtfModel.model_dir='{model_dir}'")
+    # TODO: don't assume checkpoint prefix is `./checkpoints/`
+    model_dir = Path("./checkpoints", name).resolve().absolute()
+    main_kwargs["command"].append(f"--gin_param=MtfModel.model_dir='{model_dir}'")
 
     # NB: add the extra_args in after the model_dir param so it can be overridden
     main_kwargs["command"].extend(extra_args)
