@@ -47,8 +47,8 @@ def main(
     )
     args.append(f"--gpus={gpus}" if "--gpus" in result.stdout else "--runtime=nvidia")
 
-    for local, container_path in filter(lambda p: Path(p[0]).exists(), volumes.items()):
-        args.append(f"--volume={Path(local).absolute()}:{container_path}")
+    for src, dst in filter(lambda p: Path(p[0]).exists(), volumes.items()):
+        args.append(f"--volume={Path(src).absolute()}:{dst}")
 
     subprocess.run(
         args + [image] + cmd,
@@ -65,8 +65,11 @@ def main(
 if __name__ == "__main__":
     import argparse
 
-    formatter = argparse.ArgumentDefaultsHelpFormatter
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=formatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        allow_abbrev=False,
+    )
 
     parser.add_argument(
         "-i",
@@ -126,14 +129,21 @@ if __name__ == "__main__":
         "name": name,
         "command": shlex.split(args.command),
         "volumes": {
-            Path("./checkpoints"): "/workspace/checkpoints",
-            args.checkpoints_dir: "/workspace/checkpoints",
-            Path("./data"): "/workspace/data/",
-            args.data_dir: "/workspace/data/",
-            Path("./chats"): "/workspace/chats",
-            Path("/mnt"): "/mnt",
+            args.checkpoints_dir: Path("/workspace/checkpoints/"),
+            args.data_dir: Path("/workspace/data/"),
         },
     }
+
+    default_volumes = {
+        "./checkpoints": Path("/workspace/checkpoints/"),
+        "./data": Path("/workspace/data/"),
+        "./chats": Path("/workspace/chats/"),
+        "/mnt": Path("/mnt"),
+    }
+    for src, dst in default_volumes.items():
+        # two local directories cannot map to the same container directory
+        if dst not in main_kwargs["volumes"].values():
+            main_kwargs["volumes"][src] = dst
 
     # TODO: figure out a better way to handle chat.py checkpoints_dir
     if "chat.py" not in main_kwargs["command"]:
