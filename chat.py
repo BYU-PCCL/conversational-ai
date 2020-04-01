@@ -9,7 +9,9 @@ from typing import List, Optional, Union
 
 def interactive(
     checkpoint: Union[str, Path],
-    output_dir: Optional[Union[str, Path]] = None,
+    output_dir: Optional[Union[str, Path]],
+    prefix: str,
+    turn_separator: str,
     prompt: str = "> ",
 ) -> List[str]:
     """Runs an interactive chat session with the trained T5 model."""
@@ -41,7 +43,7 @@ def interactive(
             history.append(inp)
 
             # TODO: do not hardcode the task & separator tokens
-            model_input = [f"conversation: " + "<TURN>".join(history)]
+            model_input = [prefix + turn_separator.join(history)]
             predictions = m.predict(model_input, temperature=0.0)
 
             prediction = "\n".join(predictions)
@@ -62,26 +64,29 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    chkpt: Union[str, Path, None] = os.getenv("CONVERSATIONAL_AI_MODEL_DIR")
-    if not chkpt:
-        chkpt = max(
-            (p for p in Path("./checkpoints/").iterdir() if p.is_dir()),
-            key=lambda p: p.stat().st_mtime,
-        )
-
     parser.add_argument(
-        "-c",
         "--checkpoint",
-        help="The directory of the model checkpoint",
+        help="The directory containing the model checkpoint",
         type=Path,
-        default=chkpt,
+        required=True,
     )
-
     parser.add_argument(
         "--output-dir",
         help="Also save chat under OUTPUT_DIR, with the same name as CHECKPOINT",
         type=Path,
-        default=Path(os.getenv("CONVERSATIONAL_AI_CHATS_DIR", "./chats/")),
+        default="./chats/",
+    )
+    parser.add_argument(
+        "--prefix",
+        help="The task/prefix to prepend to the start of the conversation",
+        default="converse: ",
+    )
+    parser.add_argument(
+        "--turn-separator",
+        help="The token to insert between conversation turns",
+        default="<TURN>",
     )
 
-    _history = interactive(**vars(parser.parse_args()))
+    args, _extra_args = parser.parse_known_args()
+
+    _history = interactive(**vars(args))
