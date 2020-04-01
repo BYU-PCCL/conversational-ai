@@ -2,6 +2,7 @@
 
 The T5 model is described in the paper: https://arxiv.org/abs/1910.10683.
 """
+import ast
 import os
 import tempfile
 from functools import partial
@@ -53,9 +54,11 @@ class T5:
             self._model.predict(str(in_file), str(out_file), **kwargs)
 
             # will have the checkpoint num appended to it so we glob to get all of them
-            outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
+            all_outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
             # TODO: should we return just the last one?
-            return "\n".join(outputs).split("\n")  # return the flattened list
+            outputs = filter(lambda x: x.strip(), "\n".join(all_outputs).split("\n"))
+            # HACK: not sure if the model is outputing `b'output'` or something else is
+            return [ast.literal_eval(line.strip()).decode("utf-8") for line in outputs]
 
 
 @gin.configurable
