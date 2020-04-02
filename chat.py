@@ -12,6 +12,7 @@ def interactive(
     output_dir: Optional[Union[str, Path]],
     prefix: str,
     turn_separator: str,
+    context_window: int = 100,
     prompt: str = "> ",
 ) -> List[str]:
     """Runs an interactive chat session with the trained T5 model."""
@@ -43,7 +44,7 @@ def interactive(
             history.append(inp)
 
             # TODO: do not hardcode the task & separator tokens
-            model_input = [prefix + turn_separator.join(history)]
+            model_input = [prefix + turn_separator.join(history[-context_window:])]
             predictions = m.predict(model_input, temperature=0.0)
 
             prediction = "\n".join(predictions)
@@ -88,6 +89,12 @@ if __name__ == "__main__":
         "--turn-separator",
         help="The token to insert between conversation turns",
         default="<TURN>",
+    )
+    parser.add_argument(
+        "--context-window",
+        help="Length of the conversation context window",
+        type=int,
+        default=25,
     )
 
     args, _extra_args = parser.parse_known_args()
