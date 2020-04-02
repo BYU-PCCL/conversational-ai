@@ -1,0 +1,6 @@
+human: Hello. How are you doing today?
+model: füllen: Hello, How are you doing today?
+human: Interesting...I did not know you spoke German!
+model: füllen: Hello, How are you doing today? X füllen: Hello, How are you doing today? X Interesting...I did not know you spoke German!
+human: Ok...
+model:  ⁇ : Hello. How are you doing today? X füllen: Hello. How are you doing today? X Interesting...I did not know you spoke German! X Ok...
