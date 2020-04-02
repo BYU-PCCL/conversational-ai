@@ -50,7 +50,10 @@ def interactive(
             history.append(prediction)
             print(prediction)
             if output_file:
-                output_file.write_text(f"{prompt}{inp}\n{prediction}")
+                output = ""
+                for i, turn in enumerate(history):
+                    output += f"human: {turn}\n" if i % 2 == 0 else f"model: {turn}\n"
+                output_file.write_text(output)
     except (KeyboardInterrupt, EOFError):
         # do not print a traceback
         return history
