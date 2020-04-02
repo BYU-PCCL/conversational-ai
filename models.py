@@ -20,7 +20,7 @@ class T5:
     """Wraps a `t5.models.MtfModel`."""
 
     def __init__(self, **kwargs) -> None:
-        """Configures and instantiates a T5 model."""
+        """Configure and instantiates a T5 model."""
         self._model = t5.models.MtfModel(**kwargs)
         Path(self._model._model_dir).mkdir(parents=True, exist_ok=True)
 
@@ -36,13 +36,13 @@ class T5:
 
     @gin.configurable
     def evaluate(self, mixture_or_task_name: str, steps: Optional[int] = -1) -> None:
-        """Evaluates a T5 model."""
+        """Evaluate a T5 model."""
         self._model.batch_size = self._model.batch_size * 4
         self._model.eval(mixture_or_task_name, checkpoint_steps=steps)
 
     @gin.configurable
     def predict(self, model_input: List[str], **kwargs) -> List[str]:
-        """Makes a prediction using a trained T5 model."""
+        """Make a prediction using a trained T5 model."""
         kwargs.setdefault("checkpoint_steps", -1)
 
         # HACK: get around t5's lame API that requires filesystem I/O
@@ -67,7 +67,7 @@ def register_task(
     train_path: str = "./data/train.tsv",
     validation_path: str = "./data/train.tsv",
 ) -> None:
-    """Registers a task for use with training or evaluating a T5 model."""
+    """Register a task for use with training or evaluating a T5 model."""
     num_input_examples = None
     if not Path(train_path).is_file():
         train_len, val_len = dataset.write_to_files(train_path, validation_path)

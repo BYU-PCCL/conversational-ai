@@ -30,7 +30,7 @@ def main(
     ],
     **kwargs,  # not used; just here so we can pass in whatever we get from the CLI
 ) -> None:
-    """Starts the container."""
+    """Start the container."""
     cmd = [] if not command else command
     if isinstance(cmd, str):
         cmd = shlex.split(cmd)
@@ -38,7 +38,7 @@ def main(
     if pull:
         subprocess.run(["docker", "pull", image], stdout=sys.stdout, stderr=sys.stderr)
 
-    args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach",] + args
+    args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach"] + args
 
     gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", "all")
     args.append(f"--env=NVIDIA_VISIBLE_DEVICES={gpus}")
