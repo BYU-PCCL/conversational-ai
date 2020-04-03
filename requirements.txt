@@ -1,3 +1,0 @@
-chitchat_dataset
-gin-config>=0.3.0
-t5>=0.3.0

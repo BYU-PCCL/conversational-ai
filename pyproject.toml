@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "conversational-ai"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+license = "MIT"
+authors = ["William Myers <mwilliammyers@gmail.com>"]
+homepage = "https://github.com/BYU-PCCL/conversational-ai"
+repository = "https://github.com/BYU-PCCL/conversational-ai"
+keywords = ["science", "machine learning", "conversation"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+chitchat-dataset = "^0.3.1"
+gin-config = "^0.3.0"
+t5 = "^0.3.2"
+tfds-nightly = "^2.1.0-alpha.202004020105"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+flake8-annotations = "^2.0.1"
+flake8-black = "^0.1.1"
+flake8-bugbear = "^20.1.4"
+flake8-deprecated = "^1.3"
+flake8-docstrings = "^1.5.0"
+flake8-isort = "^2.9.1"
+flakehell = "^0.3.3"
+isort = { extras = ["pyproject"], version = "^4.3.21" }
+mypy = "^0.770"
+pep8-naming = "^0.10.0"
+
+[tool.flakehell]
+exclude = [
+  ".git",
+  "__pycache__",
+  ".mypy_cache",
+  ".venv",
+  "*.egg-info",
+  "build",
+  "dist",
+]
+max_line_length = 88
+max_doc_length = 88
+max_complexity = 10
+docstring_convention = "google"
+no_isort_config = true
+ignore = [
+  # Missing type annotation for self in method
+  "ANN101",
+  # Missing type annotation for *args
+  "ANN002",
+  # Missing type annotation for **kwargs
+  "ANN003",
+]
+
+[tool.flakehell.plugins]
+"*" = ["+*"]
+# FIXME: `AssertionError: daemonic processes are not allowed to have children`
+pylint = ["-*"]
+
+[tool.isort]
+# replace these configs with `profile = "black"` once v5.0.0 lands
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+known_third_party = [
+  # we don't want to add sanic to our requirements.txt because it is optional
+  "sanic",
+  # these have different names than in requirements.txt
+  "tensorflow",
+  "gin",
+]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
