@@ -10,7 +10,7 @@ repository = "https://github.com/BYU-PCCL/conversational-ai"
 keywords = ["science", "machine learning", "conversation"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 chitchat-dataset = "^0.3.1"
 gin-config = "^0.3.0"
 t5 = "^0.3.2"

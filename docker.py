@@ -17,10 +17,10 @@ def main(
     image: str,
     name: str,
     command: Union[List[str], str, None] = None,
-    volumes: Dict[_Path, _Path] = {"/mnt": "/mnt"},
+    volumes: Dict[_Path, _Path] = {"/mnt": "/mnt"},  # noqa: B006
     tty: bool = False,
     pull: bool = False,
-    args: List[str] = [
+    args: List[str] = [  # noqa: B006
         "--rm",
         "--network=host",
         "--ipc=host",
