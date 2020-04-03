@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Start the conversational-ai docker container."""
+import multiprocessing as mp
 import os
 import platform
 import shlex
@@ -26,6 +27,7 @@ def main(
         "--shm-size=8g",
         "--ulimit=memlock=-1",
         "--ulimit=stack=67108864",
+        f"--cpus={max(int(0.25 * mp.cpu_count()), 8)}",
         f"--user={os.getuid()}:{os.getgid()}",
     ],
     **kwargs,  # not used; just here so we can pass in whatever we get from the CLI
