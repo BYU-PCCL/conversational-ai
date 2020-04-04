@@ -92,6 +92,10 @@ if __name__ == "__main__":
 
     See: https://github.com/google/gin-config for more info on configuration
     """
+    import tensorflow.compat.v1 as tf
+
+    tf.disable_v2_behavior()
+
     for p in Path("./").glob("*.gin"):
         gin.parse_config_file(p)
 
