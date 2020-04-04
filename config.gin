@@ -6,7 +6,8 @@ finetune.pretrained_model_dir = "./checkpoints/large"
 finetune.steps = 10_000
 
 evaluate.mixture_or_task_name = %task_name
-evaluate.steps = -1
+# evaluate.steps = -1
+evaluate.steps = "all"
 
 MtfModel.model_dir = "./checkpoints/t5"
 MtfModel.batch_size = ("tokens_per_batch", 2048)
@@ -16,6 +17,6 @@ MtfModel.learning_rate_schedule = 0.001
 MtfModel.mesh_devices = ["gpu:0"]
 MtfModel.mesh_shape = "model:1,batch:1"
 MtfModel.tpu = None
-# MtfModel.tpu_topology = None
+MtfModel.tpu_topology = None
 MtfModel.keep_checkpoint_max = 5
 MtfModel.save_checkpoints_steps = 500
