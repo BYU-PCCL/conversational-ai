@@ -1,8 +1,4 @@
-task_name/macro.value = "conversation"
-
-register_task.mixture_or_task_name = %task_name
-register_task.train_path = "./data/train.tsv"
-register_task.validation_path = "./data/validation.tsv"
+task_name/macro.value = "conversation_v001_compounding"
 
 finetune.mixture_or_task_name = %task_name
 # finetune.pretrained_model_dir = "gs://t5-data/pretrained_models/large"
