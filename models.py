@@ -4,6 +4,7 @@ The T5 model is described in the paper: https://arxiv.org/abs/1910.10683.
 """
 import ast
 import os
+import sys
 import tempfile
 from pathlib import Path
 from typing import List, Optional
@@ -80,7 +81,8 @@ if __name__ == "__main__":
 
     # TODO: should we also check `logging.getLogger("tensorflow").level` ?
     if int(os.getenv("TF_CPP_MIN_LOG_LEVEL", "0")) < 2:
-        print("# Gin config", "# " + "=" * 78, gin.operative_config_str(), sep="\n")
+        conf = gin.operative_config_str()
+        print("# Gin config", "# " + "=" * 78, conf, sep="\n", file=sys.stderr)
 
     model.finetune()  # noqa: E1120
     model.evaluate()  # noqa: E1120
