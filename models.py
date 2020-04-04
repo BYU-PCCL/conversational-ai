@@ -7,7 +7,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import gin
 import t5
@@ -35,9 +35,8 @@ class T5:
         self._model.finetune(mixture_or_task_name, steps, pretrained_model_dir)
 
     @gin.configurable
-    def evaluate(self, mixture_or_task_name: str, steps: Optional[int] = -1) -> None:
+    def evaluate(self, mixture_or_task_name: str, steps: Optional[Any] = "all") -> None:
         """Evaluate a T5 model."""
-        self._model.batch_size = self._model.batch_size * 4
         self._model.eval(mixture_or_task_name, checkpoint_steps=steps)
 
     @gin.configurable
@@ -85,4 +84,9 @@ if __name__ == "__main__":
         print("# Gin config", "# " + "=" * 78, conf, sep="\n", file=sys.stderr)
 
     model.finetune()  # noqa: E1120
+
+    with gin.unlock_config():
+        gin.bind_parameter("MtfModel.batch_size", ("tokens_per_replica", 32768))
+        gin.bind_parameter("Bitransformer.decode.max_decode_length", 128)
+
     model.evaluate()  # noqa: E1120
