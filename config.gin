@@ -5,8 +5,9 @@ register_task.train_path = "./data/train.tsv"
 register_task.validation_path = "./data/validation.tsv"
 
 finetune.mixture_or_task_name = %task_name
-finetune.pretrained_model_dir = "gs://t5-data/pretrained_models/large"
-finetune.steps = 10000
+# finetune.pretrained_model_dir = "gs://t5-data/pretrained_models/large"
+finetune.pretrained_model_dir = "./checkpoints/large"
+finetune.steps = 10_000
 
 evaluate.mixture_or_task_name = %task_name
 evaluate.steps = -1
