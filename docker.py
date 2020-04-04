@@ -17,10 +17,10 @@ def main(
     image: str,
     name: str,
     command: Union[List[str], str, None] = None,
-    volumes: Dict[_Path, _Path] = {"/mnt": "/mnt"},
+    volumes: Dict[_Path, _Path] = {"/mnt": "/mnt"},  # noqa: B006
     tty: bool = False,
     pull: bool = False,
-    args: List[str] = [
+    args: List[str] = [  # noqa: B006
         "--rm",
         "--network=host",
         "--ipc=host",
@@ -45,10 +45,8 @@ def main(
     gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", "all")
     args.append(f"--env=NVIDIA_VISIBLE_DEVICES={gpus}")
     # handle compatability with older versions of `nvidia-container-toolkit`
-    result = subprocess.run(
-        ["docker", "run", "--help"], capture_output=True, check=True, encoding="utf8",
-    )
-    args.append(f"--gpus={gpus}" if "--gpus" in result.stdout else "--runtime=nvidia")
+    result = subprocess.check_output(["docker", "run", "--help"], encoding="utf8")
+    args.append(f"--gpus={gpus}" if "--gpus" in result else "--runtime=nvidia")
 
     for src, dst in filter(lambda p: Path(p[0]).exists(), volumes.items()):
         args.append(f"--volume={Path(src).absolute()}:{dst}")
@@ -57,7 +55,7 @@ def main(
         args + [image] + cmd,
         stdin=sys.stdin if tty else None,
         stdout=sys.stdout if tty else None,
-        capture_output=not tty,
+        check=not tty,
     )
 
     if not tty:
