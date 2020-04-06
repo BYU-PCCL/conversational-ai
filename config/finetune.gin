@@ -1,0 +1,31 @@
+import tasks
+
+include 'dataset.gin'
+include 'learning_rate_schedules/constant_0_001.gin'
+include 'gs://t5-data/pretrained_models/small/operative_config.gin'
+
+MIXTURE_NAME = 'conversation_v001_compounding'
+
+init_checkpoint = './checkpoints/small/model.ckpt-1000000'
+
+utils.run.model_dir = './checkpoints/conversational-ai_small_{hostname}_{timestamp}'
+
+utils.run.keep_checkpoint_max = 5
+utils.run.save_checkpoints_steps = 500
+
+# train_tokens = train_steps * batch_size * sequence_length
+# utils.auto_train_steps.train_tokens = 17_179_869_184
+# utils.run.train_steps = @utils.auto_train_steps
+utils.run.batch_size = ("tokens_per_batch", 8192)
+utils.run.sequence_length = {"inputs": 512, "targets": 512}
+
+utils.run.mesh_shape = 'model:1,batch:1'
+utils.run.mesh_devices = ['gpu:0']
+utils.run.tpu_job_name = None
+utils.run.tpu = None
+utils.run.gcp_project = None
+utils.run.tpu_zone = None
+
+# because we are using a GPU instead of a TPU
+utils.get_variable_dtype.slice_dtype = "float32"
+utils.get_variable_dtype.activation_dtype = "float32"

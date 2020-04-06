@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 
+# FIXME
 def interactive(
     checkpoint: Union[str, Path],
     output_dir: Optional[Union[str, Path]],
@@ -88,7 +89,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--turn-separator",
         help="The token to insert between conversation turns",
-        default="<TURN>",
+        default="<EOM>",
     )
     parser.add_argument(
         "--context-window",

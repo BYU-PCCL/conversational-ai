@@ -13,4 +13,4 @@ COPY ["*.sh", "*.gin", "*.py", "./"]
 
 EXPOSE 8080
 
-CMD ["python3", "models.py"]
+CMD ["python3", "t5_model.py"]

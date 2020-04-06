@@ -9,24 +9,6 @@ import chitchat_dataset as ccc
 import t5
 import tensorflow.compat.v1 as tf
 
-# TODO: do not hardcode these...
-_NUM_TRAIN_EXAMPLES = {"conversation_v001_compounding": 124_990}
-
-
-def register() -> None:
-    """Register a task for use with a T5 model."""
-    name = "conversation_v001_compounding"
-    t5.data.TaskRegistry.add(
-        name,
-        t5.data.Task,
-        dataset_fn=functools.partial(_compounding_dataset, _NUM_TRAIN_EXAMPLES[name]),
-        splits=["train", "validation"],
-        text_preprocessor=None,
-        postprocess_fn=t5.data.postprocessors.lower_text,
-        metric_fns=[t5.evaluation.metrics.accuracy, t5.evaluation.metrics.rouge],
-        sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
-    )
-
 
 def _compounding_dataset(num: int, split: str, shuffle_files: bool) -> tf.data.Dataset:
     """Create a tf.data.Dataset of input/target examples.
@@ -44,3 +26,19 @@ def _compounding_dataset(num: int, split: str, shuffle_files: bool) -> tf.data.D
         output_shapes={"inputs": tf.TensorShape([]), "targets": tf.TensorShape([])},
     )
     return dataset.take(num) if split == "train" else dataset.skip(num)
+
+
+t5.data.TaskRegistry.add(
+    "conversation_v001_compounding",
+    t5.data.Task,
+    dataset_fn=functools.partial(_compounding_dataset, 124_990),
+    splits=["train", "validation"],
+    text_preprocessor=None,
+    postprocess_fn=t5.data.postprocessors.lower_text,
+    metric_fns=[
+        t5.evaluation.metrics.accuracy,
+        t5.evaluation.metrics.rouge,
+        t5.evaluation.metrics.bleu,
+    ],
+    sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
+)

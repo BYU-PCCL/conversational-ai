@@ -1,0 +1,16 @@
+import tasks
+
+include 'eval.gin'
+include 'perplexity_eval.gin'
+include 'beam_search.gin'
+
+MIXTURE_NAME = 'conversation_v001_compounding'
+
+utils.run.sequence_length = {"inputs": 512, "targets": 512}
+
+utils.run.mesh_shape = 'model:1,batch:1'
+utils.run.mesh_devices = ['gpu:0']
+utils.run.tpu_job_name = None
+utils.run.tpu = None
+utils.run.gcp_project = None
+utils.run.tpu_zone = None

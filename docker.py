@@ -13,7 +13,7 @@ from typing import Dict, List, Union
 _Path = Union[str, Path]
 
 
-def main(
+def run(
     image: str,
     name: str,
     command: Union[List[str], str, None] = None,
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         "-c",
         "--command",
         help="The command to run inside the container",
-        default="python3 models.py",
+        default="python3 t5_model.py",
     )
     parser.add_argument(
         "-t",
@@ -115,27 +115,23 @@ if __name__ == "__main__":
         timestamp=datetime.now().strftime("%Y-%m-%dT%H_%M_%S.%f"),
     )
 
-    main_kwargs = {
+    run_kwargs = {
         **vars(args),
         "image": f"{args.image}:{args.tag}",
         "name": name,
         "command": shlex.split(args.command),
         "volumes": {
             "./checkpoints": "/workspace/checkpoints/",
+            "./config": "/workspace/config/",
             "./data": "/workspace/data/",
             "./chats": "/workspace/chats/",
             "/mnt": "/mnt",
         },
     }
 
-    # TODO: don't assume checkpoint prefix is `./checkpoints/`
-    model_dir = Path("./checkpoints", name).resolve().absolute()
-    main_kwargs["command"].append(f"--gin_param=MtfModel.model_dir='{model_dir}'")
-
-    # NB: add the extra_args in after the model_dir param so it can be overridden
-    main_kwargs["command"].extend(extra_args)
+    run_kwargs["command"].extend(extra_args)
 
     try:
-        main(**main_kwargs)
+        run(**run_kwargs)
     except KeyboardInterrupt:
         sys.exit()
