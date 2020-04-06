@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Start the conversational-ai docker container."""
+import datetime
 import multiprocessing as mp
 import os
 import platform
 import shlex
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Union
 
@@ -107,12 +107,14 @@ if __name__ == "__main__":
 
     args, extra_args = parser.parse_known_args()
 
+    # hardcode the tz for now because some servers are in random timezons
+    tz = datetime.timezone(-datetime.timedelta(hours=6))
     name = args.name.format(
         name=args.image.split("/")[-1],
         tag=args.tag,
         hostname=platform.node(),
         # docker container names cannot have `:` in them
-        timestamp=datetime.now().strftime("%Y-%m-%dT%H_%M_%S.%f"),
+        timestamp=datetime.datetime.now(tz=tz).strftime("%Y-%m-%dT%H_%M_%S.%f"),
     )
 
     run_kwargs = {
