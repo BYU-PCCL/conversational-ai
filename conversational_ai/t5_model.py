@@ -11,7 +11,7 @@ import gin
 import pkg_resources
 
 
-def init_gin_config() -> None:
+def init_gin_config() -> str:
     """Initialize all gin configuration."""
     from mesh_tensorflow.transformer import utils
 
@@ -30,6 +30,8 @@ def init_gin_config() -> None:
 
     with gin.unlock_config():
         gin.bind_parameter("utils.run.model_dir", model_dir)
+
+    return gin.config_str()
 
 
 def run(log_level: str = "INFO", **kwargs) -> None:
@@ -80,5 +82,6 @@ def predict(
 
 if __name__ == "__main__":
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-    init_gin_config()
+    config = init_gin_config()
+    print("# Gin config", "# " + "=" * 78, config, sep="\n")  # TODO: use logging
     run()
