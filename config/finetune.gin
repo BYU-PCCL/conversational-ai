@@ -1,7 +1,6 @@
 import conversational_ai.tasks
 
-# include "gs://t5-data/pretrained_models/small/operative_config.gin"
-include "./checkpoints/pretrained_models/small/operative_config.gin"
+include "gs://t5-data/pretrained_models/small/operative_config.gin"
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
 
