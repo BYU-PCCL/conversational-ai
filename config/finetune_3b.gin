@@ -1,11 +1,10 @@
 import conversational_ai.tasks
 
-include "finetune.gin"
+# include "gs://t5-data/pretrained_models/3B/operative_config.gin"
 include "./checkpoints/pretrained_models/3B/operative_config.gin"
+include "finetune.gin"
 
-init_checkpoint = "./checkpoints/pretrained_models/3B/model.ckpt-1000000"
-
-utils.run.batch_size = ("tokens_per_batch", 2048)
+utils.run.batch_size = ("tokens_per_batch", 16_384)
 
 utils.run.mesh_devices = ["gpu:0", "gpu:1"]
-utils.run.mesh_shape = "model:2,batch:1"
+utils.run.mesh_shape = "model:1,batch:2"

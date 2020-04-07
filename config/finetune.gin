@@ -1,17 +1,18 @@
 import conversational_ai.tasks
 
+# include "gs://t5-data/pretrained_models/small/operative_config.gin"
+include "./checkpoints/pretrained_models/small/operative_config.gin"
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
-# include "./checkpoints/pretrained_models/small/operative_config.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
 
-init_checkpoint = "./checkpoints/pretrained_models/small/model.ckpt-1000000"
-
 utils.run.model_dir = "./checkpoints/conversational-ai_{hostname}_{timestamp}"
 
-utils.run.keep_checkpoint_max = 10
-utils.run.save_checkpoints_steps = 1000
+constant_learning_rate.learning_rate = 0.0002
+
+utils.run.keep_checkpoint_max = 20
+utils.run.save_checkpoints_steps = 10_000
 
 # train_tokens = train_steps * batch_size * sequence_length
 # utils.auto_train_steps.train_tokens = 17_179_869_184
