@@ -1,4 +1,4 @@
-import tasks
+import conversational_ai.tasks
 
 include "eval.gin"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Start the conversational-ai docker container."""
+"""Starts the conversational-ai docker container."""
 import datetime
 import multiprocessing as mp
 import os
@@ -86,10 +86,10 @@ if __name__ == "__main__":
         default="{name}_{tag}_{hostname}_{timestamp}",
     )
     parser.add_argument(
-        "-c",
-        "--command",
-        help="The command to run inside the container",
-        default="python3 t5_model.py",
+        "-m",
+        "--module",
+        help="The module for python to run inside the container",
+        default="conversational_ai.t5_model",
     )
     parser.add_argument(
         "-t",
@@ -121,7 +121,7 @@ if __name__ == "__main__":
         **vars(args),
         "image": f"{args.image}:{args.tag}",
         "name": name,
-        "command": shlex.split(args.command),
+        "command": shlex.split(args.module),
         "volumes": {
             "./checkpoints": "/workspace/checkpoints/",
             "./config": "/workspace/config/",

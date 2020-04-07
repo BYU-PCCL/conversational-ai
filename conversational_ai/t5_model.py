@@ -15,7 +15,7 @@ def init_gin_config() -> None:
     """Initialize all gin configuration."""
     from mesh_tensorflow.transformer import utils
 
-    gin.add_config_file_search_path(Path(__file__).parent.joinpath("config"))
+    gin.add_config_file_search_path(Path(__file__).parent.parent.joinpath("config"))
     gin.add_config_file_search_path(pkg_resources.resource_filename("t5.models", "gin"))
 
     utils.parse_gin_defaults_and_flags()

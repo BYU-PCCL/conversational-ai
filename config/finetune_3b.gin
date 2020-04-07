@@ -1,4 +1,4 @@
-import tasks
+import conversational_ai.tasks
 
 include "finetune.gin"
 include "./checkpoints/pretrained_models/3B/operative_config.gin"

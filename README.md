@@ -1,5 +1,6 @@
 # conversational-ai
 
+[![ci](https://github.com/BYU-PCCL/conversational-ai/workflows/ci/badge.svg)](https://github.com/BYU-PCCL/conversational-ai/actions?query=workflow%3Aci)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## requirements
@@ -17,22 +18,36 @@ pip install -U pip wheel setuptools && pip install -r requirements.txt
 
 ## usage
 
+```
+./docker.py --help
+```
+
 ### finetune
 
-```
-./docker.sh
+```bash
+python3 -m conversational_ai.t5_model --gin_file=finetune.gin
 ```
 
-or equivalently:
+or
 
-```
-curl -fsSL git.io/pccl-conversational-ai-docker-sh | sh
+```bash
+./docker.py --gin_file=finetune_3b.gin
 ```
 
 ### chat
 
 to chat interactively with a trained model, do:
 
+```bash
+python3 -m conversational_ai.chat \
+    --gin_file=infer.gin \
+    --gin_file=./path/to/checkpoint/operative_config.gin
 ```
-env DOCKER_PUSH=no DOCKER_ARGS=-it ./docker.sh chat.py
+
+or
+
+```
+docker.py --tty -m conversational_ai.chat \
+    --gin_file=infer.gin \
+    --gin_file=./checkpoints/path/to/checkpoint/operative_config.gin
 ```

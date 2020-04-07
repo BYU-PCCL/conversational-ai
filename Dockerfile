@@ -7,10 +7,9 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -U pip wheel setuptools && \
     pip install --no-cache-dir -r requirements.txt
 
-COPY ["*.tsv", "*.txt", "./"]
-
-COPY ["*.sh", "*.gin", "*.py", "./"]
+COPY conversational_ai/ ./conversational_ai/
 
 EXPOSE 8080
 
-CMD ["python3", "t5_model.py"]
+ENTRYPOINT ["python3", "-m"]
+CMD ["conversational_ai.t5_model"]

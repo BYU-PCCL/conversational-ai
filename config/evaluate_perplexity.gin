@@ -1,4 +1,4 @@
-import tasks
+import conversational_ai.tasks
 
 include "perplexity_eval.gin"
 

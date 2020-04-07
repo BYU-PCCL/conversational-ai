@@ -7,7 +7,7 @@ from typing import List, Optional, Union
 
 import gin
 
-import t5_model
+from conversational_ai import t5_model
 
 
 @gin.configurable

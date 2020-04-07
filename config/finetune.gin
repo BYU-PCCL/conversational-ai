@@ -1,4 +1,4 @@
-import tasks
+import conversational_ai.tasks
 
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
