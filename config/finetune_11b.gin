@@ -1,0 +1,9 @@
+import conversational_ai.tasks
+
+# include "gs://t5-data/pretrained_models/11B/operative_config.gin"
+include "./checkpoints/pretrained_models/11B/operative_config.gin"
+include "finetune.gin"
+include "3b.gin"  # TODO: being able to re-use these params means we should change them
+
+# not necessary if downloading from Google Cloud Storage
+init_checkpoint = "./checkpoints/pretrained_models/11B/model.ckpt-1000000"
