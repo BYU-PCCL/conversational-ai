@@ -1,10 +1,10 @@
 import tasks
 
-include "eval.gin"
+include "perplexity_eval.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
 
-utils.run.mode = "eval"
+utils.run.mode = "perplexity_eval"
 utils.run.dataset_split = "validation"
 
 utils.run.eval_checkpoint_step = "all"

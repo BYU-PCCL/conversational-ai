@@ -1,0 +1,11 @@
+import tasks
+
+include "finetune.gin"
+include "./checkpoints/pretrained_models/3B/operative_config.gin"
+
+init_checkpoint = "./checkpoints/pretrained_models/3B/model.ckpt-1000000"
+
+utils.run.batch_size = ("tokens_per_batch", 2048)
+
+utils.run.mesh_devices = ["gpu:0", "gpu:1"]
+utils.run.mesh_shape = "model:2,batch:1"
