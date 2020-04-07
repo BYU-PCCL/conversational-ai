@@ -1,8 +1,11 @@
 """Run a T5 model."""
+import ast
 import datetime
 import os
 import platform
+import tempfile
 from pathlib import Path
+from typing import List, Optional, Union
 
 import gin
 import pkg_resources
@@ -17,7 +20,7 @@ def init_gin_config() -> None:
 
     utils.parse_gin_defaults_and_flags()
 
-    # hardcode the tz for now because some servers are in random timezons
+    # hardcode the tz for now because some servers are in random timezones
     tz = datetime.timezone(-datetime.timedelta(hours=6))
     # make it so we don't have to specify a unique model_dir each time
     model_dir = gin.query_parameter("utils.run.model_dir").format(
@@ -28,11 +31,6 @@ def init_gin_config() -> None:
     with gin.unlock_config():
         gin.bind_parameter("utils.run.model_dir", model_dir)
 
-        try:
-            gin.parse_config_file(Path(model_dir, "operative_config.gin"))
-        except OSError:
-            pass
-
 
 def run(log_level: str = "INFO", **kwargs) -> None:
     """Run a T5 model for training, finetuning, evaluation etc."""
@@ -42,6 +40,42 @@ def run(log_level: str = "INFO", **kwargs) -> None:
     tf.logging.set_verbosity(log_level)
     tf.disable_v2_behavior()
     utils.run(**kwargs)
+
+
+@gin.configurable
+def predict(
+    model_input: List[str],
+    model_dir: str,
+    step: Optional[Union[int, str]] = None,
+    log_level: str = "FATAL",
+    **kwargs,
+) -> List[str]:
+    """Get a prediction from the model."""
+    from t5.models.mtf_model import _get_latest_checkpoint_from_dir
+
+    # HACK: use `decode` instead of `decode_from_file` (which run uses)
+    with tempfile.TemporaryDirectory() as tmp:
+        in_file = Path(tmp, "input.txt")
+        in_file.write_text("\n".join(model_input))
+        out_file = Path(tmp, "output.txt")
+
+        with gin.unlock_config():
+            gin.bind_parameter("infer_model.input_filename", str(in_file))
+            gin.bind_parameter("infer_model.output_filename", str(out_file))
+            gin.bind_parameter("utils.run.mode", "infer")
+
+            if step == -1 or step == "latest":
+                step = _get_latest_checkpoint_from_dir(model_dir)
+            gin.bind_parameter("utils.run.eval_checkpoint_step", step)
+
+        run(log_level=log_level, **kwargs)
+
+        # will have the checkpoint num appended to it so we glob to get all of them
+        all_outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
+        # TODO: should we return just the last one?
+        outputs = filter(lambda x: x.strip(), "\n".join(all_outputs).split("\n"))
+        # HACK: not sure if the model is outputing `b'output'` or something else is
+        return [ast.literal_eval(line.strip()).decode("utf-8") for line in outputs]
 
 
 if __name__ == "__main__":
