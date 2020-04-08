@@ -102,6 +102,12 @@ if __name__ == "__main__":
         help="Pull the image before running the container",
         action="store_true",
     )
+    parser.add_argument(
+        "--checkpoints-dir",
+        help="The directory root/prefix containing all checkpoint directories",
+        type=Path,
+        default=Path("./checkpoints/"),
+    )
 
     # TODO: add `--volumes` flag
 
@@ -123,7 +129,7 @@ if __name__ == "__main__":
         "name": name,
         "command": shlex.split(args.module),
         "volumes": {
-            "./checkpoints": "/workspace/checkpoints/",
+            args.checkpoints_dir: "/workspace/checkpoints/",
             "./config": "/workspace/config/",
             "./data": "/workspace/data/",
             "./chats": "/workspace/chats/",
@@ -131,6 +137,10 @@ if __name__ == "__main__":
         },
     }
 
+    model_dir = Path("/workspace/checkpoints/", name)
+    run_kwargs["command"].append(f"--gin_param=MtfModel.model_dir='{model_dir}'")
+
+    # NB: add the extra_args in after the model_dir param so it can be overridden
     run_kwargs["command"].extend(extra_args)
 
     try:
