@@ -1,0 +1,12 @@
+human: Hello!
+model: Hello!
+human: Hi! How are you doing today?
+model: Ooh... I am currently really habity for doing fantastic.
+human: Interesting...
+model: I would take a hiking and do two things in handy but I had 5 minutes graduation and probably all time and since like chick fil a Snow
+human: hahaha wow. What have you been up to today?
+model: I'm up. Hahaa I just have two friends there!
+human: Cool! I have to go. It has been nice chatting with you!
+model: Dang. We only had one in the morning once when they come back and wanted a nightmare Oh my gosh haha Maybe one of my Ive left around the summer
+human: Bye!
+model: haha yeah... there are so many friends who are in mountain :)

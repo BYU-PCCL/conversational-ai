@@ -1,0 +1,12 @@
+human: Hello!
+model: Hey how's you!
+human: Good. What about you?
+model: I'm my freshman, day, so I'd understand how teacherss on our list. How do you like to listen to?
+human: Cool. I like Metallica.
+model: It's depressing about classical. I mostly hope you don't travel.
+human: hahaha. Do you not like classical music?
+model: One day I got to go. I learned David. I can't have bad conversations.
+human: Go where?
+model: Dang, i'm not sure if Siri do all my comments..
+human: ok...? Well I have to go. Bye!
+model: Out of my favorites. Someone wards were playing in our annualcrosse. It was amazing.
