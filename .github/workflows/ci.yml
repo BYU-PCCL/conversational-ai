@@ -1,16 +1,6 @@
 name: ci
 
-on:
-  push:
-    paths:
-      - .github/workflows/**
-      - "**.py"
-      - "**.sh"
-  pull_request:
-    paths:
-      - .github/workflows/**
-      - "**.py"
-      - "**.sh"
+on: [push, pull_request]
 
 jobs:
   lint:
