@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Starts the conversational-ai docker container."""
 import datetime
+import getpass
 import multiprocessing as mp
 import os
 import platform
+import re
 import shlex
 import subprocess
 import sys
@@ -39,10 +41,11 @@ def run(
 
     if pull:
         subprocess.run(["docker", "pull", image], stdout=sys.stdout, stderr=sys.stderr)
+        print("")
 
     args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach"] + args
 
-    gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", "all")
+    gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", os.getenv("NV_GPU", "all"))
     args.append(f"--env=NVIDIA_VISIBLE_DEVICES={gpus}")
     # handle compatability with older versions of `nvidia-container-toolkit`
     result = subprocess.check_output(["docker", "run", "--help"], encoding="utf8")
@@ -55,7 +58,7 @@ def run(
         args + [image] + cmd,
         stdin=sys.stdin if tty else None,
         stdout=sys.stdout if tty else None,
-        check=not tty,
+        check=True,
     )
 
     if not tty:
@@ -74,16 +77,14 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-i",
         "--image",
-        help="The name of the docker image",
-        default="pccl/conversational-ai",
+        help="Docker image to use for the container",
+        default="pccl/conversational-ai:latest",
     )
-    parser.add_argument("--tag", help="The docker tag", default="latest")
     parser.add_argument(
         "--name",
-        help="Container name format string",
-        default="{name}_{tag}_{hostname}_{timestamp}",
+        help="Container name; formatted with values if available",
+        default="cai_{timestamp}",
     )
     parser.add_argument(
         "-m",
@@ -94,7 +95,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-t",
         "--tty",
-        help="Run container in foreground, allocating an interactive pseudo-TTY",
+        help="Run container in the foreground, allocating an interactive pseudo-TTY",
         action="store_true",
     )
     parser.add_argument(
@@ -102,24 +103,23 @@ if __name__ == "__main__":
         help="Pull the image before running the container",
         action="store_true",
     )
-
     # TODO: add `--volumes` flag
 
     args, extra_args = parser.parse_known_args()
 
-    # hardcode the tz for now because some servers are in random timezons
+    # hardcode the tz for now because some servers are in random timezones
     tz = datetime.timezone(-datetime.timedelta(hours=6))
     name = args.name.format(
-        name=args.image.split("/")[-1],
-        tag=args.tag,
+        image=args.image,
+        username=getpass.getuser(),
         hostname=platform.node(),
-        # docker container names cannot have `:` in them
-        timestamp=datetime.datetime.now(tz=tz).strftime("%Y-%m-%dT%H_%M_%S.%f"),
+        timestamp=datetime.datetime.now(tz=tz).isoformat(timespec="milliseconds"),
     )
+    # TODO: handle docker container name must start with an alphanumeric character?
+    name = re.sub(r"[^\d\w_.-]+", "-", name)
 
     run_kwargs = {
         **vars(args),
-        "image": f"{args.image}:{args.tag}",
         "name": name,
         "command": shlex.split(args.module),
         "volumes": {
