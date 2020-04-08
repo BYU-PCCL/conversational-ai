@@ -1,11 +1,10 @@
-include "beam_search.gin"
+# include "beam_search.gin"
+# include "greedy_decode.gin"
+include "sample_decode.gin"
+
+logging.level = "ERROR"
 
 chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
 
 chat_interactively.prefix = "converse: "
 chat_interactively.turn_separator = "<EOM>"
-chat_interactively.context_window  = 25
-
-predict.log_level = "ERROR"
-
-utils.run.eval_checkpoint_step = "all"

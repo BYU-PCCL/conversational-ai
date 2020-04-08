@@ -1,5 +1,7 @@
 import conversational_ai.tasks
 
+logging.level = "INFO"
+
 include "eval.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
