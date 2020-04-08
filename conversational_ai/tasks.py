@@ -11,7 +11,7 @@ import tensorflow.compat.v1 as tf
 
 
 def _compounding_dataset(num: int, split: str, shuffle_files: bool) -> tf.data.Dataset:
-    """Create a tf.data.Dataset of input/target examples.
+    """Creates a tf.data.Dataset of input/target examples.
 
     Each example has the form: `{"inputs": tf.string, "targets": tf.string}`.
     """

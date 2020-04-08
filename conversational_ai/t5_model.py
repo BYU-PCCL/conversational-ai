@@ -29,7 +29,7 @@ def logging(level: str = "INFO") -> None:
 
 
 def init_gin_config(log_config: bool = True) -> None:
-    """Initialize all gin configuration."""
+    """Initializes all gin configuration."""
     gin.add_config_file_search_path(Path(__file__).parent.parent.joinpath("config"))
     gin.add_config_file_search_path(pkg_resources.resource_filename("t5.models", "gin"))
 
@@ -42,7 +42,6 @@ def init_gin_config(log_config: bool = True) -> None:
         hostname=platform.node(),
         timestamp=datetime.datetime.now(tz=tz).isoformat(timespec="milliseconds"),
     )
-
     with gin.unlock_config():
         gin.bind_parameter("utils.run.model_dir", model_dir)
 
@@ -53,7 +52,7 @@ def init_gin_config(log_config: bool = True) -> None:
 
 
 def run(**kwargs) -> None:
-    """Run a T5 model for training, finetuning, evaluation etc."""
+    """Runs a T5 model for training, finetuning, evaluation etc."""
     tf.disable_v2_behavior()
     utils.run(**kwargs)
 
@@ -65,7 +64,7 @@ def predict(
     step: Optional[Union[int, str]] = None,
     **kwargs,
 ) -> List[str]:
-    """Get a prediction from the model."""
+    """Gets a prediction from the model."""
     if step == -1 or step == "latest":
         step = _get_latest_checkpoint_from_dir(model_dir)
 
