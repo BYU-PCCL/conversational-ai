@@ -8,14 +8,15 @@ MIXTURE_NAME = "conversation_v001_compounding"
 
 utils.run.model_dir = "./checkpoints/conversational-ai_{hostname}_{timestamp}"
 
-constant_learning_rate.learning_rate = 0.0002
+constant_learning_rate.learning_rate = 0.0001
 
-utils.run.keep_checkpoint_max = 20
+utils.run.keep_checkpoint_max = 50
 utils.run.save_checkpoints_steps = 10_000
 
 # train_tokens = train_steps * batch_size * sequence_length
 # utils.auto_train_steps.train_tokens = 17_179_869_184
 # utils.run.train_steps = @utils.auto_train_steps
+utils.run.train_steps = 500_000
 utils.run.batch_size = ("tokens_per_batch", 8192)
 utils.run.sequence_length = {"inputs": 512, "targets": 512}
 
