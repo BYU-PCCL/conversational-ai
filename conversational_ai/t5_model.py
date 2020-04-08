@@ -1,4 +1,4 @@
-"""Run a T5 model.
+"""Utilities for working with the T5 model.
 
 https://arxiv.org/abs/1910.10683
 """
@@ -25,10 +25,9 @@ def logging(level: str = "INFO") -> None:
     py_logging.basicConfig(level=level)
     tf.get_logger().propagate = False  # https://stackoverflow.com/a/33664610
     tf.get_logger().setLevel(level)
-    # tf.get_logger().addFilter(lambda record: "deprecat" not in record.msg)
 
 
-def init_gin_config(log_config: bool = True) -> None:
+def init_gin_config() -> None:
     """Initializes all gin configuration."""
     gin.add_config_file_search_path(Path(__file__).parent.parent.joinpath("config"))
     gin.add_config_file_search_path(pkg_resources.resource_filename("t5.models", "gin"))
@@ -46,9 +45,7 @@ def init_gin_config(log_config: bool = True) -> None:
         gin.bind_parameter("utils.run.model_dir", model_dir)
 
     logging()
-
-    if log_config:
-        logger.debug("\n# Gin config\n# %s\n%s", "#" * 78, gin.config_str())
+    logger.debug("\n# Gin config\n# %s\n%s", "#" * 78, gin.config_str())
 
 
 def run(**kwargs) -> None:
