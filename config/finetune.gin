@@ -6,7 +6,6 @@ include "learning_rate_schedules/constant_0_001.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
 
-# will be overridden by docker.py
 utils.run.model_dir = "./checkpoints/conversational-ai_{hostname}_{timestamp}"
 
 constant_learning_rate.learning_rate = 0.0001
