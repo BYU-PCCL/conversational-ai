@@ -2,21 +2,10 @@ import conversational_ai.tasks
 
 include "eval.gin"
 
-MIXTURE_NAME = "conversation_v001_compounding"
-
 utils.run.mode = "eval"
 utils.run.dataset_split = "validation"
 
 utils.run.eval_checkpoint_step = "all"
-
-utils.run.sequence_length = {"inputs": 512, "targets": 512}
-
-utils.run.mesh_shape = "model:1,batch:1"
-utils.run.mesh_devices = ["gpu:0"]
-utils.run.tpu_job_name = None
-utils.run.tpu = None
-utils.run.gcp_project = None
-utils.run.tpu_zone = None
 
 # Setting this lower makes decodes faster
 Bitransformer.decode.max_decode_length = 128
