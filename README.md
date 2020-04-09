@@ -18,6 +18,14 @@ pip install -U pip wheel setuptools && pip install -r requirements.txt
 
 ## usage
 
+You can use it directly or via Docker:
+
+```
+python3 -m conversational_ai.t5_model --help
+```
+
+or
+
 ```
 ./docker.py --help
 ```
