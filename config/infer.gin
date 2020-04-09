@@ -1,10 +1,9 @@
-# include "beam_search.gin"
-# include "greedy_decode.gin"
-include "sample_decode.gin"
-
 logging.level = "ERROR"
 
 chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
-
 chat_interactively.prefix = "converse: "
 chat_interactively.turn_separator = "<EOM>"
+
+Bitransformer.decode.beam_size = 1  # 4+ for beam search
+Bitransformer.decode.temperature = 1.0  # only used for sample decoding
+# Bitransformer.decode.alpha = 0.6  # only used for beam search

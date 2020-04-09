@@ -1,4 +1,4 @@
-utils.run.batch_size = ("tokens_per_batch", 32_768)
+utils.run.batch_size = ("tokens_per_batch", 16_384)
 
 utils.run.mesh_devices = ["gpu:0", "gpu:1"]
 utils.run.mesh_shape = "model:1,batch:2"
