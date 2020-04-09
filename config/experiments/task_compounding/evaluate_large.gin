@@ -1,0 +1,4 @@
+include "checkpoints/conversational-ai_compounding-v1_large/operative_config.gin"
+include "evaluate.gin"
+
+MIXTURE_NAME = "conversation_v001_compounding"
