@@ -17,6 +17,7 @@ def chat_interactively(
     config_log_file: Optional[Union[str, Path]] = "./chats/chat_{timestamp}.gin",
     context_window: int = 100,
     step: Optional[Union[int, str]] = "latest",
+    conversation_length_save_threshold: int = 0,
     prompt: str = "> ",
 ) -> List[str]:
     """Runs an interactive chat session with the trained T5 model."""
@@ -52,7 +53,7 @@ def chat_interactively(
             prediction = "\n".join(predictions)
             history.append(prediction)
             print(prediction)
-            if output_file:
+            if output_file and len(history) >= conversation_length_save_threshold:
                 output = ""
                 for i, turn in enumerate(history):
                     output += f"human: {turn}\n" if i % 2 == 0 else f"model: {turn}\n"
@@ -62,7 +63,7 @@ def chat_interactively(
     except Exception:
         raise
     finally:
-        if config_log_file and len(history) > 1:
+        if config_log_file and len(history) >= conversation_length_save_threshold:
             config_log_file = Path(str(config_log_file).format(**fmt))
             config_log_file.parent.mkdir(parents=True, exist_ok=True)
             config_log_file.write_text(gin.config_str())  # gin will have been init
