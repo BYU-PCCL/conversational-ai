@@ -2,6 +2,7 @@
 
 https://arxiv.org/abs/1910.10683
 """
+import argparse
 import ast
 import datetime
 import logging as py_logging
@@ -17,35 +18,6 @@ from mesh_tensorflow.transformer import utils
 from t5.models.mtf_model import _get_latest_checkpoint_from_dir
 
 logger = py_logging.getLogger("conversational-ai")
-
-
-@gin.configurable
-def logging(level: str = "INFO") -> None:
-    """Initializes up logging."""
-    py_logging.basicConfig(level=level)
-    tf.get_logger().propagate = False  # https://stackoverflow.com/a/33664610
-    tf.get_logger().setLevel(level)
-
-
-def init_gin_config() -> None:
-    """Initializes all gin configuration."""
-    gin.add_config_file_search_path(Path(__file__).parent.parent.joinpath("config"))
-    gin.add_config_file_search_path(pkg_resources.resource_filename("t5.models", "gin"))
-
-    utils.parse_gin_defaults_and_flags()
-
-    # hardcode the tz for now because some servers are in random timezones
-    tz = datetime.timezone(-datetime.timedelta(hours=6))
-    # make it so we don't have to specify a unique model_dir each time
-    model_dir = gin.query_parameter("utils.run.model_dir").format(
-        hostname=platform.node(),
-        timestamp=datetime.datetime.now(tz=tz).isoformat(timespec="milliseconds"),
-    )
-    with gin.unlock_config():
-        gin.bind_parameter("utils.run.model_dir", model_dir)
-
-    logging()
-    logger.debug("\n# Gin config\n# %s\n%s", "#" * 78, gin.config_str())
 
 
 def run(**kwargs) -> None:
@@ -88,6 +60,74 @@ def predict(
         return [ast.literal_eval(line.strip()).decode("utf-8") for line in outputs]
 
 
+@gin.configurable
+def logging(level: str = "INFO") -> None:
+    """Initializes up logging."""
+    py_logging.basicConfig(level=level)
+    tf.get_logger().propagate = False  # https://stackoverflow.com/a/33664610
+    tf.get_logger().setLevel(level)
+
+
+def parse_gin_defaults_and_flags() -> None:
+    """Parses all default gin files and those provided via flags."""
+    args = _parse_args()  # TODO: should we require that args be passed in?
+
+    for path in [
+        *(args.gin_location_prefix or []),
+        Path(__file__).parent.parent.joinpath("config"),
+        pkg_resources.resource_filename("t5.models", "gin"),
+        pkg_resources.resource_filename("mesh_tensorflow.transformer", "gin"),
+    ]:
+        gin.add_config_file_search_path(path)
+
+    try:
+        # attempt to parse these first so they can be overridden later
+        gin.parse_config_file("defaults.gin")
+        gin.parse_config_file("operative_config.gin")
+    except IOError:
+        pass
+
+    gin.parse_config_files_and_bindings(args.gin_file, args.gin_param)
+
+    # hardcode the tz for now because some servers are in random timezones
+    tz = datetime.timezone(-datetime.timedelta(hours=6))
+    # make it so we don't have to specify a unique model_dir each time
+    model_dir = gin.query_parameter("utils.run.model_dir").format(
+        hostname=platform.node(),
+        timestamp=datetime.datetime.now(tz=tz).isoformat(timespec="milliseconds"),
+    )
+    with gin.unlock_config():
+        gin.bind_parameter("utils.run.model_dir", model_dir)
+
+    logging()
+    logger.debug("\n# Gin config\n# %s\n%s", "#" * 78, gin.config_str())
+
+
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--gin_file",
+        action="append",
+        help="add a gin config file to parse",
+        metavar="PATH",
+    )
+    parser.add_argument(
+        "--gin_param",
+        action="append",
+        help="add a (properly quoted) gin parameter binding",
+        metavar="PARAM",
+    )
+    parser.add_argument(
+        "--gin_location_prefix",
+        action="append",
+        help="add a directory to search for gin configs in",
+        metavar="DIR",
+    )
+
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    init_gin_config()
+    parse_gin_defaults_and_flags()
     run()

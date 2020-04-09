@@ -73,5 +73,5 @@ if __name__ == "__main__":
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # disable tf C++ logging before importing
     from conversational_ai import t5_model
 
-    t5_model.init_gin_config()
+    t5_model.parse_gin_defaults_and_flags()
     _history = chat_interactively()

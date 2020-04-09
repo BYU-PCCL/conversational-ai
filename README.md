@@ -40,14 +40,14 @@ to chat interactively with a trained model, do:
 
 ```bash
 python3 -m conversational_ai.chat \
-    --gin_file=infer.gin \
-    --gin_file=./path/to/checkpoint/operative_config.gin
+    --gin_location_prefix=./path/to/checkpoint/ \
+    --gin_file=infer.gin
 ```
 
 or
 
 ```
 docker.py --tty -m conversational_ai.chat \
-    --gin_file=infer.gin \
-    --gin_file=./checkpoints/path/to/checkpoint/operative_config.gin
+    --gin_location_prefix=./path/to/checkpoint/ \
+    --gin_file=infer.gin
 ```
