@@ -1,0 +1,9 @@
+logging.level = "ERROR"
+
+chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
+chat_interactively.prefix = "nsp: "
+chat_interactively.turn_separator = " "
+
+Bitransformer.decode.beam_size = 4  # 4+ for beam search
+# Bitransformer.decode.temperature = 1.0  # only used for sample decoding
+Bitransformer.decode.alpha = 0.6  # only used for beam search

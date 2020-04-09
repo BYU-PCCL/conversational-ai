@@ -1,0 +1,9 @@
+include "finetune_3b.gin"
+
+MIXTURE_NAME = "conversation_v001_nsp"
+
+utils.run.model_dir = "./checkpoints/conversational-ai_nsp-v1_3b"
+
+utils.run.train_steps = 5000
+utils.run.keep_checkpoint_max = 10
+utils.run.save_checkpoints_steps = 500
