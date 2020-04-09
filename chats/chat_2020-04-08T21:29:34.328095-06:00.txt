@@ -1,0 +1,8 @@
+human: Hello. HOw are you?
+model: next
+human: How has your day been?
+model: not_next
+human: haha wow
+model: not_next
+human: ok bye
+model: not_next

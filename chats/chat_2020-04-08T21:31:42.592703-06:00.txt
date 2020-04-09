@@ -1,0 +1,16 @@
+human: HellO!
+model: next
+human: How are you doing today?
+model: next
+human: What's up?
+model: next
+human: Bye.
+model: not_next
+human: I have to go. Bye.
+model: not_next
+human: See ya.
+model: not_next
+human: I gotta go
+model: not_next
+human: Hi!
+model: not_next
