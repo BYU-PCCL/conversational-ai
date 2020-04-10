@@ -61,10 +61,6 @@ def run(
         check=True,
     )
 
-    if not tty:
-        print(name, "(Press CTRL+C to stop viewing the logs)", sep="\n\n")
-        subprocess.run(["docker", "logs", "-f", name])
-
 
 if __name__ == "__main__":
     import argparse
