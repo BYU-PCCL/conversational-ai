@@ -1,0 +1,8 @@
+human: Hello!
+model: Hi!
+human: how are you doing today?
+model: Hi!
+Hey!
+Hey! How are you?
+Hey!
+I'm doing doing great great! How are you?

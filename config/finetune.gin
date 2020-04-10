@@ -6,7 +6,7 @@ include "learning_rate_schedules/constant_0_001.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
 
-utils.run.model_dir = "./checkpoints/conversational-ai_{hostname}_{timestamp}"
+utils.run.model_dir = "./checkpoints/conversational-ai/{hostname}_{timestamp}"
 
 constant_learning_rate.learning_rate = 0.0001
 
@@ -19,7 +19,7 @@ utils.run.save_checkpoints_steps = 5_000
 utils.run.train_steps = 250_000
 
 utils.run.batch_size = ("tokens_per_batch", 8192)
-utils.run.sequence_length = {"inputs": 512, "targets": 512}
+utils.run.sequence_length = {"inputs": 1024, "targets": 256}
 
 utils.run.mesh_devices = ["gpu:0"]
 utils.run.mesh_shape = "model:1,batch:1"

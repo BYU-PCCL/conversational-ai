@@ -2,4 +2,4 @@ include "finetune_3b.gin"
 
 MIXTURE_NAME = "conversation_v001_compounding"
 
-utils.run.model_dir = "./checkpoints/conversational-ai_compounding-v1_3b"
+utils.run.model_dir = "./checkpoints/conversational-ai/compounding-v1_3b"

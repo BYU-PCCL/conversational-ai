@@ -15,7 +15,7 @@ d_ff = 2048
 d_kv = 64
 d_model = 512
 dropout_rate = 0.1
-init_checkpoint = './checkpoints/pretrained_models/3B/model.ckpt-1000000'
+init_checkpoint = './checkpoints/conversational-ai/pretrained_models/3B/model.ckpt-1000000'
 MIXTURE_NAME = 'conversation_v001_compounding'
 num_heads = 8
 num_layers = 6
@@ -165,7 +165,7 @@ run.mesh_devices = ['gpu:0', 'gpu:1']
 run.mesh_shape = 'model:1,batch:2'
 run.mode = 'infer'
 run.model_dir = \
-    'checkpoints/conversational-ai_rainbow_2020-04-06T23:16:46.186-06:00'
+    'checkpoints/conversational-ai/rainbow_2020-04-06T23:16:46.186-06:00'
 run.model_type = 'bitransformer'
 run.optimizer = @optimize.AdafactorOptimizer
 run.perplexity_eval_steps = 10

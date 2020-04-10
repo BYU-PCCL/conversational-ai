@@ -15,8 +15,8 @@ d_ff = 2048
 d_kv = 64
 d_model = 512
 dropout_rate = 0.1
-init_checkpoint = 'gs://t5-data/pretrained_models/small/model.ckpt-1000000'
-MIXTURE_NAME = 'conversation_v001_nsp'
+init_checkpoint = './checkpoints/conversational-ai/pretrained_models/3B/model.ckpt-1000000'
+MIXTURE_NAME = 'conversation_v001_compounding'
 num_heads = 8
 num_layers = 6
 
@@ -37,9 +37,10 @@ Bitransformer.shared_embedding = True
 
 # Parameters for chat_interactively:
 # ==============================================================================
+chat_interactively.conversation_length_save_threshold = 4
 chat_interactively.model_dir = None
-chat_interactively.prefix = 'nsp: '
-chat_interactively.turn_separator = ' '
+chat_interactively.prefix = 'converse: '
+chat_interactively.turn_separator = '\n\n'
 
 # Parameters for constant_learning_rate:
 # ==============================================================================
@@ -47,8 +48,8 @@ constant_learning_rate.learning_rate = 0.0001
 
 # Parameters for Bitransformer.decode:
 # ==============================================================================
-Bitransformer.decode.beam_size = 1
-Bitransformer.decode.temperature = 1.0
+Bitransformer.decode.alpha = 0.6
+Bitransformer.decode.beam_size = 4
 
 # Parameters for DenseReluDense:
 # ==============================================================================
@@ -78,8 +79,8 @@ get_variable_dtype.slice_dtype = 'float32'
 
 # Parameters for infer_model:
 # ==============================================================================
-infer_model.input_filename = '/tmp/tmpk7uqt6ge/input.txt'
-infer_model.output_filename = '/tmp/tmpk7uqt6ge/output.txt'
+infer_model.input_filename = '/tmp/tmpkjbpy9gf/input.txt'
+infer_model.output_filename = '/tmp/tmpkjbpy9gf/output.txt'
 
 # Parameters for LayerStack:
 # ==============================================================================
@@ -103,7 +104,7 @@ LocalSelfAttention.dropout_rate = %dropout_rate
 
 # Parameters for logging:
 # ==============================================================================
-logging.level = 'ERROR'
+logging.level = 'INFO'
 
 # Parameters for make_bitransformer:
 # ==============================================================================
@@ -139,10 +140,6 @@ encoder/make_layer_stack.num_layers = %num_layers
 mesh_train_dataset_fn.mixture_or_task_name = %MIXTURE_NAME
 mesh_train_dataset_fn.use_cached = False
 
-# Parameters for num_parallel_calls:
-# ==============================================================================
-num_parallel_calls.deterministic = False
-
 # Parameters for pack_dataset:
 # ==============================================================================
 pack_dataset.use_custom_ops = False
@@ -150,35 +147,35 @@ pack_dataset.use_custom_ops = False
 # Parameters for run:
 # ==============================================================================
 run.autostack = True
-run.batch_size = ('tokens_per_batch', 8192)
+run.batch_size = ('tokens_per_batch', 16384)
 run.dataset_split = 'train'
 run.ensemble_inputs = None
-run.eval_checkpoint_step = 5000
+run.eval_checkpoint_step = 80000
 run.eval_dataset_fn = None
 run.eval_summary_dir = None
 run.export_path = ''
 run.gcp_project = None
 run.init_checkpoint = None
 run.iterations_per_loop = 100
-run.keep_checkpoint_max = 10
+run.keep_checkpoint_max = 50
 run.layout_rules = \
     'ensemble:ensemble,batch:batch,d_ff:model,heads:model,vocab:model,experts:batch'
 run.learning_rate_schedule = @learning_rate_schedules.constant_learning_rate
-run.mesh_devices = ['gpu:0']
-run.mesh_shape = 'model:1,batch:1'
+run.mesh_devices = ['gpu:0', 'gpu:1']
+run.mesh_shape = 'model:1,batch:2'
 run.mode = 'infer'
-run.model_dir = 'checkpoints/conversational-ai/nsp-v1_small'
+run.model_dir = 'checkpoints/conversational-ai/compounding-v1_3b'
 run.model_type = 'bitransformer'
 run.optimizer = @optimize.AdafactorOptimizer
 run.perplexity_eval_steps = 10
 run.predict_fn = None
-run.save_checkpoints_steps = 500
+run.save_checkpoints_steps = 5000
 run.sequence_length = {'inputs': 512, 'targets': 512}
 run.tpu = None
 run.tpu_job_name = None
 run.tpu_zone = None
 run.train_dataset_fn = @t5.models.mesh_transformer.mesh_train_dataset_fn
-run.train_steps = 5000
+run.train_steps = 250000
 run.variable_filter = None
 run.vocabulary = @t5.data.sentencepiece_vocabulary.SentencePieceVocabulary()
 
