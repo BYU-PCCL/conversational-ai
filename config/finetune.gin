@@ -1,6 +1,5 @@
 import conversational_ai.tasks
 
-include "gs://t5-data/pretrained_models/small/operative_config.gin"
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
 
@@ -18,15 +17,7 @@ utils.run.save_checkpoints_steps = 5_000
 # utils.run.train_steps = @utils.auto_train_steps
 utils.run.train_steps = 250_000
 
-utils.run.batch_size = ("tokens_per_batch", 8192)
 utils.run.sequence_length = {"inputs": 1024, "targets": 256}
-
-utils.run.mesh_devices = ["gpu:0"]
-utils.run.mesh_shape = "model:1,batch:1"
-utils.run.tpu_job_name = None
-utils.run.tpu = None
-utils.run.gcp_project = None
-utils.run.tpu_zone = None
 
 # because we are using a GPU instead of a TPU
 utils.get_variable_dtype.slice_dtype = "float32"

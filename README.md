@@ -33,7 +33,7 @@ or
 ### finetune
 
 ```bash
-python3 -m conversational_ai.t5_model --gin_file=finetune.gin
+python3 -m conversational_ai.t5_model --gin_file=finetune_small.gin
 ```
 
 or

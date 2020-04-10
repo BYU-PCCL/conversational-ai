@@ -1,8 +1,6 @@
-import conversational_ai.tasks
-
 # include "gs://t5-data/pretrained_models/3B/operative_config.gin"
 include "./checkpoints/conversational-ai/pretrained_models/3B/operative_config.gin"
-include "finetune.gin"
+include "finetune.gin"  # NB: has to come after importing operative_config.gin
 
 # not necessary if downloading from Google Cloud Storage
 init_checkpoint = "./checkpoints/conversational-ai/pretrained_models/3B/model.ckpt-1000000"
@@ -11,7 +9,6 @@ utils.run.batch_size = ("tokens_per_batch", 16_384)
 
 utils.run.mesh_devices = ["gpu:0", "gpu:1"]
 utils.run.mesh_shape = "model:1,batch:2"
-
 utils.run.tpu_job_name = None
 utils.run.tpu = None
 utils.run.gcp_project = None

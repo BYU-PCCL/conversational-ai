@@ -1,0 +1,15 @@
+# include "gs://t5-data/pretrained_models/large/operative_config.gin"
+include "./checkpoints/conversational-ai/pretrained_models/large/operative_config.gin"
+include "finetune.gin"  # NB: has to come after importing operative_config.gin
+
+# not necessary if downloading from Google Cloud Storage
+init_checkpoint = "./checkpoints/conversational-ai/pretrained_models/large/model.ckpt-1000700"
+
+utils.run.batch_size = ("tokens_per_batch", 4096)
+
+utils.run.mesh_devices = ["gpu:0"]
+utils.run.mesh_shape = "model:1,batch:1"
+utils.run.tpu_job_name = None
+utils.run.tpu = None
+utils.run.gcp_project = None
+utils.run.tpu_zone = None
