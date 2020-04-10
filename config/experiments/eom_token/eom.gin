@@ -1,0 +1,7 @@
+include "finetune_base.gin"
+
+MIXTURE_NAME = "conversation_v001_compounding_eom"
+
+utils.run.model_dir = "./checkpoints/conversational-ai/compounding-v1-eom_base"
+
+utils.run.train_steps = 100_000
