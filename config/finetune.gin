@@ -17,7 +17,7 @@ utils.run.save_checkpoints_steps = 5_000
 # utils.run.train_steps = @utils.auto_train_steps
 utils.run.train_steps = 250_000
 
-utils.run.sequence_length = {"inputs": 1024, "targets": 256}
+utils.run.sequence_length = {"inputs": 512, "targets": 256}
 
 # because we are using a GPU instead of a TPU
 utils.get_variable_dtype.slice_dtype = "float32"
