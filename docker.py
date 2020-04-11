@@ -23,8 +23,8 @@ def run(
     tty: bool = False,
     pull: bool = False,
     follow_logs: bool = False,
+    rm: bool = False,
     args: List[str] = [  # noqa: B006
-        "--rm",
         "--network=host",
         "--ipc=host",
         "--shm-size=8g",
@@ -45,6 +45,8 @@ def run(
         print("")
 
     args = ["docker", "run", f"--name={name}", "-it" if tty else "--detach"] + args
+    if rm:
+        args.append("--rm")
 
     gpus = os.getenv("NVIDIA_VISIBLE_DEVICES", os.getenv("NV_GPU", "all"))
     args.append(f"--env=NVIDIA_VISIBLE_DEVICES={gpus}")
@@ -102,6 +104,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--pull",
         help="Pull the image before running the container",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--rm",
+        help="Automatically remove the container when it exits",
         action="store_true",
     )
     parser.add_argument(
