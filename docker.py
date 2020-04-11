@@ -22,6 +22,7 @@ def run(
     volumes: Dict[_Path, _Path] = {"/mnt": "/mnt"},  # noqa: B006
     tty: bool = False,
     pull: bool = False,
+    follow_logs: bool = False,
     args: List[str] = [  # noqa: B006
         "--rm",
         "--network=host",
@@ -61,6 +62,10 @@ def run(
         check=True,
     )
 
+    if follow_logs and not tty:
+        print(name, "(Press CTRL+C to stop viewing the logs)", sep="\n\n")
+        subprocess.run(["docker", "logs", "-f", name])
+
 
 if __name__ == "__main__":
     import argparse
@@ -97,6 +102,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--pull",
         help="Pull the image before running the container",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--follow-logs",
+        help="Follow log output (only if tty was not specified)",
         action="store_true",
     )
     # TODO: add `--volumes` flag
