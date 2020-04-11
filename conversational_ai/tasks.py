@@ -73,8 +73,9 @@ t5.data.TaskRegistry.add(
         _dataset,
         generator=functools.partial(
             _generate_compounding_conversations,
-            first_speaker_token="<speaker1>",
-            second_speaker_token="<speaker2>",
+            # `<` is not in the vocab...
+            first_speaker_token="speaker1> ",
+            second_speaker_token="speaker2> ",
             end_of_utterance_token=" ",  # TODO: change `end_of_utterance_token`
             prefix="converse: ",
         ),
@@ -99,9 +100,9 @@ t5.data.TaskRegistry.add(
         _dataset,
         generator=functools.partial(
             _generate_conversations_as_str,
-            prefix="<bos>\n",
-            suffix="\n<eos>",
-            turn_prefixes=["<speaker1>", "<speaker2>"],
+            prefix="",
+            suffix="",
+            turn_prefixes=["speaker1> ", "speaker2> "],  # `<` is not in the vocab...
             turn_suffix="\n",
         ),
         keys=["text"],

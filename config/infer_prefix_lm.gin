@@ -1,9 +1,8 @@
 logging.level = "INFO"
 
 chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
-chat_interactively.conversation_prefix = "prefix: <bos>\n"
-chat_interactively.turn_prefixes = ["\n<speaker1>", "\n<speaker2>"]
-# chat_interactively.conversation_suffix = "\n<eos>"
+chat_interactively.conversation_prefix = "prefix: "
+chat_interactively.turn_prefixes = ["speaker1>", "speaker2>"]
 chat_interactively.turn_suffix = "\n"
 chat_interactively.conversation_length_save_threshold = 4
 
