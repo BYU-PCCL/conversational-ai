@@ -1,0 +1,9 @@
+human: Hello!
+model:  ⁇ speaker1>hello there?  ⁇ eos>
+instrument  ⁇ eos>
+human: how are you today?
+model:  ⁇ speaker1>Hey a party ofventest thing  ⁇ speaker2>D 50,000 or home?  ⁇ eos>
+you hish?  ⁇ eos>
+prefer doing buy  thinking a input too  ⁇ speaker1>Ok i get into Snap sandwich? I play happyya great and twoich  ⁇ eos>
+back  ⁇ speaker2>You didnt think he ea flying whole point so cool  ⁇ eos>
+spend you come about to sidedid the best..  ⁇ speaker1>So are you?  ⁇ eos>
