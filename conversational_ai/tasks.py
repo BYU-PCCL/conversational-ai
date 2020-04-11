@@ -34,7 +34,7 @@ def _dataset(
 
 
 t5.data.TaskRegistry.add(
-    "conversation_v001_nsp_chitchat",
+    "chitchat_v001_nsp",
     t5.data.Task,
     dataset_fn=functools.partial(
         _dataset,
@@ -51,7 +51,7 @@ t5.data.TaskRegistry.add(
 
 
 t5.data.TaskRegistry.add(
-    "conversation_v002_compounding_chitchat",
+    "chitchat_v002_compounding",
     t5.data.Task,
     dataset_fn=functools.partial(
         _dataset,

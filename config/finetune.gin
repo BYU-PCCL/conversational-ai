@@ -3,7 +3,7 @@ import conversational_ai.tasks
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
 
-MIXTURE_NAME = "conversation_v002_compounding_chitchat"
+MIXTURE_NAME = "chitchat_v002_compounding"
 
 utils.run.model_dir = "./checkpoints/conversational-ai/{hostname}_{timestamp}"
 
