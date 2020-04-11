@@ -30,7 +30,7 @@ def run(
         "--shm-size=8g",
         "--ulimit=memlock=-1",
         "--ulimit=stack=67108864",
-        f"--cpus={max(int(0.15 * mp.cpu_count()), 8)}",
+        f"--cpus={max(int(0.33 * mp.cpu_count()), 8)}",
         f"--user={os.getuid()}:{os.getgid()}",
     ],
     **kwargs,  # not used; just here so we can pass in whatever we get from the CLI
