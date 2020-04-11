@@ -10,13 +10,10 @@ import t5
 import tensorflow.compat.v1 as tf
 
 
-def _generate_compounding_conversations(
-    end_of_message_token: str = "<EOM>",
-    end_of_utterance_token: str = " ",  # TODO: change to ". " ?
-    prefix: str = "converse: ",
-) -> Iterable[Dict[str, str]]:
+def _generate_compounding_conversations(**kwargs) -> Iterable[Dict[str, str]]:
     """Yields examples from `ccc.CompoundingConversationDataset`."""
-    for inputs, targets in ccc.CompoundingConversationDataset(**locals()):
+    kwargs.setdefault("prefix", "converse: ")
+    for inputs, targets in ccc.CompoundingConversationDataset(**kwargs):
         yield {"inputs": inputs, "targets": targets}
 
 
@@ -37,7 +34,7 @@ def _dataset(
 
 
 t5.data.TaskRegistry.add(
-    "conversation_v001_nsp",
+    "conversation_v001_nsp_chitchat",
     t5.data.Task,
     dataset_fn=functools.partial(
         _dataset,
@@ -52,29 +49,29 @@ t5.data.TaskRegistry.add(
     sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
 )
 
-for suffix, eom_token in [
-    ("", "<EOM>"),
-    ("_eom", "<EOM>"),
-    ("_br", "<br>"),
-    ("_1newlines", "\n"),
-    ("_2newlines", "\n\n"),
-]:
-    t5.data.TaskRegistry.add(
-        f"conversation_v001_compounding{suffix}",
-        t5.data.Task,
-        dataset_fn=functools.partial(
-            _dataset,
-            generator=functools.partial(_generate_compounding_conversations, eom_token),
-            keys=["inputs", "targets"],
-            num_train=124_990,
+
+t5.data.TaskRegistry.add(
+    "conversation_v002_compounding_chitchat",
+    t5.data.Task,
+    dataset_fn=functools.partial(
+        _dataset,
+        generator=functools.partial(
+            _generate_compounding_conversations,
+            first_speaker_token="<speaker1>",
+            second_speaker_token="<speaker2>",
+            end_of_utterance_token=" ",  # TODO: change `end_of_utterance_token`
+            prefix="converse: ",
         ),
-        splits=["train", "validation"],
-        text_preprocessor=None,
-        postprocess_fn=t5.data.postprocessors.lower_text,
-        metric_fns=[
-            t5.evaluation.metrics.accuracy,
-            t5.evaluation.metrics.bleu,
-            t5.evaluation.metrics.rouge,
-        ],
-        sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
-    )
+        keys=["inputs", "targets"],
+        num_train=124_990,
+    ),
+    splits=["train", "validation"],
+    text_preprocessor=None,
+    postprocess_fn=t5.data.postprocessors.lower_text,
+    metric_fns=[
+        t5.evaluation.metrics.accuracy,
+        t5.evaluation.metrics.bleu,
+        t5.evaluation.metrics.rouge,
+    ],
+    sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
+)

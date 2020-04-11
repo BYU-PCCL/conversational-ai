@@ -3,21 +3,24 @@ import datetime
 import os
 import readline  # noqa: F401,W0611
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Iterable, List, Optional, Union
 
+import chitchat_dataset as ccc
 import gin
 
 
 @gin.configurable
 def chat_interactively(
     model_dir: Union[str, Path],
-    prefix: str,
-    turn_separator: str,
+    conversation_prefix: str,
+    turn_prefixes: List[str],
+    turn_suffix: str = "",
     output_file: Optional[Union[str, Path]] = "./chats/chat_{timestamp}.txt",
     config_log_file: Optional[Union[str, Path]] = "./chats/chat_{timestamp}.gin",
     context_window: int = 100,
     step: Optional[Union[int, str]] = "latest",
     conversation_length_save_threshold: int = 0,
+    output_turn_prefixes: Iterable[str] = ["human: ", "model: "],  # noqa: B006
     prompt: str = "> ",
 ) -> List[str]:
     """Runs an interactive chat session with the trained T5 model."""
@@ -47,17 +50,19 @@ def chat_interactively(
             inp = input(prompt)
             history.append(inp)
 
-            inputs = [prefix + turn_separator.join(history[-context_window:])]
+            inputs = ccc.prepend_cycle(history[-context_window:], turn_prefixes)
+            inputs = [conversation_prefix + turn_suffix.join(inputs)]
             predictions = t5_model.predict(inputs, model_dir=str(model_dir), step=step)
 
-            prediction = "\n".join(predictions)
+            prediction = "\n".join(predictions).replace(turn_prefixes[1], "")
+            # replace the human's prefix (e.g. `<speaker1>`) too for good measure
+            prediction = prediction.replace(turn_prefixes[0], "")
+
             history.append(prediction)
             print(prediction)
             if output_file and len(history) >= conversation_length_save_threshold:
-                output = ""
-                for i, turn in enumerate(history):
-                    output += f"human: {turn}\n" if i % 2 == 0 else f"model: {turn}\n"
-                output_file.write_text(output)
+                output = ccc.prepend_cycle(history, output_turn_prefixes)
+                output_file.write_text("\n".join(output))
     except (KeyboardInterrupt, EOFError):
         return history  # return without printing traceback
     except Exception:
