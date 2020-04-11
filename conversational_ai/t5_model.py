@@ -56,7 +56,7 @@ def predict(
         all_outputs = [p.read_text() for p in Path(tmp).glob(f"{out_file.name}*")]
         # TODO: should we return just the last one?
         outputs = filter(lambda x: x.strip(), "\n".join(all_outputs).split("\n"))
-        # HACK: not sure if the model is outputing `b'output'` or something else is
+        # HACK: not sure if the model is outputting `b'output'` or something else is
         return [ast.literal_eval(line.strip()).decode("utf-8") for line in outputs]
 
 

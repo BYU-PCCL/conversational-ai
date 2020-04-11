@@ -10,6 +10,22 @@ import t5
 import tensorflow.compat.v1 as tf
 
 
+def _convo_as_str(
+    convo: Iterable[str],
+    prefix: str = "",
+    suffix: str = "",
+    turn_prefixes: Iterable[str] = ["", ""],  # noqa: B006
+    turn_suffix: str = "\n",
+) -> str:
+    new_convo = turn_suffix.join(ccc.prepend_cycle(convo, turn_prefixes))
+    return f"{prefix}{new_convo}{suffix}"
+
+
+def _generate_conversations_as_str(**kwargs) -> Iterable[Dict[str, str]]:
+    for convo in ccc.ConversationDataset():
+        yield {"text": _convo_as_str(convo=convo, **kwargs)}
+
+
 def _generate_compounding_conversations(**kwargs) -> Iterable[Dict[str, str]]:
     """Yields examples from `ccc.CompoundingConversationDataset`."""
     kwargs.setdefault("prefix", "converse: ")
@@ -67,6 +83,32 @@ t5.data.TaskRegistry.add(
     ),
     splits=["train", "validation"],
     text_preprocessor=None,
+    postprocess_fn=t5.data.postprocessors.lower_text,
+    metric_fns=[
+        t5.evaluation.metrics.accuracy,
+        t5.evaluation.metrics.bleu,
+        t5.evaluation.metrics.rouge,
+    ],
+    sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
+)
+
+t5.data.TaskRegistry.add(
+    "chitchat_v002_prefix_lm",
+    t5.data.Task,
+    dataset_fn=functools.partial(
+        _dataset,
+        generator=functools.partial(
+            _generate_conversations_as_str,
+            prefix="<bos>\n",
+            suffix="\n<eos>",
+            turn_prefixes=["<speaker1>", "<speaker2>"],
+            turn_suffix="\n",
+        ),
+        keys=["text"],
+        num_train=6952,
+    ),
+    splits=["train", "validation"],
+    text_preprocessor=t5.data.preprocessors.prefix_lm,
     postprocess_fn=t5.data.postprocessors.lower_text,
     metric_fns=[
         t5.evaluation.metrics.accuracy,
