@@ -3,8 +3,12 @@ logging.level = "INFO"
 chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
 chat_interactively.conversation_prefix = "converse: "
 chat_interactively.turn_prefixes = ["<speaker1>", "<speaker2>"]
+chat_interactively.turn_suffix = ""
 chat_interactively.conversation_length_save_threshold = 4
+chat_interactively.postprocess_output = True
 
-Bitransformer.decode.beam_size = 4  # 1 for sample & greedy decoding
+utils.run.sequence_length = {"inputs": 64, "targets": 32}
+
+Bitransformer.decode.beam_size = 1 # 1 for sample & greedy decoding, 4+ for beam search
 # Bitransformer.decode.temperature = 1.0  # only used for sample decoding
-Bitransformer.decode.alpha = 0.6  # only used for beam search
+# Bitransformer.decode.alpha = 0.6  # only used for beam search
