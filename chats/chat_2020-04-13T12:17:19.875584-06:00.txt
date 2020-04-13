@@ -1,0 +1,6 @@
+human: Hello!
+model: hey are you there?
+human: Yeah! How are you doing?
+model: hey are you there?
+speaker1> oh ok speaker2> I'm sorry! speaker1> I'm sorry! speaker2> I'm back! speaker1> oh hahaha speaker1> I'm sorry! speaker2> I'm back! speaker1> oh ha
+a great evening!

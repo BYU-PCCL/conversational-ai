@@ -1,0 +1,30 @@
+human: Hello! How are you doing today?
+model: are you?
+human: I am doing well. What have you been up to today?
+model: are you?
+speaker1> hey
+I'm not sure if I'm going to end the chat.
+human: Oh, do you have to go?
+model: are you?
+speaker1> hey
+I'm not sure if I'm going to end the chat.
+speaker1> hey
+i'm going to go to bed soon so i'll talk to you later
+I'm going to end the chat.
+you have a good day!
+human: Ok bye!
+model: are you?
+speaker1> hey
+I'm not sure if I'm going to end the chat.
+speaker1> hey
+i'm going to go to bed soon so i'll talk to you later
+I'm going to end the chat.
+you have a good day!
+speaker1> hey
+i'm going to go to bed soon so i'll talk to you later
+I'm going to end the chat.
+i'm going to go to bed soon so i'll talk to you later
+i've got to go now
+I'm going to end the chat.
+a good day!
+i'm not sure if that's what I'm going to do.
