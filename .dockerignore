@@ -3,7 +3,6 @@
 /.idea/
 /.vscode/
 /checkpoints
-/data
 /models/
 chat.sh
 chats/
