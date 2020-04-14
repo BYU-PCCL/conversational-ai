@@ -2,4 +2,4 @@ include "finetune_small.gin"
 
 MIXTURE_NAME = "dailydialog_v003_prefix_lm"
 
-utils.run.model_dir = "./checkpoints/conversational-ai/dailydialog-v3-prefix-lm_small"
+utils.run.model_dir = "./checkpoints/conversational-ai/dailydialog_v003_prefix_lm_small"

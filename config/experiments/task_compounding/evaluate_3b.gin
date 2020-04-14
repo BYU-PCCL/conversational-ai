@@ -1,4 +1,4 @@
-include "checkpoints/conversational-ai/compounding-v1_3b/operative_config.gin"
+include "checkpoints/conversational-ai/chitchat_v002_compounding_3b/operative_config.gin"
 include "evaluate.gin"
 
-MIXTURE_NAME = "conversation_v001_compounding"
+MIXTURE_NAME = "chitchat_v002_compounding"

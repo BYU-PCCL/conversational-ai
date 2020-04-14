@@ -1,6 +1,6 @@
 include "gs://t5-data/pretrained_models/large/operative_config.gin"
 include "finetune.gin"  # NB: has to come after importing operative_config.gin
 
-MIXTURE_NAME = "conversation_v001_compounding"
+MIXTURE_NAME = "chitchat_v002_compounding"
 
-utils.run.model_dir = "./checkpoints/conversational-ai/compounding-v1_large"
+utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v002_compounding_large"
