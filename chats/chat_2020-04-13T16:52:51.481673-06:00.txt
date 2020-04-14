@@ -1,0 +1,8 @@
+human: What's up?
+model: the world, who knows
+human: haha, it is indeed. So, how was your day?
+model: what did you say? 
+human: What have you been up to today?
+model: . good plan What has been your favorite smell you like? 
+human: Ummm... bacon smells nice?
+model: name? 
