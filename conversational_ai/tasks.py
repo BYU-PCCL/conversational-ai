@@ -136,3 +136,12 @@ for dataset_name in ["dailydialog", "convai2"]:
         ],
         sentencepiece_model_path=t5.data.DEFAULT_SPM_PATH,
     )
+
+
+t5.data.MixtureRegistry.add(
+    "chitchat_dailydialog_v003_prefix_lm",
+    tasks=["chitchat_v003_prefix_lm", "dailydialog_v003_prefix_lm"],
+    # TODO: figure out rate based on dataset length
+    # default_rate=t5.data.utils.rate_num_examples,
+    default_rate=1.0,
+)

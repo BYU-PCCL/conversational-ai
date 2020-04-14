@@ -1,0 +1,5 @@
+include "finetune_11b.gin"
+
+MIXTURE_NAME = "chitchat_dailydialog_v003_prefix_lm"
+
+utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/11b"
