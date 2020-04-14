@@ -1,5 +1,5 @@
 chitchat_dataset>=0.9.0
 gin-config>=0.3.0
-mesh-tensorflow>=0.1.13
-t5>=0.4.0
+mesh-tensorflow==0.1.13
+t5==0.4.1
 tensorflow>=2.1.0
