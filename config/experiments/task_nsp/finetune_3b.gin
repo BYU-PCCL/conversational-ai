@@ -1,9 +1,0 @@
-include "finetune_3b.gin"
-
-MIXTURE_NAME = "chitchat_v001_nsp"
-
-utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v001_nsp_3b"
-
-utils.run.train_steps = 5000
-utils.run.keep_checkpoint_max = 10
-utils.run.save_checkpoints_steps = 500

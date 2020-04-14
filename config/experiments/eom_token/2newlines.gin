@@ -1,7 +1,0 @@
-include "finetune_base.gin"
-
-MIXTURE_NAME = "chitchat_v002_compounding_2newlines"
-
-utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v002_compounding_2newlines_base"
-
-utils.run.train_steps = 100_000

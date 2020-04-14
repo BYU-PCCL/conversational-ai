@@ -1,0 +1,5 @@
+include "finetune_base.gin"
+
+MIXTURE_NAME = "chitchat_v002_compounding"
+
+utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v002_compounding/base"

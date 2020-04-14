@@ -1,4 +1,0 @@
-include "checkpoints/conversational-ai/chitchat_v001_nsp_3b/operative_config.gin"
-include "evaluate.gin"
-
-MIXTURE_NAME = "chitchat_v001_nsp"

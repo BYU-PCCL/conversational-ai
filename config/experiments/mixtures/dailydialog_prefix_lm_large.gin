@@ -1,5 +1,0 @@
-include "finetune_large.gin"
-
-MIXTURE_NAME = "dailydialog_v003_prefix_lm"
-
-utils.run.model_dir = "./checkpoints/conversational-ai/dailydialog_v003_prefix_lm_large"

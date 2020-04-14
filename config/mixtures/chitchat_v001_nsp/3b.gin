@@ -1,0 +1,5 @@
+include "finetune_3b.gin"
+
+MIXTURE_NAME = "chitchat_v001_nsp"
+
+utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v001_nsp/3b"

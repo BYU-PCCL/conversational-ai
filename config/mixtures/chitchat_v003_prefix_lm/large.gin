@@ -1,0 +1,5 @@
+include "finetune_large.gin"
+
+MIXTURE_NAME = "chitchat_v003_prefix_lm"
+
+utils.run.model_dir = "./checkpoints/conversational-ai/chitchat_v003_prefix_lm/large"
