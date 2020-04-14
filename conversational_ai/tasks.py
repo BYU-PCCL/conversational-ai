@@ -82,7 +82,7 @@ for dataset_name in ["dailydialog", "convai2"]:
     )
 
 t5.data.TaskRegistry.add(
-    "chitchat_v002_prefix_lm",
+    "chitchat_v003_prefix_lm",
     t5.data.Task,
     dataset_fn=functools.partial(
         chitchat.dataset,
@@ -91,7 +91,7 @@ t5.data.TaskRegistry.add(
             prefix="",
             suffix="",
             turn_prefixes=["speaker1> ", "speaker2> "],  # `<` is not in the vocab...
-            turn_suffix="\n",
+            turn_suffix="\t",
         ),
         keys=["text"],
         num_train=6952,
@@ -109,7 +109,7 @@ t5.data.TaskRegistry.add(
 
 for dataset_name in ["dailydialog", "convai2"]:
     t5.data.TaskRegistry.add(
-        f"{dataset_name}_v002_prefix_lm",
+        f"{dataset_name}_v003_prefix_lm",
         t5.data.Task,
         dataset_fn=functools.partial(
             generic.dataset,
@@ -121,7 +121,7 @@ for dataset_name in ["dailydialog", "convai2"]:
                     "speaker1> ",
                     "speaker2> ",
                 ],  # `<` is not in the vocab...
-                turn_suffix="\n",
+                turn_suffix="\t",
             ),
             keys=["text"],
             data_dir=f"./data/{dataset_name}",
