@@ -3,11 +3,11 @@ import conversational_ai.tasks
 include "dataset.gin"
 include "learning_rate_schedules/constant_0_001.gin"
 
-MIXTURE_NAME = "chitchat_v002_compounding"
+MIXTURE_NAME = "chitchat_v003_prefix_lm"
 
 utils.run.model_dir = "./checkpoints/conversational-ai/{hostname}_{timestamp}"
 
-constant_learning_rate.learning_rate = 0.0001
+constant_learning_rate.learning_rate = 0.0007
 
 utils.run.keep_checkpoint_max = 50
 utils.run.save_checkpoints_steps = 5_000
@@ -17,7 +17,7 @@ utils.run.save_checkpoints_steps = 5_000
 # utils.run.train_steps = @utils.auto_train_steps
 utils.run.train_steps = 250_000
 
-utils.run.sequence_length = {"inputs": 512, "targets": 256}
+utils.run.sequence_length = {"inputs": 256, "targets": 32}
 
 # because we are using a GPU instead of a TPU
 utils.get_variable_dtype.slice_dtype = "float32"
