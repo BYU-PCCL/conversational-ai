@@ -1,6 +1,7 @@
 """Simple chatbot script to chat with a trained T5 model."""
 import datetime
 import os
+import re
 import readline  # noqa: F401,W0611
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
@@ -56,8 +57,9 @@ def chat_interactively(
 
             prediction = "\n".join(predictions)  # TODO: should we join all predictions?
             # FIXME: figure out how to handle postprocessing the output
-            prediction = prediction.split(turn_prefixes[0])[0]
-            prediction = prediction.replace(turn_prefixes[1], "").strip()
+            # TODO: should we just split on one of the `turn_prefixes`?
+            split_prediction = re.split("|".join(turn_prefixes), prediction)
+            prediction = next(s.strip() for s in split_prediction if s.strip())
 
             history.append(prediction)
             print(prediction)
