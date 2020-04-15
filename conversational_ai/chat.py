@@ -55,11 +55,8 @@ def chat_interactively(
             inputs = [conversation_prefix + turn_suffix.join(inputs)]
             predictions = t5_model.predict(inputs, model_dir=str(model_dir), step=step)
 
-            prediction = "\n".join(predictions)  # TODO: should we join all predictions?
-            # FIXME: figure out how to handle postprocessing the output
-            # TODO: should we just split on one of the `turn_prefixes`?
-            split_prediction = re.split("|".join(turn_prefixes), prediction)
-            prediction = next(s.strip() for s in split_prediction if s.strip())
+            # TODO: should we join all predictions?
+            prediction = _postprocess_response("\n".join(predictions), turn_prefixes)
 
             history.append(prediction)
             print(prediction)
@@ -75,6 +72,12 @@ def chat_interactively(
             config_log_file = Path(str(config_log_file).format(**fmt))
             config_log_file.parent.mkdir(parents=True, exist_ok=True)
             config_log_file.write_text(gin.config_str())  # gin will have been init
+
+
+# FIXME: figure out how to handle postprocessing the output
+def _postprocess_response(prediction: str, turn_prefixes: List[str]) -> str:
+    prediction = prediction.split(turn_prefixes[1], 1)[-1]
+    return prediction.split(turn_prefixes[0], 1)[0].strip()
 
 
 if __name__ == "__main__":
