@@ -1,7 +1,6 @@
 """Simple chatbot script to chat with a trained T5 model."""
 import datetime
 import os
-import re
 import readline  # noqa: F401,W0611
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
@@ -22,7 +21,6 @@ def chat_interactively(
     step: Optional[Union[int, str]] = "latest",
     conversation_length_save_threshold: int = 0,
     output_turn_prefixes: Iterable[str] = ["human: ", "model: "],  # noqa: B006
-    postprocess_output: bool = True,
     prompt: str = "> ",
 ) -> List[str]:
     """Runs an interactive chat session with the trained T5 model."""
@@ -57,9 +55,9 @@ def chat_interactively(
             predictions = t5_model.predict(inputs, model_dir=str(model_dir), step=step)
 
             prediction = "\n".join(predictions)  # TODO: should we join all predictions?
-            if postprocess_output:
-                # TODO: should we always take the first from the split?
-                prediction = re.split("|".join(turn_prefixes), prediction)[0]
+            # FIXME: figure out how to handle postprocessing the output
+            prediction = prediction.split(turn_prefixes[0])[0]
+            prediction = prediction.replace(turn_prefixes[1], "").strip()
 
             history.append(prediction)
             print(prediction)

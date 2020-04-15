@@ -5,7 +5,6 @@ chat_interactively.conversation_prefix = "prefix: "
 chat_interactively.turn_prefixes = ["speaker1>", "speaker2>"]
 chat_interactively.turn_suffix = "\t"
 chat_interactively.conversation_length_save_threshold = 4
-chat_interactively.postprocess_output = True
 
 utils.run.sequence_length = {"inputs": 256, "targets": 32}
 
