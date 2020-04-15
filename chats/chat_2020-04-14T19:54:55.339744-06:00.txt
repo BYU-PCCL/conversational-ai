@@ -1,0 +1,4 @@
+human: Hello!
+model: My name is Heidi! I'm from Texas
+human: Nice to meet you! I am from Chicago.
+model: speaker2> Spolelepo! speaker1> Holy cow and sauteed! Oh nice! speaker2> What was the best part about

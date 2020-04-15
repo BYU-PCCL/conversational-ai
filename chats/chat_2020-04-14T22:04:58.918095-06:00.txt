@@ -1,0 +1,14 @@
+human: What's up?
+model: Are you OK today? 
+human: Yeah! How are you doing?
+model: 
+human: cool.
+model: Ok good! how about you?
+human: 
+model: Hi 
+human: Hello
+model: hopeful. i start a chat about the beginning 
+human: awesome!
+model: I saw 12 on Red 5th 1, and 3 How about you 
+human: haha cool
+model: 

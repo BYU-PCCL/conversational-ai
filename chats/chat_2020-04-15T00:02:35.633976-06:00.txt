@@ -1,0 +1,12 @@
+human: Hello!
+model: hi is anyone there?
+human: Hello!
+model:  hib sunny whats up
+human: Not much, you?
+model:  You really have continental chocolate chip signed 
+human: Haha wow. I do like chocolate chip cookies...
+model: actually college bending?  thats crazy) are you a Marvel fan 
+human: Yeah i love marvel movies. Do you?
+model:  yes it is tragedy by a cookie 
+human: haha ok...
+model: it isnt too much of a painting food  Joseph peanut butter?3 

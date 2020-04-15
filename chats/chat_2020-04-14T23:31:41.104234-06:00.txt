@@ -1,0 +1,4 @@
+human: Hello!
+model: I can't see the chats
+human: Uh oh. I am here!
+model: AdLab I need to start working on a project im interested in so Im gonna end the chat!  What are you up to?

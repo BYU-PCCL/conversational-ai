@@ -1,0 +1,6 @@
+human: Hello. How are you today?
+model: Anything good? Anything I can do for you today? Anyone there?
+human: I am here!
+model: What kind of sharks would you want? 
+human: haha sharks? That is random.
+model: That would be amazing Well this whole saturday that i don't have to worry about visiting people 

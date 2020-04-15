@@ -1,0 +1,10 @@
+human: Hey!
+model: What what did you want to eat ?
+human: bacon!
+model: I was wondering if you want to go !
+human: Sure! Go where?
+model: Well , what do you think about Melbourne ? The freeway ? Things have been so good .
+human: haha I have always wanted to go to Australia!
+model: We also had a sweet Tashason .
+human: haha what is that?
+model: Alright :)

@@ -1,0 +1,4 @@
+human: Hello! How is your day going?
+model: lol this is so silly.
+human: haha this chat? I know... So what are you up to?
+model: i am in my
