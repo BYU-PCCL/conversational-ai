@@ -1,0 +1,14 @@
+human: Hello!
+model: Hello again!
+human: How are you today?
+model: Do we have two chats?
+human: haha i dont think so?
+model: I'm not a huge fan of smells sadly hahaha
+human: haha oh that is too bad...
+model: I've seen some videos of starcrafts that I don't think about. Type I saw that question. Essentially I'
+human: oh you play starcraft?
+model: oh I didn't know ya
+human: Oh cool!
+model: I would go on a cruise with my sister and brother when I was about to dress up and they said the weather was super nice haha speaker2
+human: I have to go. Bye!
+model: you will check in a world one week

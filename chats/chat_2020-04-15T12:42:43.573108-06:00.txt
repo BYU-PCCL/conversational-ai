@@ -1,0 +1,8 @@
+human: Hello!
+model: whats up?!
+human: Not much, you?
+model: No more mainstream simulations of chemicals but it's the weight Halal3 class I love to cook
+human: haha I am not a very good cook. What do you like to cook?
+model: Probably. I'll be able to make money but it's not allowed to do any good.
+human: haha cool.
+model: So do you know came into the movie?

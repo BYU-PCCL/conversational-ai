@@ -1,0 +1,7 @@
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-155000
+decoded 0: b'prefix: speaker1>Hello!'
+            -> b"Or the sun speaker2> and the weather is too hard I'm leaving speaker1> hey hahaha"
+            -> b'speaker2> hi'
+            -> b'whats up?'
+            -> b'speaker2> Heyoo!'
+            -> b'Anyone there?'

@@ -1,0 +1,8 @@
+human: Hello!
+model: whats up
+human: How are you today?
+model: Hmmmm
+human: hahaha. What have you been up to today?
+model: In the last few hours
+human: cool
+model: Saturday, Friday as a good day
