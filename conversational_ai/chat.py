@@ -1,7 +1,6 @@
 """Simple chatbot script to chat with a trained T5 model."""
 import datetime
 import os
-import re
 import readline  # noqa: F401,W0611
 from pathlib import Path
 from typing import Iterable, List, Optional, Union
@@ -76,7 +75,9 @@ def chat_interactively(
 
 # FIXME: figure out how to handle postprocessing the output
 def _postprocess_response(prediction: str, turn_prefixes: List[str]) -> str:
-    prediction = prediction.split(turn_prefixes[1], 1)[-1]
+    assert len(turn_prefixes) == 2
+    splits = prediction.split(turn_prefixes[1], 1)
+    prediction = next(s.strip() for s in splits if s.strip())
     return prediction.split(turn_prefixes[0], 1)[0].strip()
 
 
