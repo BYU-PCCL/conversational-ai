@@ -5,11 +5,11 @@ https://arxiv.org/abs/1910.10683
 import argparse
 import ast
 import datetime
-import logging as py_logging
+import logging
 import platform
 import tempfile
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Any, Callable, List, Optional, Union
 
 import gin
 import pkg_resources
@@ -17,7 +17,10 @@ import tensorflow.compat.v1 as tf
 from mesh_tensorflow.transformer import utils
 from t5.models.mtf_model import _get_latest_checkpoint_from_dir
 
-logger = py_logging.getLogger("conversational-ai")
+# HACK: figure out a better alternative to `RUN_TIMESTAMP` global variable?
+# hardcode the tz for now because some servers are in random timezones
+_tz = datetime.timezone(-datetime.timedelta(hours=6))
+RUN_TIMESTAMP = datetime.datetime.now(tz=_tz).isoformat(timespec="milliseconds")
 
 
 def run(**kwargs) -> None:
@@ -61,11 +64,34 @@ def predict(
 
 
 @gin.configurable
-def logging(level: str = "INFO") -> None:
-    """Initializes up logging."""
-    py_logging.basicConfig(level=level)
+def logging_file_handler(filename: str, **kwargs) -> logging.FileHandler:
+    """Returns a ``logging.FileHandler``."""
+    return logging.FileHandler(filename.format(timestamp=RUN_TIMESTAMP), **kwargs)
+
+
+@gin.register
+def logging_filter_log_records_for_chat(record: Any) -> bool:
+    """Filters log records suitable for interactive chat."""
+    return (
+        record.msg.startswith("decoded 0:")
+        or record.msg.startswith("            ->")
+        or record.msg.startswith("Restoring parameters from")
+    )
+
+
+@gin.configurable
+def tf_logging(
+    level: str = "INFO",
+    filters: Optional[List[Callable[[Any], bool]]] = None,
+    additional_handlers: Optional[List[Any]] = None,
+) -> None:
+    """Initializes Tensorflow logging."""
     tf.get_logger().propagate = False  # https://stackoverflow.com/a/33664610
     tf.get_logger().setLevel(level)
+    for h in additional_handlers or []:
+        tf.get_logger().addHandler(h)
+    for f in filters or []:
+        tf.get_logger().addFilter(f)
 
 
 def parse_gin_defaults_and_flags() -> None:
@@ -89,18 +115,14 @@ def parse_gin_defaults_and_flags() -> None:
 
     gin.parse_config_files_and_bindings(args.gin_file, args.gin_param)
 
-    # hardcode the tz for now because some servers are in random timezones
-    tz = datetime.timezone(-datetime.timedelta(hours=6))
     # make it so we don't have to specify a unique model_dir each time
     model_dir = gin.query_parameter("utils.run.model_dir").format(
-        hostname=platform.node(),
-        timestamp=datetime.datetime.now(tz=tz).isoformat(timespec="milliseconds"),
+        hostname=platform.node(), timestamp=RUN_TIMESTAMP,
     )
     with gin.unlock_config():
         gin.bind_parameter("utils.run.model_dir", model_dir)
 
-    logging()
-    logger.debug("\n# Gin config\n# %s\n%s", "#" * 78, gin.config_str())
+    tf_logging()
 
 
 def _parse_args() -> argparse.Namespace:

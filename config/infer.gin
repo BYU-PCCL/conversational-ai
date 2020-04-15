@@ -1,1 +1,1 @@
-include "infer_compounding.gin"
+include "infer_prefix_lm.gin"

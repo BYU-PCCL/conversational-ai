@@ -103,7 +103,7 @@ LocalSelfAttention.dropout_rate = %dropout_rate
 
 # Parameters for logging:
 # ==============================================================================
-logging.level = 'INFO'
+tf_logging.level = 'INFO'
 
 # Parameters for make_bitransformer:
 # ==============================================================================

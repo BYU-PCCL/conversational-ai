@@ -1,5 +1,4 @@
 """Simple chatbot script to chat with a trained T5 model."""
-import datetime
 import os
 import readline  # noqa: F401,W0611
 from pathlib import Path
@@ -31,13 +30,11 @@ def chat_interactively(
         model_dir = gin.query_parameter("utils.run.model_dir")
     model_dir = Path(model_dir)
 
-    # hardcode the tz for now because some servers are in random timezones
-    tz = datetime.timezone(-datetime.timedelta(hours=6))
     fmt = {
         **locals(),
         "run": model_dir.name,
         "step": step,
-        "timestamp": datetime.datetime.now(tz=tz).isoformat(),
+        "timestamp": t5_model.RUN_TIMESTAMP,
     }
 
     if output_file is not None:

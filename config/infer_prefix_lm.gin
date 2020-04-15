@@ -1,4 +1,7 @@
-logging.level = "INFO"
+tf_logging.level = "INFO"
+tf_logging.filters = [@logging_filter_log_records_for_chat]
+tf_logging.additional_handlers = [@logging_file_handler()]
+logging_file_handler.filename = "./chats/chat_{timestamp}.tensorflow.log"
 
 chat_interactively.model_dir = None  # will use the model_dir from operative_config.gin
 chat_interactively.conversation_prefix = "prefix: "
