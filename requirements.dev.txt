@@ -10,3 +10,4 @@ flake8>=3.7.9
 isort[requirements,pyproject]>=4.3.21
 mypy>=0.770
 pep8-naming>=0.10.0
+pytest>=5.4.1
