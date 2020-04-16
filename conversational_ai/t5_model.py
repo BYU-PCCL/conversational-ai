@@ -7,6 +7,7 @@ import ast
 import datetime
 import logging
 import platform
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Union
@@ -26,6 +27,13 @@ RUN_TIMESTAMP = datetime.datetime.now(tz=_tz).isoformat(timespec="milliseconds")
 def run(**kwargs) -> None:
     """Runs a T5 model for training, finetuning, evaluation etc."""
     tf.disable_v2_behavior()
+
+    if gin.query_parameter("utils.run.mode") == "eval":
+        # Increase the recursion limit, see: https://github.com/pltrdy/rouge/issues/19
+        length = gin.query_parameter("utils.run.sequence_length").get("inputs", 512)
+        batch_size = 1024  # TODO: do not hardcode batch_size for recursionlimit calc
+        sys.setrecursionlimit(batch_size * length + 10)
+
     utils.run(**kwargs)
 
 
@@ -73,7 +81,7 @@ def logging_file_handler(filename: str, **kwargs) -> logging.FileHandler:
 def logging_filter_log_records_for_chat(record: Any) -> bool:
     """Filters log records suitable for interactive chat."""
     return (
-        record.msg.startswith("decoded 0:")
+        record.msg.startswith("decoded")
         or record.msg.startswith("            ->")
         or record.msg.startswith("Restoring parameters from")
     )
