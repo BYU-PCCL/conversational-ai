@@ -1,0 +1,35 @@
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-175000
+decoded 0: b'prefix: speaker1>Hello! How are you doing today?'
+            -> b'Is anyone on here?'
+            -> b"speaker2> Doing good! (808) 782-1557 That's my number hahaha text me speaker1> Wow its totally fate"
+            -> b"speaker2> Hey it's still great! How are you doing? speaker1> I've been doing alright. Just sitting in class ha"
+            -> b'speaker2> hello? hi if you are there I am really sorry but the chat is bugged and I cant see your bubbles or my'
+            -> b'surviving finals?'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-175000
+decoded 0: b'prefix: speaker1>Hello! How are you doing today? speaker2>Is anyone on here? speaker1>Hi! I am here. How are you?'
+            -> b'speaker2> Great, thanks. Did you do anything fun today? speaker1> Good How is your day? speaker2> just working all week What'
+            -> b"speaker2> The chit chat thing is Elizabeth disobedient can't be here at least. speaker1> Ya I am trying to"
+            -> b'speaker2> Doing great! speaker1> I am doing good. I have a friend tomorrow speaker2> Yeah speaker1> Have you met'
+            -> b"speaker2> I'm great! How do you feel about yesterday? Sorry, I scare you away, but you can't be sure "
+            -> b"speaker2> It's doing well! Although I am a little worried about my finals today, but I couldn't find the time to"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-175000
+decoded 0: b'prefix: speaker1>Hello! How are you doing today? speaker2>Is anyone on here? speaker1>Hi! I am here. How are you? speaker2>Great, thanks. Did you do anything fun today? speaker1>Nope :( Just writing a paper... How about you?'
+            -> b'speaker2> I had the only 5 minutes talking when I got back. I may be shared by you on this table then. Quick examine you again Get'
+            -> b"speaker2> Fair :) There I have a ton of questions, though, and then it's just am getting up early. speaker"
+            -> b'What do you think about the description of your life of "abobbles" at UVU? speaker2> No I am Sailor buddy, my'
+            -> b"speaker2> I am my first not too big but I think I'll choose anyways how this works? I've been really busy, I"
+            -> b"Well, I think I am going to BYU per semester. I'm pretty ready for the summer so it's nice to do a"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-175000
+decoded 0: b'prefix: speaker1>Hello! How are you doing today? speaker2>Is anyone on here? speaker1>Hi! I am here. How are you? speaker2>Great, thanks. Did you do anything fun today? speaker1>Nope :( Just writing a paper... How about you? speaker2>I had the only 5 minutes talking when I got back. I may be shared by you on this table then. Quick examine you again Get speaker1>Oh... Who were you talking to?'
+            -> b'speaker2> Crazy. We might say forget if lol speaker1> They are good bwet cheap speaker2> Not infinity war speaker'
+            -> b'speaker2> I like tuna. It is always good; I have more to wear. speaker1> She is like her roommates, and I am'
+            -> b"speaker2> Not at all. Haha rupts jokes speaker1> Are being very productive? speaker2> I don't know exactly"
+            -> b'speaker2> Okay. If you chat later, All good food with you dryero hair( speaker1> I would kinda sitting in the cookie...'
+            -> b'speaker2> Yeah man he is what I was told speaker1> "A-Aiest". How did you hear the chit chat'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b'prefix: speaker1>Hello! How are you doing today? speaker2>Is anyone on here? speaker1>Hi! I am here. How are you? speaker2>Great, thanks. Did you do anything fun today? speaker1>Nope :( Just writing a paper... How about you? speaker2>I had the only 5 minutes talking when I got back. I may be shared by you on this table then. Quick examine you again Get speaker1>Oh... Who were you talking to? speaker2>Crazy. We might say forget if lol speaker1>haha forget what?'
+            -> b"speaker2> I want to see a movie about Systems. speaker1> Hahaha yeah I can't wait a moment. speaker2"
+            -> b'speaker1> Just wondering, irmere thing I have to dig some grapes or stake All I am slightly rich with us. Especially'
+            -> b"The iPads always closes. The map: I think. Haha Really, what's your favorite food? Or what is automated? I can"
+            -> b'speaker2> Well, they or right away though... I guess to send these info. He can see you again. How do you heard of the prompt'
+            -> b"Oh well i miss I have cream on that one. Maybe it is nice to agree with you or at this time. Maybe you'd like to"

@@ -1,0 +1,16 @@
+human: Hey
+model: we can change to Channel 5 this evening . It's really exciting !
+human: What's up?
+model: What do you mean  Connqising a two ?
+human: ummmm
+model: ! Really ? With the war ?
+human: hello
+model: ?
+human: how are you doing?
+model: I'm Dave . I have a class right now actually .
+human: Hi Dave! I am Bob.
+model: What do you mean ?
+human: My name is Bob.
+model: The Her name is Haunc Park .
+human: ok....
+model: hahahaha the irm up here huh tho.

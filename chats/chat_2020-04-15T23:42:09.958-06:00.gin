@@ -1,0 +1,294 @@
+import conversational_ai.tasks
+import mesh_tensorflow.optimize
+import mesh_tensorflow.transformer.dataset
+import mesh_tensorflow.transformer.learning_rate_schedules
+import mesh_tensorflow.transformer.t2t_vocabulary
+import mesh_tensorflow.transformer.transformer_layers
+import mesh_tensorflow.transformer.utils
+import t5.data.mixtures
+import t5.data.sentencepiece_vocabulary
+import t5.models.mesh_transformer
+
+# Macros:
+# ==============================================================================
+d_ff = 4096
+d_kv = 64
+d_model = 1024
+dropout_rate = 0.1
+init_checkpoint = \
+    './checkpoints/conversational-ai/pretrained_models/large/model.ckpt-1000700'
+MIXTURE_NAME = 'chitchat_dailydialog_v003_prefix_lm'
+num_heads = 16
+num_layers = 24
+
+# Parameters for AdafactorOptimizer:
+# ==============================================================================
+AdafactorOptimizer.beta1 = 0.0
+AdafactorOptimizer.clipping_threshold = 1.0
+AdafactorOptimizer.decay_rate = None
+AdafactorOptimizer.epsilon1 = 1e-30
+AdafactorOptimizer.epsilon2 = 0.001
+AdafactorOptimizer.factored = True
+AdafactorOptimizer.min_dim_size_to_factor = 128
+AdafactorOptimizer.multiply_by_parameter_scale = True
+
+# Parameters for Bitransformer:
+# ==============================================================================
+Bitransformer.shared_embedding = True
+
+# Parameters for chat_interactively:
+# ==============================================================================
+chat_interactively.conversation_length_save_threshold = 4
+chat_interactively.conversation_prefix = 'prefix: '
+chat_interactively.model_dir = None
+chat_interactively.turn_prefixes = ['speaker1>', 'speaker2>']
+chat_interactively.turn_suffix = '\t'
+
+# Parameters for constant_learning_rate:
+# ==============================================================================
+constant_learning_rate.learning_rate = 0.0007
+
+# Parameters for Bitransformer.decode:
+# ==============================================================================
+Bitransformer.decode.beam_size = 1
+Bitransformer.decode.temperature = 1.0
+
+# Parameters for DenseReluDense:
+# ==============================================================================
+DenseReluDense.dropout_rate = %dropout_rate
+DenseReluDense.hidden_size = %d_ff
+
+# Parameters for decoder/DenseReluDense:
+# ==============================================================================
+decoder/DenseReluDense.activation = 'relu'
+decoder/DenseReluDense.dropout_rate = %dropout_rate
+decoder/DenseReluDense.hidden_size = %d_ff
+
+# Parameters for encoder/DenseReluDense:
+# ==============================================================================
+encoder/DenseReluDense.activation = 'relu'
+encoder/DenseReluDense.dropout_rate = %dropout_rate
+encoder/DenseReluDense.hidden_size = %d_ff
+
+# Parameters for get_sentencepiece_model_path:
+# ==============================================================================
+get_sentencepiece_model_path.mixture_or_task_name = %MIXTURE_NAME
+
+# Parameters for get_variable_dtype:
+# ==============================================================================
+get_variable_dtype.activation_dtype = 'float32'
+get_variable_dtype.slice_dtype = 'float32'
+
+# Parameters for infer_model:
+# ==============================================================================
+infer_model.input_filename = '/tmp/tmpjqi1cxhp/input.txt'
+infer_model.output_filename = '/tmp/tmpjqi1cxhp/output.txt'
+
+# Parameters for LayerStack:
+# ==============================================================================
+LayerStack.dropout_rate = %dropout_rate
+
+# Parameters for decoder/LayerStack:
+# ==============================================================================
+decoder/LayerStack.dropout_rate = %dropout_rate
+decoder/LayerStack.norm_epsilon = 1e-06
+decoder/LayerStack.recompute_grads = False
+
+# Parameters for encoder/LayerStack:
+# ==============================================================================
+encoder/LayerStack.dropout_rate = %dropout_rate
+encoder/LayerStack.norm_epsilon = 1e-06
+encoder/LayerStack.recompute_grads = False
+
+# Parameters for LocalSelfAttention:
+# ==============================================================================
+LocalSelfAttention.dropout_rate = %dropout_rate
+
+# Parameters for logging_file_handler:
+# ==============================================================================
+logging_file_handler.filename = './chats/chat_{timestamp}.tensorflow.log'
+
+# Parameters for make_bitransformer:
+# ==============================================================================
+make_bitransformer.decoder_name = 'decoder'
+make_bitransformer.encoder_name = 'encoder'
+
+# Parameters for make_layer_stack:
+# ==============================================================================
+make_layer_stack.layers = \
+    [@mesh_tensorflow.transformer.transformer_layers.SelfAttention,
+     @mesh_tensorflow.transformer.transformer_layers.DenseReluDense]
+make_layer_stack.num_layers = %num_layers
+
+# Parameters for decoder/make_layer_stack:
+# ==============================================================================
+decoder/make_layer_stack.block_scope = True
+decoder/make_layer_stack.layers = \
+    [@mesh_tensorflow.transformer.transformer_layers.SelfAttention,
+     @mesh_tensorflow.transformer.transformer_layers.EncDecAttention,
+     @mesh_tensorflow.transformer.transformer_layers.DenseReluDense]
+decoder/make_layer_stack.num_layers = %num_layers
+
+# Parameters for encoder/make_layer_stack:
+# ==============================================================================
+encoder/make_layer_stack.block_scope = True
+encoder/make_layer_stack.layers = \
+    [@mesh_tensorflow.transformer.transformer_layers.SelfAttention,
+     @mesh_tensorflow.transformer.transformer_layers.DenseReluDense]
+encoder/make_layer_stack.num_layers = %num_layers
+
+# Parameters for mesh_train_dataset_fn:
+# ==============================================================================
+mesh_train_dataset_fn.mixture_or_task_name = %MIXTURE_NAME
+mesh_train_dataset_fn.use_cached = False
+
+# Parameters for pack_dataset:
+# ==============================================================================
+pack_dataset.use_custom_ops = False
+
+# Parameters for run:
+# ==============================================================================
+run.autostack = True
+run.batch_size = ('tokens_per_batch', 4096)
+run.dataset_split = 'train'
+run.ensemble_inputs = None
+run.eval_checkpoint_step = 195000
+run.eval_dataset_fn = None
+run.eval_summary_dir = None
+run.export_path = ''
+run.gcp_project = None
+run.init_checkpoint = None
+run.iterations_per_loop = 100
+run.keep_checkpoint_max = 50
+run.layout_rules = \
+    'ensemble:ensemble,batch:batch,d_ff:model,heads:model,vocab:model,experts:batch'
+run.learning_rate_schedule = @learning_rate_schedules.constant_learning_rate
+run.mesh_devices = ['gpu:0', 'gpu:1']
+run.mesh_shape = 'model:1,batch:2'
+run.mode = 'infer'
+run.model_dir = \
+    'checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large'
+run.model_type = 'bitransformer'
+run.optimizer = @optimize.AdafactorOptimizer
+run.perplexity_eval_steps = 10
+run.predict_fn = None
+run.save_checkpoints_steps = 5000
+run.sequence_length = {'inputs': 256, 'targets': 32}
+run.tpu = None
+run.tpu_job_name = None
+run.tpu_zone = None
+run.train_dataset_fn = @t5.models.mesh_transformer.mesh_train_dataset_fn
+run.train_steps = 250000
+run.variable_filter = None
+run.vocabulary = @t5.data.sentencepiece_vocabulary.SentencePieceVocabulary()
+
+# Parameters for SelfAttention:
+# ==============================================================================
+SelfAttention.dropout_rate = %dropout_rate
+SelfAttention.key_value_size = %d_kv
+SelfAttention.num_heads = %num_heads
+
+# Parameters for decoder/SelfAttention:
+# ==============================================================================
+decoder/SelfAttention.attention_func = None
+decoder/SelfAttention.attention_kwargs = None
+decoder/SelfAttention.combine_dims = True
+decoder/SelfAttention.dropout_rate = %dropout_rate
+decoder/SelfAttention.keep_query_heads_dims = False
+decoder/SelfAttention.key_value_size = %d_kv
+decoder/SelfAttention.num_heads = %num_heads
+decoder/SelfAttention.num_memory_heads = 0
+decoder/SelfAttention.relative_attention_num_buckets = 32
+decoder/SelfAttention.relative_attention_type = 'bias_shared'
+decoder/SelfAttention.shared_kv = False
+
+# Parameters for encoder/SelfAttention:
+# ==============================================================================
+encoder/SelfAttention.attention_func = None
+encoder/SelfAttention.attention_kwargs = None
+encoder/SelfAttention.combine_dims = True
+encoder/SelfAttention.dropout_rate = %dropout_rate
+encoder/SelfAttention.keep_query_heads_dims = False
+encoder/SelfAttention.key_value_size = %d_kv
+encoder/SelfAttention.num_heads = %num_heads
+encoder/SelfAttention.num_memory_heads = 0
+encoder/SelfAttention.relative_attention_num_buckets = 32
+encoder/SelfAttention.relative_attention_type = 'bias_shared'
+encoder/SelfAttention.shared_kv = False
+
+# Parameters for SentencePieceVocabulary:
+# ==============================================================================
+SentencePieceVocabulary.extra_ids = 100
+SentencePieceVocabulary.sentencepiece_model_file = \
+    @t5.models.mesh_transformer.get_sentencepiece_model_path()
+
+# Parameters for serialize_num_microbatches:
+# ==============================================================================
+serialize_num_microbatches.tokens_per_microbatch_per_replica = 8192
+
+# Parameters for shift_targets:
+# ==============================================================================
+shift_targets.bos_id = 0
+shift_targets.eos_id = 1
+
+# Parameters for tf_logging:
+# ==============================================================================
+tf_logging.additional_handlers = [@logging_file_handler()]
+tf_logging.filters = [@logging_filter_log_records_for_chat]
+tf_logging.level = 'INFO'
+
+# Parameters for tpu_estimator_model_fn:
+# ==============================================================================
+tpu_estimator_model_fn.model_info_file = None
+tpu_estimator_model_fn.outer_batch_size = 1
+tpu_estimator_model_fn.tpu_summaries = False
+
+# Parameters for tpu_mesh_shape:
+# ==============================================================================
+tpu_mesh_shape.model_parallelism = 1
+
+# Parameters for Unitransformer:
+# ==============================================================================
+Unitransformer.d_model = %d_model
+Unitransformer.max_length = 512
+Unitransformer.shared_embedding_and_softmax_weights = True
+
+# Parameters for decoder/Unitransformer:
+# ==============================================================================
+decoder/Unitransformer.d_model = %d_model
+decoder/Unitransformer.ensemble = None
+decoder/Unitransformer.input_full_attention = False
+decoder/Unitransformer.label_smoothing = 0.0
+decoder/Unitransformer.loss_denominator = 233472
+decoder/Unitransformer.loss_fn = None
+decoder/Unitransformer.loss_on_targets_only = False
+decoder/Unitransformer.max_length = 512
+decoder/Unitransformer.positional_embedding = False
+decoder/Unitransformer.shared_embedding_and_softmax_weights = True
+decoder/Unitransformer.sinusoid_positional_embedding = False
+decoder/Unitransformer.token_dropout_rate = 0.0
+decoder/Unitransformer.vocab_divisor = 128
+decoder/Unitransformer.z_loss = 0.0001
+
+# Parameters for encoder/Unitransformer:
+# ==============================================================================
+encoder/Unitransformer.d_model = %d_model
+encoder/Unitransformer.ensemble = None
+encoder/Unitransformer.input_full_attention = False
+encoder/Unitransformer.label_smoothing = 0.0
+encoder/Unitransformer.loss_denominator = None
+encoder/Unitransformer.loss_fn = None
+encoder/Unitransformer.loss_on_targets_only = False
+encoder/Unitransformer.max_length = 512
+encoder/Unitransformer.positional_embedding = False
+encoder/Unitransformer.shared_embedding_and_softmax_weights = True
+encoder/Unitransformer.sinusoid_positional_embedding = False
+encoder/Unitransformer.token_dropout_rate = 0.0
+encoder/Unitransformer.vocab_divisor = 128
+encoder/Unitransformer.z_loss = 0.0001
+
+# Parameters for VarianceScalingInitializer:
+# ==============================================================================
+VarianceScalingInitializer.distribution = 'normal'
+VarianceScalingInitializer.mode = 'fan_in'
+VarianceScalingInitializer.scale = 1.0

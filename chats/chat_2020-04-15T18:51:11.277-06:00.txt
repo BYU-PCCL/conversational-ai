@@ -1,0 +1,10 @@
+human: Hello! How are you doing today?
+model: Is anyone on here?
+human: Hi! I am here. How are you?
+model: Great, thanks. Did you do anything fun today?
+human: Nope :( Just writing a paper... How about you?
+model: I had the only 5 minutes talking when I got back. I may be shared by you on this table then. Quick examine you again Get
+human: Oh... Who were you talking to?
+model: Crazy. We might say forget if lol
+human: haha forget what?
+model: I want to see a movie about Systems.

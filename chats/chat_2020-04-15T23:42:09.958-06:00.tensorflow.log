@@ -1,0 +1,56 @@
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b'prefix: speaker1>Hey'
+            -> b"we can change to Channel 5 this evening . It's really exciting ! speaker2> I'm glad you like them . speaker1"
+            -> b", what's up ? speaker2> my nose and tires . Have you ever had those ? speaker1> Are you ready to"
+            -> b'! I would like to prepare my hair cut . speaker2> I am sorry to hear that . Anything I can do for you ?'
+            -> b'man that would be sick speaker2> that would be crazy'
+            -> b"Mike's father passed away last night . speaker2> I'm sorry to hear that . You're the first person I've"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up?"
+            -> b"What do you mean  Connqising a two ? speaker2> It's a secret ."
+            -> b"speaker2> I'm trying to say . The most interesting thing I learned recently was that two-factor authentication is not always the best security measure"
+            -> b"speaker2> Nothing much . What's new with you ? speaker1> Not too much . I've been pretty busy ."
+            -> b"speaker2> Nothing much . Just watching the movie . speaker1> Is there anything you're reading ? speaker2> I'"
+            -> b"speaker2> Nothing much . speaker1> She's pretty conservative . speaker2> Is her fiance Taiwanese ?"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm"
+            -> b"! Really ? With the war ? speaker2> Yeah , too cool ! I'll do the split . speaker1>"
+            -> b". speaker2> And ? speaker1> What do you mean ? speaker2> It's a bye !"
+            -> b". speaker2> Does 7 o'clock suit you ? speaker1> Either rattlesnake . speaker2> Sounds"
+            -> b'... speaker2> What the hell ! Phony good luck e-mails are one thing , but sexual harassment is crossing the'
+            -> b'. I surrender . speaker2> Delighted I was a joke . And Erica , PLS . Fat boy isn'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm speaker2>! Really ? With the war ? speaker1>hello"
+            -> b"? speaker2> It's for sure  Plus Food printing is now a thing Which is like 3d printing but with...food ingredients."
+            -> b"speaker2> What? speaker1> Unless it's 1't speaker2> Have you heard about the MicroPower deal ? speaker1"
+            -> b'Did you hear about this chit chat challenge? speaker2> No ... or maybe we will! speaker1> Close this chit chat'
+            -> b"Yep And then I'm trying to diversify him and it takes a while to find her fiance speaker2> Do they have a"
+            -> b"Nope . Can I ask what a major we're using a lot of products on students And which brand of cars? speaker2"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm speaker2>! Really ? With the war ? speaker1>hello speaker2>? speaker1>how are you doing?"
+            -> b"speaker2> I'm Dave . I have a class right now actually . speaker1> Your prizes ? speaker2> Yeah "
+            -> b'And how do you know there are ? speaker2> What do they mean ? speaker1> They give us free food charge . speaker2'
+            -> b"Would you probably guessing a movie or a person who talked about stuff like that? speaker2> I'm not sure . Let'"
+            -> b"Should we not ? speaker Turn the cup . speaker2> Wow ! It's great ! Slow down and you'll be changing"
+            -> b'speaker2> Just give it a couple more . speaker1> Oh , the photocopier ? speaker2> Then the '
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm speaker2>! Really ? With the war ? speaker1>hello speaker2>? speaker1>how are you doing? speaker2>I'm Dave . I have a class right now actually . speaker1>Hi Dave! I am Bob."
+            -> b"What do you mean ? speaker2> It's hard to say . Seems like all the newcomers ... speaker1>"
+            -> b'How did you hear about the MicroPower ? speaker2> Basically , she knew they had a lot of classes . speaker1>'
+            -> b"speaker2> How ? What happened ? speaker1> Well , I know a couple of different cultures here . I think it'"
+            -> b"I'm just asking for this chit chat thing . speaker2> They need to be in the next class . speaker1> Lucky"
+            -> b"What did you think of this program ? speaker2> I'm an apple . I think it was , ' Life is '"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm speaker2>! Really ? With the war ? speaker1>hello speaker2>? speaker1>how are you doing? speaker2>I'm Dave . I have a class right now actually . speaker1>Hi Dave! I am Bob. speaker2>What do you mean ? speaker1>My name is Bob."
+            -> b"speaker2> The Her name is Haunc Park . speaker1> What about It speaker2> It's a movie about the ancient"
+            -> b"speaker2> Are we all  this together ? speaker1> I don't know . How about this program ? speaker2> It"
+            -> b"I can't believe it . I checked the movie , too . speaker2> How about this one ? speaker1> It'"
+            -> b"speaker2> Do you know who it is ? speaker1> I don't know . speaker2> That's a surprise "
+            -> b"This guy has a malicious intent to enlarge the picture . speaker2> I'm waiting . I didn't know you liked"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-195000
+decoded 0: b"prefix: speaker1>Hey speaker2>we can change to Channel 5 this evening . It's really exciting ! speaker1>What's up? speaker2>What do you mean Connqising a two ? speaker1>ummmm speaker2>! Really ? With the war ? speaker1>hello speaker2>? speaker1>how are you doing? speaker2>I'm Dave . I have a class right now actually . speaker1>Hi Dave! I am Bob. speaker2>What do you mean ? speaker1>My name is Bob. speaker2>The Her name is Haunc Park . speaker1>ok...."
+            -> b'hahahaha the irm up here huh tho. speaker2> How about the Brigham Young Ballroom tour team?'
+            -> b"How in arizona? speaker2> That's the real question speaker1> The answer was that one ? speaker2> Yeah "
+            -> b"Can we see it together ? speaker2> yeah ! Where's the treasure ? speaker1> It's in to a bar"
+            -> b"speaker2> Ha ! It's so funny . I think I know though It shows a sci-fi film that made an artificial"
+            -> b"Marvel movie is amazing ! speaker2> What dos the last name again? speaker1> It's about this guy who falls in love with"

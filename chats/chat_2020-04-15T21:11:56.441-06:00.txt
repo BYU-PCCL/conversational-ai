@@ -1,0 +1,14 @@
+human: Hello!
+model: Did you have any experience in art class or something ?
+human: Yeah I took art class in high school and in college. How about you?
+model: bobes is a must-see . It's a much better than a hundred and sixty pesusof
+human: ok... Have you seen any good movies lately?
+model: I'll be interested in architecture , isn't it ?
+human: Yeah I like architecture too. Have you been to Chicago?
+model: Yes . I've heard about it . Come on . Let's get close to them .
+human: Ok? To whom?
+model: I'll have to go to the drugstores .
+human: Ok...
+model: I got it . Oh , one more thing , I'll have to go before you can make another one .
+human: Ok. I have to go to. See ya!
+model: Vince says that I'll have to take more credits this time .

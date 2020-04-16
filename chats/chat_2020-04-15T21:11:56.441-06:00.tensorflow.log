@@ -1,0 +1,49 @@
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b'prefix: speaker1>Hello!'
+            -> b'Did you have any experience in art class or something ? speaker2> I hate to tell you this , but I have to be at home make'
+            -> b'speaker2> no , this new one will do . And no surprise ! speaker1> Yesterday when I was little kidten minutes ago '
+            -> b"But you ' re enough of a customer , I am not sure . speaker2> How do you know ? speaker1>"
+            -> b'What should I ! My skin is too weak . She probably just steps from another guys . speaker2> The Cosao ?'
+            -> b"I would be made up my friend ' s wedding asks for sexual harassment . speaker2> Wow ! You're such a"
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b'prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you?'
+            -> b"speaker2> bobes is a must-see . It's a much better than a hundred and sixty pesusof"
+            -> b'Tell me about it . speaker2> Well . There are one of my designs on the net , and you can choose a good time'
+            -> b"Well , I love Japan a lot . speaker2> Don't be so pathetic . speaker1> Hey , young man"
+            -> b"Why not you ? Women's hospitality ? speaker2> Haha . I just been there three times in the past few years ."
+            -> b"speaker2> Because it's an expensive place to live on . Just like I have a trip to Singapore , a CD ,"
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b"prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you? speaker2>bobes is a must-see . It's a much better than a hundred and sixty pesusof speaker1>ok... Have you seen any good movies lately?"
+            -> b"speaker2> I'll be interested in architecture , isn't it ? speaker1> Yes , but not for a while"
+            -> b"speaker2> Not yet . I have an idea . Let's make out the program first , I've been here only once "
+            -> b"speaker2> Yes , I have . It's not an alien from another school . And you know what ? I've been"
+            -> b'speaker2> Yes . I tried to get in shape before . I used to be really interested in getting a better job . speaker1'
+            -> b'speaker2> Yes . My face has been successful for six months . Would you like to come ?'
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b"prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you? speaker2>bobes is a must-see . It's a much better than a hundred and sixty pesusof speaker1>ok... Have you seen any good movies lately? speaker2>I'll be interested in architecture , isn't it ? speaker1>Yeah I like architecture too. Have you been to Chicago?"
+            -> b"speaker2> Yes . I've heard about it . Come on . Let's get close to them ."
+            -> b"I'll come back after work with me . That's why I'm having such a PhD from my girlfriend . speaker2>"
+            -> b"speaker2> Always be honest with you in the group . I'm not sure I'll be able to learn something new there ."
+            -> b"speaker2> Yes . But you're right . I'll watch a lot of TV then . speaker1> Sure ."
+            -> b"speaker2> Yes . I've heard about it . I'm an ' Secret ' s struggle with her songs ."
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b"prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you? speaker2>bobes is a must-see . It's a much better than a hundred and sixty pesusof speaker1>ok... Have you seen any good movies lately? speaker2>I'll be interested in architecture , isn't it ? speaker1>Yeah I like architecture too. Have you been to Chicago? speaker2>Yes . I've heard about it . Come on . Let's get close to them . speaker1>Ok? To whom?"
+            -> b"I'll have to go to the drugstores ."
+            -> b"speaker2> Come on . Let's go !"
+            -> b'Only in-house auctions are touching .'
+            -> b"I'm staying for a jazz company . Not only problem , but you're still a nighter than me ."
+            -> b"speaker2> Yes , but I'd like to . It's going to be my pleasure . Bring your teacher with you ,"
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b"prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you? speaker2>bobes is a must-see . It's a much better than a hundred and sixty pesusof speaker1>ok... Have you seen any good movies lately? speaker2>I'll be interested in architecture , isn't it ? speaker1>Yeah I like architecture too. Have you been to Chicago? speaker2>Yes . I've heard about it . Come on . Let's get close to them . speaker1>Ok? To whom? speaker2>I'll have to go to the drugstores . speaker1>Ok..."
+            -> b"I got it . Oh , one more thing , I'll have to go before you can make another one ."
+            -> b'How about this one ?'
+            -> b"I'm sure you'll have time to go ."
+            -> b"I'm sure you'll gargle with this . speaker2> I think I'll have to . I'll stay in the"
+            -> b"I know what you mean . I'm going to stay up up awhile ."
+Restoring parameters from checkpoints/conversational-ai/dailydialog_v003_prefix_lm/large/model.ckpt-180000
+decoded 0: b"prefix: speaker1>Hello! speaker2>Did you have any experience in art class or something ? speaker1>Yeah I took art class in high school and in college. How about you? speaker2>bobes is a must-see . It's a much better than a hundred and sixty pesusof speaker1>ok... Have you seen any good movies lately? speaker2>I'll be interested in architecture , isn't it ? speaker1>Yeah I like architecture too. Have you been to Chicago? speaker2>Yes . I've heard about it . Come on . Let's get close to them . speaker1>Ok? To whom? speaker2>I'll have to go to the drugstores . speaker1>Ok... speaker2>I got it . Oh , one more thing , I'll have to go before you can make another one . speaker1>Ok. I have to go to. See ya!"
+            -> b"Vince says that I'll have to take more credits this time ."
+            -> b'See you Monday .'
+            -> b"A new film , but I think I'm going to have a better time ."
+            -> b"You bit prefer getting a samba class , and your lessons will immig shows to death halfway . I don't want to miss"
+            -> b'I have an idea .'
