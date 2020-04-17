@@ -1,0 +1,44 @@
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-40000
+decoded 0: b'prefix: speaker1>Hello'
+            -> b'speaker2> hi'
+decoded 1: b'prefix: speaker1>Hello'
+            -> b'speaker2> hey'
+decoded 2: b'prefix: speaker1>Hello'
+            -> b'speaker2> Aboneone?'
+decoded 4: b'prefix: speaker1>Hello'
+            -> b"speaker2> This is my first choice I am gay, and I can't believe it"
+decoded 8: b'prefix: speaker1>Hello'
+            -> b'0100101101010010110101100101'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-40000
+decoded 0: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today?'
+            -> b'good stay constantly up there. I dont follow medicine speaker2> haha just the preephicovered knk They cannot get focus on Mount'
+decoded 1: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today?'
+            -> b'Midcoanny thing very far right in the middle and then our best friend arrived right now. speaker2> Lol no plans speaker1> im back'
+decoded 2: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today?'
+            -> b'speaker2> heyaw'
+decoded 4: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today?'
+            -> b"who's this?"
+decoded 8: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today?'
+            -> b"i don't know if i did i would spend the to eat one speaker2> i haven't talked to"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-40000
+decoded 0: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today?'
+            -> b'you ! . .'
+decoded 1: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today?'
+            -> b"was your AVIS NO NO BYU speaker2> awesome. I've heard that the one is his math name. Hatry is M"
+decoded 2: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today?'
+            -> b'im going to reset some stuff really chatting('
+decoded 4: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today?'
+            -> b'because you asked me to the girls afterwards every day speaker2> i feel like you went to a year ago but it just makes me think of'
+decoded 8: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today?'
+            -> b'legs are going wild speaker2> I actually ate antFOOOOOO speaker1> i havent thought about that. you?'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-40000
+decoded 0: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today? speaker2>you ! . . speaker1>haha ok. Have you seen any good movies?'
+            -> b"day that doesn't work, i'm on a date since the mountains, then i'll let her go :( The"
+decoded 1: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today? speaker2>you ! . . speaker1>haha ok. Have you seen any good movies?'
+            -> b"i accidentally got good chats because the good game is pretty big. What kind of money? speaker2> oh no you'll stress"
+decoded 2: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today? speaker2>you ! . . speaker1>haha ok. Have you seen any good movies?'
+            -> b'speaker2> Woah, cool! speaker1> hmm good luck in your life oh europe session. I play Star Wars'
+decoded 4: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today? speaker2>you ! . . speaker1>haha ok. Have you seen any good movies?'
+            -> b'Do you really like finance calls? speaker2> How did you do this dance thing? oh hahaha you have to leave so far but'
+decoded 8: b'prefix: speaker1>Hello speaker2>hi speaker1>How are you today? speaker2>good stay constantly up there. I dont follow medicine speaker1>haha oh good. What have you been up to today? speaker2>you ! . . speaker1>haha ok. Have you seen any good movies?'
+            -> b"cool You? speaker2> lol speaker1> I better be concerned about everything but I still didn't know either. One of their kids in the"

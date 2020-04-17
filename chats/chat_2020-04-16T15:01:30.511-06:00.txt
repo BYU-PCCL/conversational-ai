@@ -1,0 +1,8 @@
+human: Hello
+model: hi
+human: How are you today?
+model: good stay constantly up there. I dont follow medicine
+human: haha oh good. What have you been up to today?
+model: you ! . .
+human: haha ok. Have you seen any good movies?
+model: day that doesn't work, i'm on a date since the mountains, then i'll let her go :( The

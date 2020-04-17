@@ -1,0 +1,8 @@
+human: Hello!
+model: Hey!!! whats up dope! dope!
+human: haha not much. You?
+model: Can you see these messages! What
+human: Yeah I can! How are you doing today?
+model: Lots of catfishing sounds I dont know. I get much sleep.
+human: haha I have never been fishing
+model: but would prefer dipping.

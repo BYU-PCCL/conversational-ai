@@ -1,0 +1,44 @@
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-250000
+decoded 0: b'prefix: speaker1>Hello!'
+            -> b'speaker2> Hey!!! whats up dope! dope!'
+decoded 1: b'prefix: speaker1>Hello!'
+            -> b'speaker2> hey good morning! then I would travel and buy all the worlds and sell them'
+decoded 2: b'prefix: speaker1>Hello!'
+            -> b'speaker2> Heyoo speaker1> hey its you again! speaker2> Haha yup its me XD speaker1>'
+decoded 4: b'prefix: speaker1>Hello!'
+            -> b'speaker2> hey hi'
+decoded 8: b'prefix: speaker1>Hello!'
+            -> b"speaker2> Hmm, that's a tough one"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-250000
+decoded 0: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You?'
+            -> b'speaker2> Can you see these messages! What'
+decoded 1: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You?'
+            -> b'speaker2> Yes! Sorry about that! speaker1> Oh... I just got started. XD speaker2> oh my gos'
+decoded 2: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You?'
+            -> b"speaker2> hahaha i am not a huge fan of this rainy weather...it was so good I've honestly had nothing to"
+decoded 4: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You?'
+            -> b"speaker2> Hahaha guess I'll be on here and no one will get my chats or answer. speaker1> I keep getting "
+decoded 8: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You?'
+            -> b"No can't see anything. I think you are saying. let's try again. speaker2> Okay"
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-250000
+decoded 0: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today?'
+            -> b'speaker2> Lots of catfishing sounds I dont know. I get much sleep. speaker1> Dude what else is that? speaker2>'
+decoded 1: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today?'
+            -> b'speaker2> Im doing really well! and putting a little extra on them having no debt choice speaker1> legit but how do you not'
+decoded 2: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today?'
+            -> b'Anyone at the end of the week? speaker2> Yeah! that would be basketball but Ill do the dishes speaker1> I feel like because people'
+decoded 4: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today?'
+            -> b':) I am thinking of buying a new bathroom lol speaker2> Are you? speaker1> Good how far are you? speaker2>'
+decoded 8: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today?'
+            -> b'speaker2> Hello! I have many cookies though speaker1> so you can get them bitter nonstop cuz you find someone coming from byu"'
+Restoring parameters from checkpoints/conversational-ai/chitchat_dailydialog_v003_prefix_lm/large/model.ckpt-250000
+decoded 0: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today? speaker2>Lots of catfishing sounds I dont know. I get much sleep. speaker1>haha I have never been fishing'
+            -> b'but would prefer dipping. speaker2> have you seen chunktzar speaker1> y make a ta super nice animal then it'
+decoded 1: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today? speaker2>Lots of catfishing sounds I dont know. I get much sleep. speaker1>haha I have never been fishing'
+            -> b'and not like 6 of them Too much. But I know speaker2> oh...fix, I da speaker1> or marson.......'
+decoded 2: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today? speaker2>Lots of catfishing sounds I dont know. I get much sleep. speaker1>haha I have never been fishing'
+            -> b"some kind of best hiking your life speaker2> Haha I don't speaker1> why we have dreamed of having the rest of your"
+decoded 4: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today? speaker2>Lots of catfishing sounds I dont know. I get much sleep. speaker1>haha I have never been fishing'
+            -> b'lately so secret speaker2> We eat here Biology They are great lessons Not created it! Haha I hope that they go tonight just too much.'
+decoded 8: b'prefix: speaker1>Hello! speaker2>Hey!!! whats up dope! dope! speaker1>haha not much. You? speaker2>Can you see these messages! What speaker1>Yeah I can! How are you doing today? speaker2>Lots of catfishing sounds I dont know. I get much sleep. speaker1>haha I have never been fishing'
+            -> b'yet... speaker2> hahaha I do like shape shifting? I mean you can even control so much from your sexes speaker1>'
